@@ -1,4 +1,4 @@
-package es.ucm.fdi.tp.practica4.ataxx;
+package es.ucm.fdi.tp.practica5.ataxx;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -262,10 +262,6 @@ public class AtaxxRules implements GameRules {
 		return playersPieces.get((i + 1) % playersPieces.size());
 	}
 
-	@Override
-	public double evaluate(Board board, List<Piece> playersPieces, Piece turn) {
-		return 0;
-	}
 
 	private static final int deltas[][] = { { 0, 1 }, { 1, 1 }, { 1, 0 }, { 1, -1 }, { 0, -1 }, { -1, 1 }, { -1, 0 },
 			{ -1, -1 }, { -2, -2 }, { -2, -1 }, { -2, 0 }, { -2, 1 }, { -2, 2 }, { -1, -2 }, { -1, 2 }, { 0, -2 },
@@ -292,5 +288,10 @@ public class AtaxxRules implements GameRules {
 			}
 		}
 		return moves;
+	}
+
+	@Override
+	public double evaluate(Board board, List<Piece> pieces, Piece turn, Piece p) {
+		return 0;
 	}
 }

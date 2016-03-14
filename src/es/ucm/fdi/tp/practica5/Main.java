@@ -1,4 +1,4 @@
-package es.ucm.fdi.tp.practica4;
+package es.ucm.fdi.tp.practica5;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +22,9 @@ import es.ucm.fdi.tp.basecode.bgame.model.AIAlgorithm;
 import es.ucm.fdi.tp.basecode.bgame.model.Game;
 import es.ucm.fdi.tp.basecode.bgame.model.GameError;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
-import es.ucm.fdi.tp.basecode.connectN.ConnectNFactory;
+import es.ucm.fdi.tp.basecode.connectn.ConnectNFactory;
 import es.ucm.fdi.tp.basecode.ttt.TicTacToeFactory;
-import es.ucm.fdi.tp.practica4.ataxx.AtaxxFactory;
+import es.ucm.fdi.tp.practica5.ataxx.AtaxxFactory;
 
 /**
  * This is the class with the main method for the board games application.
