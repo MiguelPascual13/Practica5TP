@@ -72,18 +72,22 @@ public class AtaxxRules implements GameRules {
 		/* There will always be 2 players placed in the opposite corners. */
 		board.setPosition(0, 0, pieces.get(0));
 		board.setPosition(dim - 1, dim - 1, pieces.get(0));
+		board.setPieceCount(pieces.get(0), 2);
 		board.setPosition(0, dim - 1, pieces.get(1));
 		board.setPosition(dim - 1, 0, pieces.get(1));
+		board.setPieceCount(pieces.get(1), 2);
 
 		/* Here we consider putting the third player. */
 		if (pieces.size() > 2 && pieces.size() <= 4) {
 			board.setPosition(dim / 2, 0, pieces.get(2));
 			board.setPosition(dim / 2, dim - 1, pieces.get(2));
+			board.setPieceCount(pieces.get(2), 2);
 
 			/* Now we consider putting the forth one. */
 			if (pieces.size() == 4) {
 				board.setPosition(0, dim / 2, pieces.get(3));
 				board.setPosition(dim - 1, dim / 2, pieces.get(3));
+				board.setPieceCount(pieces.get(3), 2);
 			}
 		}
 	}

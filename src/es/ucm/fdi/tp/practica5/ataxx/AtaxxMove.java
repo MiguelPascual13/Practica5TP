@@ -108,13 +108,16 @@ public class AtaxxMove extends GameMove {
 				} else if (infiniteDistance() == 2) {
 					moveFar(board, pieces);
 				} else {
-					throw new GameError("Position (" + row + "," + col + ") is illegal!");
+					throw new GameError("Position (" + row + "," + col
+							+ ") is illegal!");
 				}
 			} else {
-				throw new GameError("Position (" + row + "," + col + ") is already occupied!");
+				throw new GameError("Position (" + row + "," + col
+						+ ") is already occupied!");
 			}
 		} else {
-			throw new GameError("In the position (" + oldRow + "," + oldCol + ") there is no piece of yours.");
+			throw new GameError("In the position (" + oldRow + "," + oldCol
+					+ ") there is no piece of yours.");
 		}
 	}
 
@@ -156,8 +159,8 @@ public class AtaxxMove extends GameMove {
 		transformAdjacents(board, pieces, row, col);
 	}
 
-	private static final int deltas[][] = { { 0, 1 }, { 1, 1 }, { 1, 0 }, { 1, -1 }, { 0, -1 }, { -1, 1 }, { -1, 0 },
-			{ -1, -1 }, };
+	private static final int deltas[][] = { { 0, 1 }, { 1, 1 }, { 1, 0 },
+			{ 1, -1 }, { 0, -1 }, { -1, 1 }, { -1, 0 }, { -1, -1 }, };
 
 	/**
 	 * Given a position and the dimension of the squared board, decides if the
@@ -175,7 +178,8 @@ public class AtaxxMove extends GameMove {
 		return x >= 0 && y >= 0 && x < dim && y < dim;
 	}
 
-	private void transformAdjacents(Board board, List<Piece> pieces, int oldRow, int oldCol) {
+	private void transformAdjacents(Board board, List<Piece> pieces,
+			int oldRow, int oldCol) {
 		for (int[] ds : deltas) {
 			int x = oldRow + ds[0];
 			int y = oldCol + ds[1];
@@ -183,10 +187,13 @@ public class AtaxxMove extends GameMove {
 			 * If is in, the position is not empty an is not an obstacle or a
 			 * piece of yours.
 			 */
-			Piece p = board.getPosition(x, y);
-			if (inBoard(x, y, board.getRows()) && p != null && !isObstacle(p) && p.getId() != getPiece().getId()) {
+			Piece p;
+			if (inBoard(x, y, board.getRows())
+					&& (p = board.getPosition(x, y)) != null && !isObstacle(p)
+					&& p.getId() != getPiece().getId()) {
 				board.setPieceCount(p, board.getPieceCount(p) - 1);
-				board.setPieceCount(getPiece(), board.getPieceCount(getPiece()) + 1);
+				board.setPieceCount(getPiece(),
+						board.getPieceCount(getPiece()) + 1);
 				board.setPosition(x, y, getPiece());
 			}
 		}
@@ -244,7 +251,8 @@ public class AtaxxMove extends GameMove {
 	 *            piece we move
 	 * @return an instance of AtaxxMove
 	 */
-	protected GameMove createMove(int oldRow, int oldCol, int row, int col, Piece p) {
+	protected GameMove createMove(int oldRow, int oldCol, int row, int col,
+			Piece p) {
 		return new AtaxxMove(oldRow, oldCol, row, col, p);
 	}
 
@@ -258,8 +266,8 @@ public class AtaxxMove extends GameMove {
 		if (getPiece() == null) {
 			return help();
 		} else {
-			return "Place a piece '" + getPiece() + "' from (" + oldRow + "," + oldCol + ") at (" + row + "," + col
-					+ ")";
+			return "Place a piece '" + getPiece() + "' from (" + oldRow + ","
+					+ oldCol + ") at (" + row + "," + col + ")";
 		}
 	}
 }

@@ -45,19 +45,10 @@ public class AtaxxFactory implements GameFactory {
 	 *            have to make sure that the arguments here are correct..
 	 */
 	public AtaxxFactory(int dim, int obstacles) {
-		/*JAMÁS debería saltar esta excepción, debemos asegurarnos de la
-		 * corrección de los datos antes de llegar aquí.*/
-		// Illegal dimensions cases (treat before here)!!
-		/*if (dim < 5) {
-			throw new GameError("Dimension must be at least 5: " + dim);
-		} else if (dim % 2 == 0) {
-			throw new GameError("Dimesion must be odd: " + dim);
-		} else { //everything went good. (ESTÁ GARANTIZADO)*/
-			this.dim = dim;
-			this.obstacles = obstacles;
-		//}
+		this.dim = dim;
+		this.obstacles = obstacles;
 	}
-	
+
 	@Override
 	public GameRules gameRules() {
 		return new AtaxxRules(dim, obstacles);
@@ -105,8 +96,8 @@ public class AtaxxFactory implements GameFactory {
 	}
 
 	@Override
-	public void createSwingView(final Observable<GameObserver> g, final Controller c, final Piece viewPiece,
-			Player random, Player ai) {
+	public void createSwingView(final Observable<GameObserver> g,
+			final Controller c, final Piece viewPiece, Player random, Player ai) {
 		throw new UnsupportedOperationException("There is no swing view");
 	}
 
