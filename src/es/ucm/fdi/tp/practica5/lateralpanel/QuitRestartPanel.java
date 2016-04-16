@@ -1,4 +1,4 @@
-package es.ucm.fdi.tp.practica5;
+package es.ucm.fdi.tp.practica5.lateralpanel;
 
 import java.awt.FlowLayout;
 
@@ -10,8 +10,8 @@ public class QuitRestartPanel extends JPanel{
 	public static final String quitButtonText = "Quit";
 	public static final String restartButtonText = "Restart";
 	
-	JButton quitButton;
-	JButton restartButton;
+	private JButton quitButton;
+	private JButton restartButton;
 	
 	public QuitRestartPanel(){
 		super(new FlowLayout());

@@ -1,4 +1,4 @@
-package es.ucm.fdi.tp.practica5;
+package es.ucm.fdi.tp.practica5.lateralpanel;
 
 import java.awt.GridLayout;
 
@@ -15,7 +15,7 @@ public class LateralPanel extends JPanel {
 	private PlayerInformationPanel playerInformationPanel;
 
 	public LateralPanel() {
-		super(new GridLayout(0, 1));
+		super(new GridLayout(0,1));
 		statusMessagePanel = new StatusMessagePanel();
 		playerInformationPanel = new PlayerInformationPanel();
 		playerModesPanel = new PlayerModesPanel();
