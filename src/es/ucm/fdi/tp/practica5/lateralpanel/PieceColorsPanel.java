@@ -1,10 +1,14 @@
 package es.ucm.fdi.tp.practica5.lateralpanel;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
@@ -25,6 +29,11 @@ public class PieceColorsPanel extends JPanel {
 		playerName = new JComboBox<Piece>(new Vector<Piece>());
 		this.add(playerName);
 		this.add(chooseColorButton);
+		chooseColorButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				Color c = JColorChooser.showDialog(getParent(), "Elige el color al que deseas cambiar", Color.BLUE);
+			}
+		});
 	}
 
 }

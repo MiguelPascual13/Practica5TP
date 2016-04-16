@@ -40,7 +40,7 @@ public class BoardPanel extends JPanel {
 	 */
 	public BoardPanel() {
 		super();
-		this.board = new FiniteRectBoard(3, 3);
+		this.board = new FiniteRectBoard(20, 20);
 		this.cells = new JLabel[this.board.getRows()][this.board.getCols()];
 		this.fillJLabelMatrix();
 		this.setLayout(new GridLayout(this.board.getRows(), this.board.getCols()));
@@ -124,9 +124,13 @@ public class BoardPanel extends JPanel {
 				// Piece p = this.board.getPosition(i, j);
 				cells[i][j].setOpaque(true);
 				if(i %2 == 0 && j%2 == 0)
-					cells[i][j].setBackground(Color.RED);
-				else
+					cells[i][j].setBackground(Color.GREEN);
+				else if(i%2==0 && j%2!=0)
 					cells[i][j].setBackground(Color.BLUE);
+				else if(i%2!=0 && j%2==0)
+					cells[i][j].setBackground(Color.CYAN);
+				else 
+					cells[i][j].setBackground(Color.PINK);
 				this.add(cells[i][j]);
 			}
 		}

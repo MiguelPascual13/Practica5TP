@@ -20,9 +20,10 @@ public class AutomaticMovesPanel extends JPanel {
 		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), panelNameText));
 		randomButton = new JButton(randomButtonText);
 		intelligentButton = new JButton(intelligentButtonText);
-
+		intelligentButton.setEnabled(false);
 		this.add(randomButton);
 		this.add(intelligentButton);
+		
 
 	}
 }

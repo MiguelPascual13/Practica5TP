@@ -29,7 +29,7 @@ public class PlayerModesPanel extends JPanel {
 		playerName = new JComboBox<Piece>(new Vector<Piece>());
 		// playerName.addItem();
 		// playerName.addItem();
-		playerGameModes = new JComboBox<String>(new Vector<String>());
+		playerGameModes = new JComboBox<String>(new Vector<String>()); //No estoy seguro de si estos tienen que ser strings o no 
 		playerGameModes.addItem(manualText);
 		playerGameModes.addItem(randomText);
 		playerGameModes.addItem(intelligentText);
