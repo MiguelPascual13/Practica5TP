@@ -1,22 +1,23 @@
 package es.ucm.fdi.tp.practica5;
 
-import java.awt.Color;
 import java.awt.GridLayout;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
-import es.ucm.fdi.tp.basecode.bgame.model.FiniteRectBoard;
 import es.ucm.fdi.tp.basecode.bgame.model.Game;
 
 @SuppressWarnings("serial")
 public class BoardPanel extends JPanel {
 
+	private static final int SEPARATION = 4;
+
+	private PieceColorMap colorChooser;
+
 	/**
 	 * Matrix of JLabels, it will our "board" to paint.
 	 */
-	private JLabel cells[][];
+	private Cell cells[][];
 
 	/**
 	 * Board with all of its functionality.
@@ -38,13 +39,16 @@ public class BoardPanel extends JPanel {
 	 * @param rows
 	 * @param columns
 	 */
-	public BoardPanel() {
+	public BoardPanel(Board board) {
 		super();
-		this.board = new FiniteRectBoard(20, 20);
-		this.cells = new JLabel[this.board.getRows()][this.board.getCols()];
-		this.fillJLabelMatrix();
-		this.setLayout(new GridLayout(this.board.getRows(), this.board.getCols()));
-		this.update();
+		if (board != null) {
+			if (colorChooser == null) {
+				colorChooser = new PieceColorMap();
+			}
+			this.setBoard(board);
+			this.cells = new Cell[this.board.getRows()][this.board.getCols()];
+			this.update();
+		}
 	}
 
 	public void setGame(Game game) {
@@ -97,10 +101,10 @@ public class BoardPanel extends JPanel {
 		 */
 
 		// creating a new JLabel matrix...
-		cells = new JLabel[this.board.getRows()][this.board.getCols()];
+		cells = new Cell[this.board.getRows()][this.board.getCols()];
 
 		// changing the JPanel GridLayout (same doubt as before)...
-		this.setLayout(new GridLayout(this.board.getRows(), this.board.getCols()));
+		this.setLayout(new GridLayout(this.board.getRows(), this.board.getCols(), SEPARATION, SEPARATION));
 
 		// filling the JLabel matrix...
 		this.fillJLabelMatrix();
@@ -118,19 +122,24 @@ public class BoardPanel extends JPanel {
 	 * HIGHLIGHT3: Revise all the highlights.
 	 */
 	public void update() {
+		if (colorChooser == null) {
+			this.colorChooser = new PieceColorMap();
+		}
 		for (int i = 0; i < this.board.getRows(); i++) {
 			for (int j = 0; j < this.board.getCols(); j++) {
 				// Why do we create an object here?
 				// Piece p = this.board.getPosition(i, j);
 				cells[i][j].setOpaque(true);
-				if(i %2 == 0 && j%2 == 0)
-					cells[i][j].setBackground(Color.GREEN);
-				else if(i%2==0 && j%2!=0)
-					cells[i][j].setBackground(Color.BLUE);
-				else if(i%2!=0 && j%2==0)
-					cells[i][j].setBackground(Color.CYAN);
-				else 
-					cells[i][j].setBackground(Color.PINK);
+				cells[i][j].setBackground(this.colorChooser.getColorFor(board.getPosition(i, j)));
+				/*
+				 * if (i % 2 == 0 && j % 2 == 0)
+				 * cells[i][j].setBackground(Color.GREEN); else if (i % 2 == 0
+				 * && j % 2 != 0) cells[i][j].setBackground(Color.BLUE); else if
+				 * (i % 2 != 0 && j % 2 == 0)
+				 * cells[i][j].setBackground(Color.CYAN); else
+				 * cells[i][j].setBackground(Color.PINK);
+				 */
+				// cells[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
 				this.add(cells[i][j]);
 			}
 		}
@@ -144,12 +153,9 @@ public class BoardPanel extends JPanel {
 	}
 
 	private void fillJLabelMatrix() {
-		/**
-		 * HELP WANTED: Can we use for each notation?
-		 */
 		for (int i = 0; i < this.board.getRows(); i++) {
 			for (int j = 0; j < this.board.getCols(); j++) {
-				this.cells[i][j] = new JLabel();
+				this.cells[i][j] = new Cell(i, j);
 			}
 		}
 	}

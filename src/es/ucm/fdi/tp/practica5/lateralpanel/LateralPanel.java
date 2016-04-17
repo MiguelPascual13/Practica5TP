@@ -15,7 +15,7 @@ public class LateralPanel extends JPanel {
 	private PlayerInformationPanel playerInformationPanel;
 
 	public LateralPanel() {
-		super(new GridLayout(0,1));
+		super(new GridLayout(0, 1));
 		statusMessagePanel = new StatusMessagePanel();
 		playerInformationPanel = new PlayerInformationPanel();
 		playerModesPanel = new PlayerModesPanel();
@@ -30,5 +30,15 @@ public class LateralPanel extends JPanel {
 		this.add(quitRestartPanel);
 
 	}
-
+	
+	/**
+	 * Adds a message at the end of the text area, the messages are supposed to
+	 * end with an end line character.
+	 * 
+	 * @param message
+	 *            The message to show.
+	 */
+	public void appendToStatusMessagePanel(String message) {
+		this.statusMessagePanel.append(message);
+	}
 }

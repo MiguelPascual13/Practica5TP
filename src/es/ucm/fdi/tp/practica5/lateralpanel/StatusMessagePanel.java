@@ -18,7 +18,7 @@ public class StatusMessagePanel extends JPanel {
 		super(new BorderLayout());
 
 		textArea = new JTextArea();
-		textArea.setEditable(true);
+		textArea.setEditable(false);
 		scrollPane = new JScrollPane(textArea);
 
 		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), panelNameText));
@@ -26,4 +26,14 @@ public class StatusMessagePanel extends JPanel {
 		this.add(scrollPane, BorderLayout.CENTER);
 	}
 
+	/**
+	 * Adds a message at the end of the text area, the messages are supposed to
+	 * end with an end line character.
+	 * 
+	 * @param message
+	 *            The message to show.
+	 */
+	public void append(String message) {
+		this.textArea.append(message);
+	}
 }

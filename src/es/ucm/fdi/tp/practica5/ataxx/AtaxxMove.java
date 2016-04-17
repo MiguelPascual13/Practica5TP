@@ -6,6 +6,7 @@ import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.GameError;
 import es.ucm.fdi.tp.basecode.bgame.model.GameMove;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
+import es.ucm.fdi.tp.practica5.Main;
 
 /**
  * A Class representing a move for Ataxx.
@@ -17,8 +18,6 @@ import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 public class AtaxxMove extends GameMove {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final String OBSTACLE = "*";
 
 	/**
 	 * The row where to place the piece return by {@link GameMove#getPiece()}.
@@ -207,7 +206,7 @@ public class AtaxxMove extends GameMove {
 	 * @return {@code true} if is and obstacle, {@code false} if not.
 	 */
 	private boolean isObstacle(Piece p) {
-		return p.getId() == OBSTACLE;
+		return p.getId() == Main.OBSTACLE;
 	}
 
 	/**

@@ -94,7 +94,8 @@ public class AtaxxFactory implements GameFactory {
 	public void createConsoleView(Observable<GameObserver> g, Controller c) {
 		new GenericConsoleView(g, c);
 	}
-
+	
+	/**Esto ya no se usa.*/
 	@Override
 	public void createSwingView(final Observable<GameObserver> g,
 			final Controller c, final Piece viewPiece, Player random, Player ai) {

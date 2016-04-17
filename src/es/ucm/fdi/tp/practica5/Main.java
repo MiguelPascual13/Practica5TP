@@ -1,7 +1,5 @@
 package es.ucm.fdi.tp.practica5;
 
-import java.awt.EventQueue;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,7 +12,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import es.ucm.fdi.tp.basecode.attt.AdvancedTTTFactory;
 import es.ucm.fdi.tp.basecode.bgame.control.ConsoleCtrl;
 import es.ucm.fdi.tp.basecode.bgame.control.ConsoleCtrlMVC;
 import es.ucm.fdi.tp.basecode.bgame.control.Controller;
@@ -24,9 +21,10 @@ import es.ucm.fdi.tp.basecode.bgame.model.AIAlgorithm;
 import es.ucm.fdi.tp.basecode.bgame.model.Game;
 import es.ucm.fdi.tp.basecode.bgame.model.GameError;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
-import es.ucm.fdi.tp.basecode.connectn.ConnectNFactory;
-import es.ucm.fdi.tp.basecode.ttt.TicTacToeFactory;
-import es.ucm.fdi.tp.practica5.ataxx.AtaxxFactory;
+import es.ucm.fdi.tp.practica5.factories.AdvancedTTTFactoryExt;
+import es.ucm.fdi.tp.practica5.factories.AtaxxFactoryExt;
+import es.ucm.fdi.tp.practica5.factories.ConnectNFactoryExt;
+import es.ucm.fdi.tp.practica5.factories.TicTacToeFactoryExt;
 
 /**
  * This is the class with the main method for the board games application.
@@ -186,6 +184,8 @@ public class Main {
 	 * Modo de juego por defecto. Para probar errores, será un jugador manual.
 	 */
 	final private static PlayerMode DEFAULT_PLAYERMODE = PlayerMode.MANUAL;
+
+	public static final String OBSTACLE = "*";
 
 	/*-----ATTRIBUTES-----*/
 
@@ -580,30 +580,30 @@ public class Main {
 		 */
 		switch (selectedGame) {
 		case AdvancedTicTacToe:
-			gameFactory = new AdvancedTTTFactory();
+			gameFactory = new AdvancedTTTFactoryExt();
 			break;
 		case CONNECTN:
 			if (dimRows != null && dimCols != null && dimRows == dimCols) {
-				gameFactory = new ConnectNFactory(dimRows);
+				gameFactory = new ConnectNFactoryExt(dimRows);
 			} else {
-				gameFactory = new ConnectNFactory();
+				gameFactory = new ConnectNFactoryExt();
 			}
 			break;
 		case TicTacToe:
-			gameFactory = new TicTacToeFactory();
+			gameFactory = new TicTacToeFactoryExt();
 			break;
 		case Ataxx:
 			/*
 			 * CONDICIONES PARA UN JUEGO PARAMÉTRICO Se podría hacer más legible
 			 * con una función booleana.
 			 */
-			if (dimRows != null && dimCols != null && dimRows == dimCols && dimRows >= 5 && dimRows % 2 == 1
-					&& obstacles <= (((((dimRows / 2) * (dimCols / 2)) - 1) * 4) + 1)
+			if (obstacles != null && dimRows != null && dimCols != null && dimRows == dimCols && dimRows >= 5
+					&& dimRows % 2 == 1 && obstacles <= (((((dimRows / 2) * (dimCols / 2)) - 1) * 4) + 1)
 					&& (obstacles % 4 == 0 || obstacles % 4 == 1)) {
-				gameFactory = new AtaxxFactory(dimRows, obstacles);
+				gameFactory = new AtaxxFactoryExt(dimRows, obstacles);
 			} else {
 				/* The parameters are wrong, create one by default. */
-				gameFactory = new AtaxxFactory();
+				gameFactory = new AtaxxFactoryExt();
 			}
 			break;
 		default:
@@ -797,26 +797,24 @@ public class Main {
 			gameFactory.createConsoleView(g, c);
 			break;
 		case WINDOW:
-			gameFactory.createSwingView(g, c, null,
-					gameFactory.createRandomPlayer(),
+			/*
+			 * Hay que tener en cuenta las particularidades del enunciado y
+			 * distinguir el caso de la vista múltiple.
+			 */
+			c = new SwingController(g, pieces);
+			gameFactory.createSwingView(g, c, null, gameFactory.createRandomPlayer(),
 					gameFactory.createAIPlayer(aiPlayerAlg));
+			break;
 		default:
 			throw new UnsupportedOperationException("Something went wrong! This program point should be unreachable!");
 		}
-
+		
+		/*Aquí se crea el tablerito*/
 		c.start();
 	}
 
 	public static void main(String[] args) {
 
-		GUI ventana = new GUI();
-
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				ventana.setVisible(true);
-			}
-		});
-		
 		parseArgs(args);
 		startGame();
 	}

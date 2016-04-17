@@ -6,13 +6,15 @@ import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
 import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.basecode.ttt.TicTacToeFactory;
+import es.ucm.fdi.tp.practica5.GenericSwingView;
 
 @SuppressWarnings("serial")
 public class TicTacToeFactoryExt extends TicTacToeFactory {
-	
+
 	@Override
 	public void createSwingView(final Observable<GameObserver> g, final Controller c, final Piece viewPiece,
 			Player random, Player ai) {
+		new GenericSwingView(g, c);
 	}
-	
+
 }
