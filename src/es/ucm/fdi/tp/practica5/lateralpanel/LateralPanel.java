@@ -1,8 +1,13 @@
 package es.ucm.fdi.tp.practica5.lateralpanel;
 
 import java.awt.GridLayout;
+import java.util.List;
 
 import javax.swing.JPanel;
+
+import es.ucm.fdi.tp.basecode.bgame.model.Piece;
+import es.ucm.fdi.tp.practica5.BoardPanel;
+import es.ucm.fdi.tp.practica5.PieceColorMap;
 
 @SuppressWarnings("serial")
 public class LateralPanel extends JPanel {
@@ -14,12 +19,12 @@ public class LateralPanel extends JPanel {
 	private StatusMessagePanel statusMessagePanel;
 	private PlayerInformationPanel playerInformationPanel;
 
-	public LateralPanel() {
+	public LateralPanel(List<Piece> pieces, PieceColorMap colorChooser, BoardPanel b) {
 		super(new GridLayout(0, 1));
 		statusMessagePanel = new StatusMessagePanel();
 		playerInformationPanel = new PlayerInformationPanel();
 		playerModesPanel = new PlayerModesPanel();
-		pieceColorsPanel = new PieceColorsPanel();
+		pieceColorsPanel = new PieceColorsPanel(pieces, colorChooser, b);
 		automaticMovesPanel = new AutomaticMovesPanel();
 		quitRestartPanel = new QuitRestartPanel();
 		this.add(statusMessagePanel);

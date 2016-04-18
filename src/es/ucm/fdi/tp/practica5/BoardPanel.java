@@ -39,16 +39,11 @@ public class BoardPanel extends JPanel {
 	 * @param rows
 	 * @param columns
 	 */
-	public BoardPanel(Board board) {
+	public BoardPanel(Board board, PieceColorMap colorChooser) {
 		super();
-		if (board != null) {
-			if (colorChooser == null) {
-				colorChooser = new PieceColorMap();
-			}
-			this.setBoard(board);
-			this.cells = new Cell[this.board.getRows()][this.board.getCols()];
-			this.update();
-		}
+		this.colorChooser = colorChooser;
+		this.setBoard(board);
+		this.update();
 	}
 
 	public void setGame(Game game) {
@@ -104,7 +99,8 @@ public class BoardPanel extends JPanel {
 		cells = new Cell[this.board.getRows()][this.board.getCols()];
 
 		// changing the JPanel GridLayout (same doubt as before)...
-		this.setLayout(new GridLayout(this.board.getRows(), this.board.getCols(), SEPARATION, SEPARATION));
+		this.setLayout(new GridLayout(this.board.getRows(), this.board
+				.getCols(), SEPARATION, SEPARATION));
 
 		// filling the JLabel matrix...
 		this.fillJLabelMatrix();
@@ -130,7 +126,8 @@ public class BoardPanel extends JPanel {
 				// Why do we create an object here?
 				// Piece p = this.board.getPosition(i, j);
 				cells[i][j].setOpaque(true);
-				cells[i][j].setBackground(this.colorChooser.getColorFor(board.getPosition(i, j)));
+				cells[i][j].setBackground(this.colorChooser.getColorFor(board
+						.getPosition(i, j)));
 				/*
 				 * if (i % 2 == 0 && j % 2 == 0)
 				 * cells[i][j].setBackground(Color.GREEN); else if (i % 2 == 0

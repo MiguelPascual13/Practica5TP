@@ -35,7 +35,7 @@ public class GUI extends JFrame {
 	private BoardPanel boardPanel;
 
 	/* g es el puto juego, el que tiene el puto tablero. */
-	public GUI() {
+	public GUI(Board board, List<Piece> pieces, PieceColorMap colorChooser) {
 
 		super();
 
@@ -59,8 +59,8 @@ public class GUI extends JFrame {
 		 */
 
 		this.setLayout(new BorderLayout());
-		lateralPanel = new LateralPanel();
-		boardPanel = new BoardPanel(null);
+		boardPanel = new BoardPanel(board, colorChooser);
+		lateralPanel = new LateralPanel(pieces, colorChooser, boardPanel);
 		this.add(lateralPanel, BorderLayout.EAST);
 		this.add(boardPanel, BorderLayout.CENTER);
 

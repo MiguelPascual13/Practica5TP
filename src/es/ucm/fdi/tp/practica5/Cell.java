@@ -22,7 +22,7 @@ public class Cell extends JLabel {
 				System.out.println(column);
 				java.awt.Toolkit.getDefaultToolkit().beep();
 			}
-
+			
 		});
 	}
 }

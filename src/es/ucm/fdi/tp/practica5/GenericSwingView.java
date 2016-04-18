@@ -19,6 +19,8 @@ public class GenericSwingView implements GameObserver {
 	private static final String winnerMessage = "Winner: ";
 	private static final String titleMessage = "Board Games: ";
 	
+	private PieceColorMap colorChooser;
+	
 	/*
 	 * Esta clase debería tener una GUI como atributo privado sobre el que
 	 * trabajar.
@@ -34,12 +36,8 @@ public class GenericSwingView implements GameObserver {
 		 * puto tablero...
 		 */
 		g.addObserver(this);
-		gui = new GUI();
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				gui.setVisible(true);
-			}
-		});
+		
+		colorChooser = new PieceColorMap();
 	}
 
 	@Override
@@ -53,11 +51,16 @@ public class GenericSwingView implements GameObserver {
 		 * con ella, por ejemplo, pintar cosas en el status,... A ver como
 		 * hostias hacemos eso...
 		 */
+		gui = new GUI(board, pieces, colorChooser);
 		gui.setTitle(titleMessage + gameDesc);
-		gui.setBoard(board);
 		gui.update();
 		gui.appendToStatusMessagePanel(startingMessage + "'" + gameDesc + "'\n");
 		gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				gui.setVisible(true);
+			}
+		});
 	}
 
 	@Override
