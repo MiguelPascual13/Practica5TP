@@ -1,6 +1,7 @@
 package es.ucm.fdi.tp.practica5;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -13,6 +14,7 @@ import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
 import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.lateralpanel.LateralPanel;
+import es.ucm.fdi.tp.practica5.lateralpanel.PieceColorsPanel.ColorChangeListener;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame {
@@ -60,7 +62,13 @@ public class GUI extends JFrame {
 
 		this.setLayout(new BorderLayout());
 		boardPanel = new BoardPanel(board, colorChooser);
-		lateralPanel = new LateralPanel(pieces, colorChooser, boardPanel);
+		lateralPanel = new LateralPanel(pieces, colorChooser, new ColorChangeListener() {
+			@Override
+			public void colorChanged(Piece piece, Color color) {
+				colorChooser.setColorFor(piece, color);
+				boardPanel.update();
+			}			
+		});
 		this.add(lateralPanel, BorderLayout.EAST);
 		this.add(boardPanel, BorderLayout.CENTER);
 

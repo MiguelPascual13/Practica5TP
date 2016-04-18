@@ -13,7 +13,6 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
-import es.ucm.fdi.tp.practica5.BoardPanel;
 import es.ucm.fdi.tp.practica5.PieceColorMap;
 
 @SuppressWarnings("serial")
@@ -23,8 +22,12 @@ public class PieceColorsPanel extends JPanel {
 
 	private JButton chooseColorButton;
 	private JComboBox<Piece> playerName;
-
-	public PieceColorsPanel(List<Piece> pieces, PieceColorMap colorChooser, BoardPanel b) {
+	
+	public interface ColorChangeListener {
+		void colorChanged(Piece piece, Color color);
+	}
+	
+	public PieceColorsPanel(List<Piece> pieces, PieceColorMap colorChooser, ColorChangeListener listener) {
 		super(new FlowLayout());
 
 		Piece pieceArray[] = new Piece[pieces.size()];
@@ -42,9 +45,8 @@ public class PieceColorsPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				Color c = JColorChooser.showDialog(getParent(),
 						"Elige el color al que deseas cambiar", Color.BLUE);
-				colorChooser.setColorFor(
+				listener.colorChanged(
 						pieces.get(playerName.getSelectedIndex()), c);
-				b.update();
 			}
 		});
 	}
