@@ -9,6 +9,8 @@ import es.ucm.fdi.tp.basecode.bgame.model.Game.State;
 import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
 import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
+import es.ucm.fdi.tp.practica5.Cell.CellClickedListener;
+import es.ucm.fdi.tp.practica5.moveControllers.MoveController;
 
 public class GenericSwingView implements GameObserver {
 
@@ -18,16 +20,16 @@ public class GenericSwingView implements GameObserver {
 	private static final String gameStatusMessage = "Game Status: ";
 	private static final String winnerMessage = "Winner: ";
 	private static final String titleMessage = "Board Games: ";
-	
+
 	private PieceColorMap colorChooser;
-	
-	
-	
+	protected MoveController moveController;
+
 	/*
 	 * Esta clase debería tener una GUI como atributo privado sobre el que
 	 * trabajar.
 	 */
 	private GUI gui;
+	private Observable<GameObserver> g;
 
 	public GenericSwingView(Observable<GameObserver> g, Controller c) {
 		/*
@@ -38,10 +40,12 @@ public class GenericSwingView implements GameObserver {
 		 * puto tablero...
 		 */
 		g.addObserver(this);
+		this.g = g;
 		colorChooser = new PieceColorMap();
 	}
 
 	@Override
+	/* Nos pasan un read only board, lo cual no nos sirve de mucho... */
 	public void onGameStart(Board board, String gameDesc, List<Piece> pieces, Piece turn) {
 		// Debería iniciar la GUI...
 		// GUI view = new GUI(...);
@@ -52,7 +56,7 @@ public class GenericSwingView implements GameObserver {
 		 * con ella, por ejemplo, pintar cosas en el status,... A ver como
 		 * hostias hacemos eso...
 		 */
-		gui = new GUI(board, pieces, colorChooser);
+		gui = new GUI(board, pieces, colorChooser, turn, moveController, g);
 		gui.setTitle(titleMessage + gameDesc);
 		gui.update();
 		gui.appendToStatusMessagePanel(startingMessage + "'" + gameDesc + "'\n");

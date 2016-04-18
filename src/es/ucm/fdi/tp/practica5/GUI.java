@@ -8,9 +8,13 @@ import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
+import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
+import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
+import es.ucm.fdi.tp.practica5.Cell.CellClickedListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.LateralPanel;
 import es.ucm.fdi.tp.practica5.lateralpanel.PieceColorsPanel.ColorChangeListener;
+import es.ucm.fdi.tp.practica5.moveControllers.MoveController;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame {
@@ -33,7 +37,8 @@ public class GUI extends JFrame {
 	private BoardPanel boardPanel;
 
 	/* g es el puto juego, el que tiene el puto tablero. */
-	public GUI(Board board, List<Piece> pieces, PieceColorMap colorChooser) {
+	public GUI(Board board, List<Piece> pieces, PieceColorMap colorChooser, Piece turn, MoveController moveController,
+			Observable<GameObserver> g) {
 
 		super();
 
@@ -55,19 +60,28 @@ public class GUI extends JFrame {
 		 * IMPORTANT: All of this will be eventually changed into a JSplitPane
 		 * structure, for the moment it will stay as it is now.
 		 */
-	
-	
-	    
-		boardPanel = new BoardPanel(board, colorChooser);
+		
+		boardPanel = new BoardPanel(board, colorChooser, new CellClickedListener(){
+
+			@Override
+			public void cellWasClicked(int row, int column, Observable<GameObserver> g) {
+				if(moveController.generateMove(row, column, board, turn, pieces, g)){
+					update();
+				}
+				
+			}}, g);
+
 		lateralPanel = new LateralPanel(pieces, colorChooser, board, new ColorChangeListener() {
 			@Override
 			public void colorChanged(Piece piece, Color color) {
 				colorChooser.setColorFor(piece, color);
 				boardPanel.update();
-			}			
+			}
 		});
-		//Creo que se podria hacer asi el JSplitPane, tu veras si te gusta como queda o no.
-		JSplitPane vSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, boardPanel,lateralPanel);
+
+		// Creo que se podria hacer asi el JSplitPane, tu veras si te gusta como
+		// queda o no.
+		JSplitPane vSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, boardPanel, lateralPanel);
 		this.getContentPane().add(vSplitPane, BorderLayout.CENTER);
 		/* Other stuff */
 		this.setLocation(100, 50);

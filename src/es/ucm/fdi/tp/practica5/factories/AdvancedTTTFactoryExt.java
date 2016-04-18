@@ -9,11 +9,17 @@ import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.GenericSwingView;
 
 @SuppressWarnings("serial")
-public class AdvancedTTTFactoryExt extends AdvancedTTTFactory {
+public class AdvancedTTTFactoryExt extends AdvancedTTTFactory implements SwingPlayable {
 
 	@Override
 	public void createSwingView(final Observable<GameObserver> g, final Controller c, final Piece viewPiece,
 			Player random, Player ai) {
 		new GenericSwingView(g, c);
+	}
+
+	@Override
+	public Player createSwingManualPlayer() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

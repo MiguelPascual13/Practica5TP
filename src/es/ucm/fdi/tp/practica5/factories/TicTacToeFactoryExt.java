@@ -9,12 +9,18 @@ import es.ucm.fdi.tp.basecode.ttt.TicTacToeFactory;
 import es.ucm.fdi.tp.practica5.GenericSwingView;
 
 @SuppressWarnings("serial")
-public class TicTacToeFactoryExt extends TicTacToeFactory {
+public class TicTacToeFactoryExt extends TicTacToeFactory implements SwingPlayable{
 
 	@Override
 	public void createSwingView(final Observable<GameObserver> g, final Controller c, final Piece viewPiece,
 			Player random, Player ai) {
 		new GenericSwingView(g, c);
+	}
+
+	@Override
+	public Player createSwingManualPlayer() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

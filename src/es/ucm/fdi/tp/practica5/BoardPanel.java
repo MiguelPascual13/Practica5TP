@@ -6,12 +6,16 @@ import javax.swing.JPanel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Game;
+import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
+import es.ucm.fdi.tp.basecode.bgame.model.Observable;
+import es.ucm.fdi.tp.practica5.Cell.CellClickedListener;
 
 @SuppressWarnings("serial")
 public class BoardPanel extends JPanel {
 
+	private Observable<GameObserver> g;
 	private static final int SEPARATION = 4;
-
+	private CellClickedListener listener;
 	private PieceColorMap colorChooser;
 
 	/**
@@ -39,8 +43,11 @@ public class BoardPanel extends JPanel {
 	 * @param rows
 	 * @param columns
 	 */
-	public BoardPanel(Board board, PieceColorMap colorChooser) {
+	public BoardPanel(Board board, PieceColorMap colorChooser, CellClickedListener listener,
+			Observable<GameObserver> g) {
 		super();
+		this.listener = listener;
+		this.g = g;
 		this.colorChooser = colorChooser;
 		this.setBoard(board);
 		this.update();
@@ -99,8 +106,7 @@ public class BoardPanel extends JPanel {
 		cells = new Cell[this.board.getRows()][this.board.getCols()];
 
 		// changing the JPanel GridLayout (same doubt as before)...
-		this.setLayout(new GridLayout(this.board.getRows(), this.board
-				.getCols(), SEPARATION, SEPARATION));
+		this.setLayout(new GridLayout(this.board.getRows(), this.board.getCols(), SEPARATION, SEPARATION));
 
 		// filling the JLabel matrix...
 		this.fillJLabelMatrix();
@@ -126,8 +132,7 @@ public class BoardPanel extends JPanel {
 				// Why do we create an object here?
 				// Piece p = this.board.getPosition(i, j);
 				cells[i][j].setOpaque(true);
-				cells[i][j].setBackground(this.colorChooser.getColorFor(board
-						.getPosition(i, j)));
+				cells[i][j].setBackground(this.colorChooser.getColorFor(board.getPosition(i, j)));
 				/*
 				 * if (i % 2 == 0 && j % 2 == 0)
 				 * cells[i][j].setBackground(Color.GREEN); else if (i % 2 == 0
@@ -152,7 +157,7 @@ public class BoardPanel extends JPanel {
 	private void fillJLabelMatrix() {
 		for (int i = 0; i < this.board.getRows(); i++) {
 			for (int j = 0; j < this.board.getCols(); j++) {
-				this.cells[i][j] = new Cell(i, j);
+				this.cells[i][j] = new Cell(i, j, listener, g);
 			}
 		}
 	}

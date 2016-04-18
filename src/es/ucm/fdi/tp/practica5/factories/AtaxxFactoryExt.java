@@ -1,14 +1,11 @@
 package es.ucm.fdi.tp.practica5.factories;
 
-import java.awt.EventQueue;
-
 import es.ucm.fdi.tp.basecode.bgame.control.Controller;
 import es.ucm.fdi.tp.basecode.bgame.control.Player;
 import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
 import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
-import es.ucm.fdi.tp.practica5.GUI;
-import es.ucm.fdi.tp.practica5.GenericSwingView;
+import es.ucm.fdi.tp.practica5.AtaxxSwingView;
 import es.ucm.fdi.tp.practica5.ataxx.AtaxxFactory;
 
 /**
@@ -16,7 +13,7 @@ import es.ucm.fdi.tp.practica5.ataxx.AtaxxFactory;
  */
 
 @SuppressWarnings("serial")
-public class AtaxxFactoryExt extends AtaxxFactory {
+public class AtaxxFactoryExt extends AtaxxFactory implements SwingPlayable{
 
 	private Integer dimRows;
 	private Integer obstacles;
@@ -41,7 +38,13 @@ public class AtaxxFactoryExt extends AtaxxFactory {
 	@Override
 	public void createSwingView(final Observable<GameObserver> g, final Controller c, final Piece viewPiece,
 			Player random, Player ai) {
-		new GenericSwingView(g, c);
+		new AtaxxSwingView(g, c);
+	}
+
+	@Override
+	public Player createSwingManualPlayer() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

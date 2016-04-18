@@ -16,7 +16,7 @@ import es.ucm.fdi.tp.practica5.GenericSwingView;
  * of the game.
  */
 @SuppressWarnings("serial")
-public class ConnectNFactoryExt extends ConnectNFactory {
+public class ConnectNFactoryExt extends ConnectNFactory implements SwingPlayable{
 	
 	private Integer dimRows;
 	private static final Integer obstacles = 0;
@@ -35,6 +35,12 @@ public class ConnectNFactoryExt extends ConnectNFactory {
 	public void createSwingView(final Observable<GameObserver> g, final Controller c, final Piece viewPiece,
 			Player random, Player ai) {
 		new GenericSwingView(g, c);
+	}
+
+	@Override
+	public Player createSwingManualPlayer() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

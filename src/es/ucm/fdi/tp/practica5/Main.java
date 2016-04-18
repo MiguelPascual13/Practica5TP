@@ -802,14 +802,24 @@ public class Main {
 			 * distinguir el caso de la vista múltiple.
 			 */
 			c = new SwingController(g, pieces);
-			gameFactory.createSwingView(g, c, null, gameFactory.createRandomPlayer(),
-					gameFactory.createAIPlayer(aiPlayerAlg));
+
+			if (!multiviews) {
+				// VISTA SIMPLE
+				gameFactory.createSwingView(g, c, null, gameFactory.createRandomPlayer(),
+						gameFactory.createAIPlayer(aiPlayerAlg));
+			} else {
+				// VISTA MÚLTIPLE
+				for (Piece p : pieces) {
+					gameFactory.createSwingView(g, c, p, gameFactory.createRandomPlayer(),
+							gameFactory.createAIPlayer(aiPlayerAlg));
+				}
+			}
 			break;
 		default:
 			throw new UnsupportedOperationException("Something went wrong! This program point should be unreachable!");
 		}
-		
-		/*Aquí se crea el tablerito*/
+
+		/* Aquí se crea el tablerito */
 		c.start();
 	}
 

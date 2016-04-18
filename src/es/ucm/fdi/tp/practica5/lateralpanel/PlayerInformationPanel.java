@@ -25,13 +25,11 @@ public class PlayerInformationPanel extends JPanel {
 	private JScrollPane scrollPane;
 	private JTable table;
 
-	public PlayerInformationPanel(List<Piece> pieces, Board board,
-			PieceColorMap colorChooser) {
+	public PlayerInformationPanel(List<Piece> pieces, Board board, PieceColorMap colorChooser) {
 		// He añadido el colorChooser para cuando intentemos pintar el fondo de
 		// las filas.
 		super(new BorderLayout());
-		this.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createEtchedBorder(), panelNameText));
+		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), panelNameText));
 
 		/* That should come from somewhere... */
 
@@ -40,12 +38,10 @@ public class PlayerInformationPanel extends JPanel {
 		table.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
 
 			@Override
-			public Component getTableCellRendererComponent(JTable table,
-					Object value, boolean isSelected, boolean hasFocus,
-					int row, int column) {
-				JComponent c = (JComponent) super
-						.getTableCellRendererComponent(table, value,
-								isSelected, hasFocus, row, column);
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+				JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+						column);
 				c.setBackground(colorChooser.getColorFor(pieces.get(row)));
 				return c;
 			}
@@ -56,8 +52,6 @@ public class PlayerInformationPanel extends JPanel {
 	}
 
 	static class MyTableModel extends AbstractTableModel {
-
-		private static final long serialVersionUID = 1L;
 
 		private String[] columnName;
 		private List<Piece> pieces;
@@ -93,7 +87,7 @@ public class PlayerInformationPanel extends JPanel {
 								// poner los modes
 								// ESTO ESTA MAAAAAAAAL
 			default:
-				return board.getPieceCount(pieces.get(row)); // TODO
+				return board.getPieceCount(pieces.get(row));
 			}
 		}
 
