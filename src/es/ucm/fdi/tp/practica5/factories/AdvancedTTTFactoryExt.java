@@ -14,7 +14,7 @@ public class AdvancedTTTFactoryExt extends AdvancedTTTFactory implements SwingPl
 	@Override
 	public void createSwingView(final Observable<GameObserver> g, final Controller c, final Piece viewPiece,
 			Player random, Player ai) {
-		new GenericSwingView(g, c);
+		new GenericSwingView(g, c, viewPiece);
 	}
 
 	@Override

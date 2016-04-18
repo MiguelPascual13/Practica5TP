@@ -9,8 +9,6 @@ import es.ucm.fdi.tp.basecode.bgame.model.Game.State;
 import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
 import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
-import es.ucm.fdi.tp.practica5.Cell.CellClickedListener;
-import es.ucm.fdi.tp.practica5.moveControllers.MoveController;
 
 public class GenericSwingView implements GameObserver {
 
@@ -28,10 +26,11 @@ public class GenericSwingView implements GameObserver {
 	 * Esta clase debería tener una GUI como atributo privado sobre el que
 	 * trabajar.
 	 */
+	private Piece viewPiece;
 	private GUI gui;
 	private Observable<GameObserver> g;
 
-	public GenericSwingView(Observable<GameObserver> g, Controller c) {
+	public GenericSwingView(Observable<GameObserver> g, Controller c, final Piece viewPiece) {
 		/*
 		 * Me suscribo como observador de la clase. (No se que significa
 		 * exactamente, pero bueno).
@@ -39,6 +38,7 @@ public class GenericSwingView implements GameObserver {
 		 * Deberíamos iniciar la gui desde aquí, pero nos genera el problema del
 		 * puto tablero...
 		 */
+		this.viewPiece = viewPiece;
 		g.addObserver(this);
 		this.g = g;
 		colorChooser = new PieceColorMap();
@@ -57,7 +57,13 @@ public class GenericSwingView implements GameObserver {
 		 * hostias hacemos eso...
 		 */
 		gui = new GUI(board, pieces, colorChooser, turn, moveController, g);
-		gui.setTitle(titleMessage + gameDesc);
+
+		if (viewPiece == null) {
+			gui.setTitle(titleMessage + gameDesc);
+		} else {
+			gui.setTitle(titleMessage + gameDesc + " (" + viewPiece + ")"); 
+		}
+
 		gui.update();
 		gui.appendToStatusMessagePanel(startingMessage + "'" + gameDesc + "'\n");
 		gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");

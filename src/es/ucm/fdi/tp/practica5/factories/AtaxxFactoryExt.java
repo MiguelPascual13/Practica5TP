@@ -38,7 +38,7 @@ public class AtaxxFactoryExt extends AtaxxFactory implements SwingPlayable{
 	@Override
 	public void createSwingView(final Observable<GameObserver> g, final Controller c, final Piece viewPiece,
 			Player random, Player ai) {
-		new AtaxxSwingView(g, c);
+		new AtaxxSwingView(g, c, viewPiece);
 	}
 
 	@Override
