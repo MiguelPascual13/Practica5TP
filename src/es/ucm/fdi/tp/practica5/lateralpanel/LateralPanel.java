@@ -1,13 +1,12 @@
 package es.ucm.fdi.tp.practica5.lateralpanel;
 
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
 
 import javax.swing.JPanel;
 
+import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
-import es.ucm.fdi.tp.practica5.BoardPanel;
 import es.ucm.fdi.tp.practica5.PieceColorMap;
 import es.ucm.fdi.tp.practica5.lateralpanel.PieceColorsPanel.ColorChangeListener;
 
@@ -21,11 +20,11 @@ public class LateralPanel extends JPanel {
 	private StatusMessagePanel statusMessagePanel;
 	private PlayerInformationPanel playerInformationPanel;
 
-	public LateralPanel(List<Piece> pieces, PieceColorMap colorChooser, ColorChangeListener listener) {
+	public LateralPanel(List<Piece> pieces, PieceColorMap colorChooser,  Board board, ColorChangeListener listener) {
 		super(new GridLayout(0, 1));
 		statusMessagePanel = new StatusMessagePanel();
-		playerInformationPanel = new PlayerInformationPanel();
-		playerModesPanel = new PlayerModesPanel();
+		playerInformationPanel = new PlayerInformationPanel(pieces, board, colorChooser);
+		playerModesPanel = new PlayerModesPanel(pieces);
 		pieceColorsPanel = new PieceColorsPanel(pieces, colorChooser, listener);
 		automaticMovesPanel = new AutomaticMovesPanel();
 		quitRestartPanel = new QuitRestartPanel();

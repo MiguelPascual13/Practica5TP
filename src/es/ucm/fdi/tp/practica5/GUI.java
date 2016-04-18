@@ -5,13 +5,9 @@ import java.awt.Color;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JSplitPane;
 
-import es.ucm.fdi.tp.basecode.bgame.control.Controller;
-import es.ucm.fdi.tp.basecode.bgame.control.Player;
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
-import es.ucm.fdi.tp.basecode.bgame.model.Game.State;
-import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
-import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.lateralpanel.LateralPanel;
 import es.ucm.fdi.tp.practica5.lateralpanel.PieceColorsPanel.ColorChangeListener;
@@ -59,19 +55,20 @@ public class GUI extends JFrame {
 		 * IMPORTANT: All of this will be eventually changed into a JSplitPane
 		 * structure, for the moment it will stay as it is now.
 		 */
-
-		this.setLayout(new BorderLayout());
+	
+	
+	    
 		boardPanel = new BoardPanel(board, colorChooser);
-		lateralPanel = new LateralPanel(pieces, colorChooser, new ColorChangeListener() {
+		lateralPanel = new LateralPanel(pieces, colorChooser, board, new ColorChangeListener() {
 			@Override
 			public void colorChanged(Piece piece, Color color) {
 				colorChooser.setColorFor(piece, color);
 				boardPanel.update();
 			}			
 		});
-		this.add(lateralPanel, BorderLayout.EAST);
-		this.add(boardPanel, BorderLayout.CENTER);
-
+		//Creo que se podria hacer asi el JSplitPane, tu veras si te gusta como queda o no.
+		JSplitPane vSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, boardPanel,lateralPanel);
+		this.getContentPane().add(vSplitPane, BorderLayout.CENTER);
 		/* Other stuff */
 		this.setLocation(100, 50);
 		this.setResizable(true);

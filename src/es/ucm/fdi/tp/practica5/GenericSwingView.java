@@ -21,6 +21,8 @@ public class GenericSwingView implements GameObserver {
 	
 	private PieceColorMap colorChooser;
 	
+	
+	
 	/*
 	 * Esta clase debería tener una GUI como atributo privado sobre el que
 	 * trabajar.
@@ -36,7 +38,6 @@ public class GenericSwingView implements GameObserver {
 		 * puto tablero...
 		 */
 		g.addObserver(this);
-		
 		colorChooser = new PieceColorMap();
 	}
 
