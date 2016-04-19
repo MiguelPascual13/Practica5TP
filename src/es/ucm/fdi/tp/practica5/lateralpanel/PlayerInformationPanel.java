@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
-import es.ucm.fdi.tp.practica5.PieceColorMap;
+import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
 @SuppressWarnings("serial")
 public class PlayerInformationPanel extends JPanel {
@@ -73,6 +73,7 @@ public class PlayerInformationPanel extends JPanel {
 			return pieces.size();
 		}
 
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public Class getColumnClass(int col) {
 			return String.class;
 		}

@@ -802,7 +802,8 @@ public class Main {
 			 * distinguir el caso de la vista múltiple.
 			 */
 			c = new Controller(g, pieces);
-
+			
+			/*Notese que aquí no tenemos ni vista de players ni nada de nada*/
 			if (!multiviews) {
 				// VISTA SIMPLE
 				gameFactory.createSwingView(g, c, null, gameFactory.createRandomPlayer(),

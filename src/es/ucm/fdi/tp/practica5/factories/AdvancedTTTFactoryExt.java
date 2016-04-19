@@ -6,20 +6,18 @@ import es.ucm.fdi.tp.basecode.bgame.control.Player;
 import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
 import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
-import es.ucm.fdi.tp.practica5.GenericSwingView;
+import es.ucm.fdi.tp.practica5.moveControllers.AdvancedTTTMoveController;
+import es.ucm.fdi.tp.practica5.view.GenericSwingView;
 
 @SuppressWarnings("serial")
-public class AdvancedTTTFactoryExt extends AdvancedTTTFactory implements SwingPlayable {
-
+public class AdvancedTTTFactoryExt extends AdvancedTTTFactory {
+	
+	private AdvancedTTTMoveController moveController;
+	
 	@Override
 	public void createSwingView(final Observable<GameObserver> g, final Controller c, final Piece viewPiece,
 			Player random, Player ai) {
-		new GenericSwingView(g, c, viewPiece);
-	}
-
-	@Override
-	public Player createSwingManualPlayer() {
-		// TODO Auto-generated method stub
-		return null;
+		moveController = new AdvancedTTTMoveController();
+		new GenericSwingView(g, c, viewPiece, moveController, random, ai);
 	}
 }

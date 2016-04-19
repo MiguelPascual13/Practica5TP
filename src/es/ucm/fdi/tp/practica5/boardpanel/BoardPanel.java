@@ -1,4 +1,4 @@
-package es.ucm.fdi.tp.practica5;
+package es.ucm.fdi.tp.practica5.boardpanel;
 
 import java.awt.GridLayout;
 
@@ -6,15 +6,16 @@ import javax.swing.JPanel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Game;
-import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
-import es.ucm.fdi.tp.basecode.bgame.model.Observable;
-import es.ucm.fdi.tp.practica5.Cell.CellClickedListener;
+import es.ucm.fdi.tp.practica5.boardpanel.Cell.CellLeftClickedListener;
+import es.ucm.fdi.tp.practica5.boardpanel.Cell.CellRightClickedListener;
+import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
 @SuppressWarnings("serial")
 public class BoardPanel extends JPanel {
 
 	private static final int SEPARATION = 4;
-	private CellClickedListener listener;
+	private CellLeftClickedListener leftListener;
+	private CellRightClickedListener rightListener;
 	private PieceColorMap colorChooser;
 
 	/**
@@ -42,9 +43,11 @@ public class BoardPanel extends JPanel {
 	 * @param rows
 	 * @param columns
 	 */
-	public BoardPanel(Board board, PieceColorMap colorChooser, CellClickedListener listener) {
+	public BoardPanel(Board board, PieceColorMap colorChooser, CellLeftClickedListener leftListener,
+			CellRightClickedListener rightListener) {
 		super();
-		this.listener = listener;
+		this.leftListener = leftListener;
+		this.rightListener = rightListener;
 		this.colorChooser = colorChooser;
 		this.setBoard(board);
 		this.update();
@@ -154,7 +157,7 @@ public class BoardPanel extends JPanel {
 	private void fillJLabelMatrix() {
 		for (int i = 0; i < this.board.getRows(); i++) {
 			for (int j = 0; j < this.board.getCols(); j++) {
-				this.cells[i][j] = new Cell(i, j, listener);
+				this.cells[i][j] = new Cell(i, j, leftListener, rightListener);
 			}
 		}
 	}

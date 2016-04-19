@@ -1,4 +1,4 @@
-package es.ucm.fdi.tp.practica5;
+package es.ucm.fdi.tp.practica5.utils;
 
 import java.awt.Color;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.Map;
 
 import es.ucm.fdi.tp.basecode.bgame.Utils;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
+import es.ucm.fdi.tp.practica5.Main;
 
 public class PieceColorMap {
 

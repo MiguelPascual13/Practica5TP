@@ -6,21 +6,18 @@ import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
 import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.basecode.ttt.TicTacToeFactory;
-import es.ucm.fdi.tp.practica5.GenericSwingView;
+import es.ucm.fdi.tp.practica5.moveControllers.TicTacToeMoveController;
+import es.ucm.fdi.tp.practica5.view.GenericSwingView;
 
 @SuppressWarnings("serial")
-public class TicTacToeFactoryExt extends TicTacToeFactory implements SwingPlayable{
+public class TicTacToeFactoryExt extends TicTacToeFactory {
+
+	private TicTacToeMoveController moveController;
 
 	@Override
 	public void createSwingView(final Observable<GameObserver> g, final Controller c, final Piece viewPiece,
 			Player random, Player ai) {
-		new GenericSwingView(g, c, viewPiece);
+		moveController = new TicTacToeMoveController();
+		new GenericSwingView(g, c, viewPiece, moveController, random, ai);
 	}
-
-	@Override
-	public Player createSwingManualPlayer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

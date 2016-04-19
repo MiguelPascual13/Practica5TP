@@ -13,7 +13,6 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
-import es.ucm.fdi.tp.practica5.PieceColorMap;
 
 @SuppressWarnings("serial")
 public class PieceColorsPanel extends JPanel {
