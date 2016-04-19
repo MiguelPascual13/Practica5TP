@@ -27,7 +27,7 @@ public class PieceColorsPanel extends JPanel {
 		void colorChanged(Piece piece, Color color);
 	}
 	
-	public PieceColorsPanel(List<Piece> pieces, PieceColorMap colorChooser, ColorChangeListener listener) {
+	public PieceColorsPanel(List<Piece> pieces, ColorChangeListener listener) {
 		super(new FlowLayout());
 
 		Piece pieceArray[] = new Piece[pieces.size()];

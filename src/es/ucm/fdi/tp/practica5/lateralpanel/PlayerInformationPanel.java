@@ -2,7 +2,6 @@ package es.ucm.fdi.tp.practica5.lateralpanel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -10,12 +9,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
@@ -36,9 +31,11 @@ public class PlayerInformationPanel extends JPanel {
 		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), panelNameText));
 
 		/* That should come from somewhere... */
-
 		String columName[] = { col1, col2, col3 };
 		table = new JTable(new MyTableModel(pieces, columName, board));
+		for(int i=0; i<3; i++){
+			 table.getColumnModel().getColumn(i).setHeaderValue(columName[i]);
+		}
 		table.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
 
 			@Override
@@ -55,6 +52,9 @@ public class PlayerInformationPanel extends JPanel {
 		this.add(scrollPane);
 	}
 	
+	public void updateTableInfo(){
+		scrollPane.repaint();
+	}
 
 	static class MyTableModel extends AbstractTableModel {
 

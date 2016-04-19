@@ -23,8 +23,11 @@ public class PlayerModesPanel extends JPanel {
 	private JButton setButton;
 	private JComboBox<Piece> playerName;
 	private JComboBox<String> playerGameModes;
-
-	public PlayerModesPanel(List<Piece> pieces) {
+	
+	public interface SetButtonListener{
+		void SetButtonClicked();
+	}
+	public PlayerModesPanel(List<Piece> pieces, SetButtonListener setListener) {
 		super(new FlowLayout());
 
 		Piece pieceArray[] = new Piece[pieces.size()];
@@ -44,14 +47,15 @@ public class PlayerModesPanel extends JPanel {
 		this.add(setButton);
 		setButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				switch (playerGameModes.getSelectedIndex()) {
+				/*switch (playerGameModes.getSelectedIndex()) {
 				case 0:
 					
 					break;
 				case 1:
 					
 					break;
-				}
+				}*/ //Esto es lo que teniamos intentemos hacerlo con un listener. 
+				setListener.SetButtonClicked();
 			}
 		});
 

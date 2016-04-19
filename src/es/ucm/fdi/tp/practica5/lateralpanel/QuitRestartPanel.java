@@ -1,6 +1,8 @@
 package es.ucm.fdi.tp.practica5.lateralpanel;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -13,7 +15,14 @@ public class QuitRestartPanel extends JPanel{
 	private JButton quitButton;
 	private JButton restartButton;
 	
-	public QuitRestartPanel(){
+	public interface QuitButtonListener {
+		void QuitButtonClicked();
+	}
+	public interface RestartButtonListener{
+		void RestartButtonClicked();
+	}
+	
+	public QuitRestartPanel(QuitButtonListener quitListener, RestartButtonListener restartListener){
 		super(new FlowLayout());
 		
 		quitButton = new JButton(quitButtonText);
@@ -21,6 +30,16 @@ public class QuitRestartPanel extends JPanel{
 		
 		this.add(quitButton);
 		this.add(restartButton);
+		
+		quitButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				quitListener.QuitButtonClicked();
+			}});
+		
+		restartButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				restartListener.RestartButtonClicked();
+			}});
 		
 	}
 }
