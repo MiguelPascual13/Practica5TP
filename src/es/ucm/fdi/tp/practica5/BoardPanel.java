@@ -13,7 +13,6 @@ import es.ucm.fdi.tp.practica5.Cell.CellClickedListener;
 @SuppressWarnings("serial")
 public class BoardPanel extends JPanel {
 
-	private Observable<GameObserver> g;
 	private static final int SEPARATION = 4;
 	private CellClickedListener listener;
 	private PieceColorMap colorChooser;
@@ -43,11 +42,9 @@ public class BoardPanel extends JPanel {
 	 * @param rows
 	 * @param columns
 	 */
-	public BoardPanel(Board board, PieceColorMap colorChooser, CellClickedListener listener,
-			Observable<GameObserver> g) {
+	public BoardPanel(Board board, PieceColorMap colorChooser, CellClickedListener listener) {
 		super();
 		this.listener = listener;
-		this.g = g;
 		this.colorChooser = colorChooser;
 		this.setBoard(board);
 		this.update();
@@ -157,7 +154,7 @@ public class BoardPanel extends JPanel {
 	private void fillJLabelMatrix() {
 		for (int i = 0; i < this.board.getRows(); i++) {
 			for (int j = 0; j < this.board.getCols(); j++) {
-				this.cells[i][j] = new Cell(i, j, listener, g);
+				this.cells[i][j] = new Cell(i, j, listener);
 			}
 		}
 	}

@@ -10,7 +10,6 @@ public class AtaxxSwingView extends GenericSwingView {
 
 	public AtaxxSwingView(Observable<GameObserver> g, Controller c, final Piece viewPiece) {
 		super(g, c, viewPiece);
-		this.moveController = new AtaxxMoveController();
 	}
 
 }

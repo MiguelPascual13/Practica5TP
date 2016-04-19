@@ -801,7 +801,7 @@ public class Main {
 			 * Hay que tener en cuenta las particularidades del enunciado y
 			 * distinguir el caso de la vista múltiple.
 			 */
-			c = new SwingController(g, pieces);
+			c = new Controller(g, pieces);
 
 			if (!multiviews) {
 				// VISTA SIMPLE

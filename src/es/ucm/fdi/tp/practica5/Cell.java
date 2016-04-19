@@ -13,21 +13,17 @@ import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 public class Cell extends JLabel {
 
 	public interface CellClickedListener {
-		public void cellWasClicked(int row, int column, Observable<GameObserver> g);
+		public void cellWasClicked(int row, int column);
 	}
 
-	private int row;
-	private int column;
 
-	public Cell(int row, int column, CellClickedListener listener, Observable<GameObserver> g) {
-		this.row = row;
-		this.column = column;
+	public Cell(int row, int column, CellClickedListener listener) {
 		this.addMouseListener(new MouseAdapter() {
 
 			/* Someone has to know what is happening here... */
 			public void mouseClicked(MouseEvent e) {
 
-				listener.cellWasClicked(row, column, g);
+				listener.cellWasClicked(row, column);
 
 				/* Se que debería usar logging pero la vida es dura */
 				System.out.println(row);

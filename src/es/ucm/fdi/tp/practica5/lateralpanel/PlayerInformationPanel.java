@@ -2,6 +2,7 @@ package es.ucm.fdi.tp.practica5.lateralpanel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -9,8 +10,12 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
@@ -26,8 +31,7 @@ public class PlayerInformationPanel extends JPanel {
 	private JTable table;
 
 	public PlayerInformationPanel(List<Piece> pieces, Board board, PieceColorMap colorChooser) {
-		// He añadido el colorChooser para cuando intentemos pintar el fondo de
-		// las filas.
+		
 		super(new BorderLayout());
 		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), panelNameText));
 
@@ -50,6 +54,7 @@ public class PlayerInformationPanel extends JPanel {
 		scrollPane = new JScrollPane(table);
 		this.add(scrollPane);
 	}
+	
 
 	static class MyTableModel extends AbstractTableModel {
 

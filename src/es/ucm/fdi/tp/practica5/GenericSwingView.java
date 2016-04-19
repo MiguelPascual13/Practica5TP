@@ -20,7 +20,6 @@ public class GenericSwingView implements GameObserver {
 	private static final String titleMessage = "Board Games: ";
 
 	private PieceColorMap colorChooser;
-	protected MoveController moveController;
 
 	/*
 	 * Esta clase debería tener una GUI como atributo privado sobre el que
@@ -29,6 +28,7 @@ public class GenericSwingView implements GameObserver {
 	private Piece viewPiece;
 	private GUI gui;
 	private Observable<GameObserver> g;
+	private Controller c;
 
 	public GenericSwingView(Observable<GameObserver> g, Controller c, final Piece viewPiece) {
 		/*
@@ -38,6 +38,7 @@ public class GenericSwingView implements GameObserver {
 		 * Deberíamos iniciar la gui desde aquí, pero nos genera el problema del
 		 * puto tablero...
 		 */
+		this.c = c;
 		this.viewPiece = viewPiece;
 		g.addObserver(this);
 		this.g = g;
@@ -56,7 +57,7 @@ public class GenericSwingView implements GameObserver {
 		 * con ella, por ejemplo, pintar cosas en el status,... A ver como
 		 * hostias hacemos eso...
 		 */
-		gui = new GUI(board, pieces, colorChooser, turn, moveController, g);
+		gui = new GUI(board, pieces, colorChooser, turn, c);
 
 		if (viewPiece == null) {
 			gui.setTitle(titleMessage + gameDesc);
@@ -99,6 +100,7 @@ public class GenericSwingView implements GameObserver {
 
 	@Override
 	public void onChangeTurn(Board board, Piece turn) {
+		gui.setTurn(turn);
 		gui.update();
 		gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");
 	}
