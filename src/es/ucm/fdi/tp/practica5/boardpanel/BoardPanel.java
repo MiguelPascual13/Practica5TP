@@ -1,19 +1,22 @@
 package es.ucm.fdi.tp.practica5.boardpanel;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Game;
-import es.ucm.fdi.tp.practica5.ListenerSettings.ListenerSettings;
+import es.ucm.fdi.tp.practica5.boardpanel.Cell.CellClickedListener;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
+import es.ucm.fdi.tp.practica5.utils.Utils;
 
 @SuppressWarnings("serial")
 public class BoardPanel extends JPanel {
 
 	private static final int SEPARATION = 4;
-	private ListenerSettings listener;
+	private CellClickedListener listener;
 	private PieceColorMap colorChooser;
 
 	/**
@@ -41,12 +44,12 @@ public class BoardPanel extends JPanel {
 	 * @param rows
 	 * @param columns
 	 */
-	public BoardPanel(Board board, PieceColorMap colorChooser, ListenerSettings listener) {
+	public BoardPanel(Board board, PieceColorMap colorChooser, CellClickedListener listener) {
 		super();
-		this.listener=listener;
+		this.listener = listener;
 		this.colorChooser = colorChooser;
 		this.setBoard(board);
-		this.update();
+		this.update(null, null);
 	}
 
 	public void setGame(Game game) {
@@ -119,15 +122,26 @@ public class BoardPanel extends JPanel {
 	 * 
 	 * HIGHLIGHT3: Revise all the highlights.
 	 */
-	public void update() {
+
+	/*
+	 * Las variables de filas y columnas indican la pieza seleccionada, se
+	 * pintarán bordes a la casilla selecciona y a las no ocupadas movibles.
+	 */
+	public void update(Integer row, Integer column) {
 		if (colorChooser == null) {
 			this.colorChooser = new PieceColorMap();
 		}
 		for (int i = 0; i < this.board.getRows(); i++) {
 			for (int j = 0; j < this.board.getCols(); j++) {
-				// Why do we create an object here?
-				// Piece p = this.board.getPosition(i, j);
 				cells[i][j].setOpaque(true);
+				if (row != null && column != null) {
+					Color c = this.colorChooser.getColorFor(board.getPosition(row, column));
+					if ((!Utils.InfiniteDistanceExceeded(row, column, i, j) && board.getPosition(i, j) == null)
+							|| ((i == row) && (j == column))) {
+						cells[i][j].setBorder(BorderFactory.createLineBorder(c, 4));
+					}
+				} else
+					cells[i][j].setBorder(null);
 				cells[i][j].setBackground(this.colorChooser.getColorFor(board.getPosition(i, j)));
 				this.add(cells[i][j]);
 			}

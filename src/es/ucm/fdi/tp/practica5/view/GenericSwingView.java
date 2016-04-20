@@ -27,8 +27,6 @@ public class GenericSwingView implements GameObserver {
 	private static final String winnerMessage = "Winner: ";
 	private static final String titleMessage = "Board Games: ";
 	private static final String youMessage = " You ";
-	private static final String moveMessage = "left-click origin piece...\nrigh-click anywhere to deselect origin...\n";
-
 	private PieceColorMap colorChooser;
 
 	/*
@@ -67,19 +65,18 @@ public class GenericSwingView implements GameObserver {
 	@Override
 	/* Nos pasan un read only board, lo cual no nos sirve de mucho... */
 	public void onGameStart(Board board, String gameDesc, List<Piece> pieces, Piece turn) {
-		// Debería iniciar la GUI...
-		// GUI view = new GUI(...);
-		// Nos vuelve a generar el problema del puto titulo...
-
-		/*
-		 * De hecho no solo deberíamos iniciar la GUI sino también hacer cosas
-		 * con ella, por ejemplo, pintar cosas en el status,... A ver como
-		 * hostias hacemos eso...
-		 */
+		
 		if(gui != null)
 			gui.dispose();
 		
-		gui = new GUI(board, pieces, colorChooser, turn, c, moveController, random, ai, randomPlayers, intelligentPlayers);
+		if (this.randomPlayers != null) {
+			this.randomPlayers = new ArrayList<Piece>();
+		} else if (this.intelligentPlayers != null){
+			this.intelligentPlayers = new ArrayList<Piece>();
+		}
+
+		gui = new GUI(board, pieces, colorChooser, turn, c, moveController, random, ai, randomPlayers,
+				intelligentPlayers, this.viewPiece);
 
 		if (viewPiece == null) {
 			gui.setTitle(titleMessage + gameDesc);
@@ -91,10 +88,8 @@ public class GenericSwingView implements GameObserver {
 		gui.appendToStatusMessagePanel(startingMessage + "'" + gameDesc + "'\n");
 		if (this.viewPiece == turn) {
 			gui.appendToStatusMessagePanel(changeTurnMessage + youMessage + turn + "\n");
-			gui.appendToStatusMessagePanel(moveMessage);
 		} else {
 			gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");
-			gui.appendToStatusMessagePanel(moveMessage);
 		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -133,17 +128,14 @@ public class GenericSwingView implements GameObserver {
 		gui.setTurn(turn);
 		gui.update();
 		if (this.viewPiece == turn) {
-			gui.appendToStatusMessagePanel(moveMessage);
 			gui.appendToStatusMessagePanel(changeTurnMessage + youMessage + turn + "\n");
 		} else {
-			gui.appendToStatusMessagePanel(moveMessage);
 			gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");
 		}
-		if(gui.isRandomPlayer(turn)!=null){
+		if (gui.isRandomPlayer(turn) != null) {
 			c.makeMove(random);
 			gui.update();
-		}
-		else if(gui.isIntelligentPlayer(turn)!=null){
+		} else if (gui.isIntelligentPlayer(turn) != null) {
 			c.makeMove(ai);
 			gui.update();
 		}

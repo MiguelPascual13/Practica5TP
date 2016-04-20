@@ -1,5 +1,6 @@
 package es.ucm.fdi.tp.practica5.moveControllers;
 
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
@@ -8,12 +9,24 @@ import es.ucm.fdi.tp.basecode.bgame.model.GameRules;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 
 @SuppressWarnings("serial")
-public class ConnectNMoveController extends MoveController{
+public class ConnectNMoveController extends MoveController {
 
 	@Override
-	public boolean manageClicks(Board board, int row, int column, Piece actualTurn, int buttonNumber, MoveListener moveListener, ErrorListener errorListener) {
+	public Integer manageClicks(Board board, int row, int column, Piece turn, Piece viewPiece, MouseEvent mouseEvent) {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
+	}
+
+	@Override
+	public Integer getSelectedRow() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getSelectedColumn() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -21,5 +34,6 @@ public class ConnectNMoveController extends MoveController{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

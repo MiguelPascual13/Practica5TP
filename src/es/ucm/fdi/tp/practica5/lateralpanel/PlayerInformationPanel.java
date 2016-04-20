@@ -22,19 +22,24 @@ public class PlayerInformationPanel extends JPanel {
 	private static final String col1 = "Player";
 	private static final String col2 = "Mode";
 	private static final String col3 = "#Pieces";
+	private static final String manual = "Manual";
+	private static final String random = "Random";
+	private static final String intelligent = "Intelligent";
+	private static final String unknown = "Unknown";
+
 	private JScrollPane scrollPane;
 	private JTable table;
 
-	public PlayerInformationPanel(List<Piece> pieces, Board board, PieceColorMap colorChooser, List<Piece> randomPlayers, List<Piece> intelligentPlayers) {
-		
+	public PlayerInformationPanel(List<Piece> pieces, Board board, PieceColorMap colorChooser,
+			List<Piece> randomPlayers, List<Piece> intelligentPlayers, Piece viewPiece) {
+
 		super(new BorderLayout());
 		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), panelNameText));
-
 		/* That should come from somewhere... */
 		String columName[] = { col1, col2, col3 };
 		table = new JTable(new MyTableModel(pieces, columName, board, randomPlayers, intelligentPlayers));
-		for(int i=0; i<3; i++){
-			 table.getColumnModel().getColumn(i).setHeaderValue(columName[i]);
+		for (int i = 0; i < 3; i++) {
+			table.getColumnModel().getColumn(i).setHeaderValue(columName[i]);
 		}
 		table.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
 
@@ -51,8 +56,8 @@ public class PlayerInformationPanel extends JPanel {
 		scrollPane = new JScrollPane(table);
 		this.add(scrollPane);
 	}
-	
-	public void updateTableInfo(){
+
+	public void updateTableInfo() {
 		scrollPane.repaint();
 	}
 
@@ -64,7 +69,8 @@ public class PlayerInformationPanel extends JPanel {
 		private List<Piece> randomPlayers;
 		private List<Piece> intelligentPlayers;
 
-		public MyTableModel(List<Piece> pieces, String[] columnName, Board board, List<Piece> randomPlayers, List<Piece> intelligentPlayers) {
+		public MyTableModel(List<Piece> pieces, String[] columnName, Board board, List<Piece> randomPlayers,
+				List<Piece> intelligentPlayers) {
 			this.pieces = pieces;
 			this.columnName = columnName;
 			this.board = board;
@@ -98,18 +104,17 @@ public class PlayerInformationPanel extends JPanel {
 				return board.getPieceCount(pieces.get(row));
 			}
 		}
-		
-		public String stringMode(int row){
-				if(isAutomaticPlayer(pieces.get(row), randomPlayers)!=null){
-					return "Random";
-				}
-				else if(isAutomaticPlayer(pieces.get(row), intelligentPlayers)!=null){
-					return "Intelligent";
-				}
-				else{
-					return "Manual";
+
+		public String stringMode(int row) {
+				if (isAutomaticPlayer(pieces.get(row), randomPlayers) != null) {
+					return random;
+				} else if (isAutomaticPlayer(pieces.get(row), intelligentPlayers) != null) {
+					return intelligent;
+				} else {
+					return manual;
 				}
 		}
+
 		public Integer isAutomaticPlayer(Piece p, List<Piece> players) {
 			for (int i = 0; i < players.size(); i++) {
 				if (p == players.get(i))
@@ -117,7 +122,6 @@ public class PlayerInformationPanel extends JPanel {
 			}
 			return null;
 		}
-
 
 		public boolean isCellEditable(int row, int col) {
 			return false;

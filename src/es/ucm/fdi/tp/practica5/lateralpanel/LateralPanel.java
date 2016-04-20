@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
-import es.ucm.fdi.tp.practica5.ListenerSettings.ListenerSettings;
+import es.ucm.fdi.tp.practica5.listeners.ListenerSettings;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
 @SuppressWarnings("serial")
@@ -20,13 +20,12 @@ public class LateralPanel extends JPanel {
 	private StatusMessagePanel statusMessagePanel;
 	private PlayerInformationPanel playerInformationPanel;
 
-	public LateralPanel(List<Piece> pieces, PieceColorMap colorChooser,
-			Board board, ListenerSettings listener, List<Piece> randomPlayers,
-			List<Piece> intelligentPlayers) {
+	public LateralPanel(List<Piece> pieces, PieceColorMap colorChooser, Board board, ListenerSettings listener,
+			List<Piece> randomPlayers, List<Piece> intelligentPlayers, Piece viewPiece) {
 		super(new GridLayout(0, 1));
 		statusMessagePanel = new StatusMessagePanel();
-		playerInformationPanel = new PlayerInformationPanel(pieces, board,
-				colorChooser, randomPlayers, intelligentPlayers);
+		playerInformationPanel = new PlayerInformationPanel(pieces, board, colorChooser, randomPlayers,
+				intelligentPlayers, viewPiece);
 		playerModesPanel = new PlayerModesPanel(pieces, listener);
 		pieceColorsPanel = new PieceColorsPanel(pieces, listener);
 		automaticMovesPanel = new AutomaticMovesPanel(listener);

@@ -11,7 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
-import es.ucm.fdi.tp.practica5.ListenerSettings.ListenerSettings;
+import es.ucm.fdi.tp.practica5.listeners.ListenerSettings;
 
 @SuppressWarnings("serial")
 public class PlayerModesPanel extends JPanel {

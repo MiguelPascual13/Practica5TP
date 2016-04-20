@@ -12,22 +12,14 @@ import es.ucm.fdi.tp.practica5.utils.Utils;
 
 @SuppressWarnings("serial")
 public class AtaxxMoveController extends MoveController {
-
-	/*
-	 * Seguramente tengamos que llevar todas estas interfaces a la clase
-	 * abstracta común a todas...
-	 */
-
-	/*
-	 * Igual deberíamos tener aquí una interfacita para mandar los mensajes al
-	 * status...
-	 */
 	private boolean somethingSelected = false;
 
-	private int oldRow;
-	private int oldColumn;
-	private int row;
-	private int column;
+	private Integer oldRow = null;
+	private Integer oldColumn = null;
+	private Integer selectedRow = null;
+	private Integer selectedColumn = null;
+	private Integer row = null;
+	private Integer column = null;
 
 	private static final String moveMessage = "left-click origin piece...\nrigh-click anywhere to deselect origin...\n";
 	private static final String destinationMessage = "left-click destination empty valid piece...\nright-click anywhere to deselect origin...\n";
@@ -39,36 +31,71 @@ public class AtaxxMoveController extends MoveController {
 		return new AtaxxMove(oldRow, oldColumn, row, column, p);
 	}
 
-	public boolean manageClicks(Board board, int row, int column, Piece turn, int buttonNumber,
-			MoveListener moveListener, ErrorListener errorListener) {
-		if (buttonNumber == MouseEvent.BUTTON1) {
+	public Integer manageClicks(Board board, int row, int column, Piece turn, Piece viewPiece, MouseEvent mouseEvent) {
+
+		if (!checkMultiViewCase(turn, viewPiece))
+			return NOTHING_TO_REPAINT;
+
+		if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
 			if (somethingSelected) {
-				moveListener.notifyMove(destinationMessage);
 				if (board.getPosition(row, column) == null) {
-					this.row = row;
-					this.column = column;
+					setDestinationCell(row, column);
 					if (Utils.InfiniteDistanceExceeded(oldRow, oldColumn, row, column)) {
-						errorListener.notifyError(invalidDestination);
-						return false;
+						return NOTHING_TO_REPAINT;
 					}
 					somethingSelected = false;
-				}
-				errorListener.notifyError(invalidDestination);
+					resetSelectedCell();
+					return REPAINT_AND_MOVE;
+				} else
+					return NOTHING_TO_REPAINT;
 			} else {
 				if (board.getPosition(row, column) == turn) {
-					this.oldRow = row;
-					this.oldColumn = column;
+					setSelectedCell(row, column);
 					somethingSelected = true;
-				} else{
-					moveListener.notifyMove(invalidOrigin);
-					return false;
+					return SOMETHING_TO_REPAINT;
+				} else {
+					return NOTHING_TO_REPAINT;
 				}
 			}
-			return !somethingSelected;
 		} else {
 			somethingSelected = false;
-			moveListener.notifyMove(moveMessage);
-			return false;
+			resetSelectedCell();
+			return SOMETHING_TO_REPAINT;
 		}
+	}
+	
+	/*La vista trabaja con selected, el movimiento con old*/
+	//GET
+	public Integer getSelectedRow() {
+		return this.selectedRow;
+	}
+
+	public Integer getSelectedColumn() {
+		return this.selectedColumn;
+	}
+	
+	//RESET
+	private void resetSelectedCell() {
+		this.selectedRow = null;
+		this.selectedColumn = null;
+	}
+	
+	private void resetOldCell() {
+		this.oldRow = null;
+		this.oldColumn = null;
+		resetSelectedCell();
+	}
+	
+	//SET
+	private void setSelectedCell(Integer row, Integer column) {
+		this.oldRow = row;
+		this.oldColumn = column;
+		this.selectedRow = row;
+		this.selectedColumn = column;
+	}
+	
+	private void setDestinationCell(Integer row, Integer column) {
+		this.row = row;
+		this.column = column;
 	}
 }

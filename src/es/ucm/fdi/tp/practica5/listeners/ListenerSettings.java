@@ -1,4 +1,4 @@
-package es.ucm.fdi.tp.practica5.ListenerSettings;
+package es.ucm.fdi.tp.practica5.listeners;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -13,10 +13,10 @@ import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.lateralpanel.PlayerModesPanel;
 import es.ucm.fdi.tp.practica5.moveControllers.MoveController;
-import es.ucm.fdi.tp.practica5.moveControllers.MoveController.ErrorListener;
-import es.ucm.fdi.tp.practica5.moveControllers.MoveController.MoveListener;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 import es.ucm.fdi.tp.practica5.view.GUI;
+
+/*QUE PUTA MIERDA ES ESTA!!!!!!!!!!!!!!!!!!!!!!*/
 
 public class ListenerSettings {
 	PieceColorMap colorChooser;
@@ -42,44 +42,7 @@ public class ListenerSettings {
 		this.board=board;
 		this.moveController=moveController;
 	}
-	public void cellWasLeftClicked(int row, int column) {
-		if (moveController.manageClicks(board, row, column,
-				turn, MouseEvent.BUTTON1,
-				new MoveListener() {
-			
-					public void notifyMove(String message) {
-						gui.appendToStatusMessagePanel(message);
-					}
 
-				}, new ErrorListener() {
-
-					public void notifyError(String message) {
-						gui.appendToStatusMessagePanel(message);
-					}
-
-				})) {
-			c.makeMove(moveController);
-			gui.update();
-		}
-	}
-	public void cellWasRightClicked(int row, int column) {
-		moveController.manageClicks(board, row, column, turn,
-				MouseEvent.BUTTON3, new MoveListener() {
-
-					@Override
-					public void notifyMove(String message) {
-						gui.appendToStatusMessagePanel(message);
-					}
-
-				}, new ErrorListener() {
-
-					@Override
-					public void notifyError(String message) {
-						gui.appendToStatusMessagePanel(message);
-					}
-
-				});
-	}
 	public void colorChanged(Piece piece, Color color) {
 		colorChooser.setColorFor(piece, color);
 		gui.update();
@@ -138,6 +101,7 @@ public class ListenerSettings {
 
 	public void RestartButtonClicked() {
 		gui.dispose();
+		gui = null;
 		c.restart();
 	}
 	

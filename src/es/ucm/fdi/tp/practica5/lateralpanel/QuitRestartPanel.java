@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import es.ucm.fdi.tp.practica5.ListenerSettings.ListenerSettings;
+import es.ucm.fdi.tp.practica5.listeners.ListenerSettings;
 
 @SuppressWarnings("serial")
 public class QuitRestartPanel extends JPanel{
