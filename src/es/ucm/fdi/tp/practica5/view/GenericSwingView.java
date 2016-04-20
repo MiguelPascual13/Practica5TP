@@ -76,6 +76,9 @@ public class GenericSwingView implements GameObserver {
 		 * con ella, por ejemplo, pintar cosas en el status,... A ver como
 		 * hostias hacemos eso...
 		 */
+		if(gui != null)
+			gui.dispose();
+		
 		gui = new GUI(board, pieces, colorChooser, turn, c, moveController, random, ai, randomPlayers, intelligentPlayers);
 
 		if (viewPiece == null) {
@@ -136,8 +139,14 @@ public class GenericSwingView implements GameObserver {
 			gui.appendToStatusMessagePanel(moveMessage);
 			gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");
 		}
-		if(isRandomPlayer(turn))
+		if(gui.isRandomPlayer(turn)!=null){
 			c.makeMove(random);
+			gui.update();
+		}
+		else if(gui.isIntelligentPlayer(turn)!=null){
+			c.makeMove(ai);
+			gui.update();
+		}
 	}
 
 	@Override
@@ -146,13 +155,4 @@ public class GenericSwingView implements GameObserver {
 		gui.appendToStatusMessagePanel(msg + "\n");
 	}
 
-	
-	private boolean isRandomPlayer(Piece p){
-		for(int i = 0; i < this.randomPlayers.size(); i++){
-			if(p == this.randomPlayers.get(i))
-				return true;
-		}
-		return false;
-	}
-	
 }

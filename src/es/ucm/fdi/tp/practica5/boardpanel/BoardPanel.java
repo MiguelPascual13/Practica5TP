@@ -133,15 +133,6 @@ public class BoardPanel extends JPanel {
 				// Piece p = this.board.getPosition(i, j);
 				cells[i][j].setOpaque(true);
 				cells[i][j].setBackground(this.colorChooser.getColorFor(board.getPosition(i, j)));
-				/*
-				 * if (i % 2 == 0 && j % 2 == 0)
-				 * cells[i][j].setBackground(Color.GREEN); else if (i % 2 == 0
-				 * && j % 2 != 0) cells[i][j].setBackground(Color.BLUE); else if
-				 * (i % 2 != 0 && j % 2 == 0)
-				 * cells[i][j].setBackground(Color.CYAN); else
-				 * cells[i][j].setBackground(Color.PINK);
-				 */
-				// cells[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
 				this.add(cells[i][j]);
 			}
 		}

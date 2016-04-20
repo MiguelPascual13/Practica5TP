@@ -1,6 +1,8 @@
 package es.ucm.fdi.tp.practica5.lateralpanel;
 
 import java.awt.BorderLayout;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -22,7 +24,10 @@ public class StatusMessagePanel extends JPanel {
 		scrollPane = new JScrollPane(textArea);
 
 		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), panelNameText));
-
+		scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener(){
+			public void adjustmentValueChanged(AdjustmentEvent e){
+			textArea.select(textArea.getHeight()+1000000000,0);
+			}});
 		this.add(scrollPane, BorderLayout.CENTER);
 	}
 

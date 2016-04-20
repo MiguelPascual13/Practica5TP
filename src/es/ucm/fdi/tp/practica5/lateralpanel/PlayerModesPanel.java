@@ -16,8 +16,8 @@ import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 public class PlayerModesPanel extends JPanel {
 	private static final String setButtonText = "Set";
 	private static final String panelNameText = "Player Modes";
-	private static final String manualText = "Manual";
-	private static final String randomText = "Random";
+	public static final String manualText = "Manual";
+	public static final String randomText = "Random";
 	// private static final String intelligentText = "Intelligent";
 
 	private JButton setButton;
@@ -25,7 +25,7 @@ public class PlayerModesPanel extends JPanel {
 	private JComboBox<String> playerGameModes;
 	
 	public interface SetButtonListener{
-		void SetButtonClicked();
+		void SetButtonClicked(Piece piece, String mode);
 	}
 	public PlayerModesPanel(List<Piece> pieces, SetButtonListener setListener) {
 		super(new FlowLayout());
@@ -47,15 +47,7 @@ public class PlayerModesPanel extends JPanel {
 		this.add(setButton);
 		setButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*switch (playerGameModes.getSelectedIndex()) {
-				case 0:
-					
-					break;
-				case 1:
-					
-					break;
-				}*/ //Esto es lo que teniamos intentemos hacerlo con un listener. 
-				setListener.SetButtonClicked();
+				setListener.SetButtonClicked(pieces.get(playerName.getSelectedIndex()), playerModesArray[playerGameModes.getSelectedIndex()]);
 			}
 		});
 
