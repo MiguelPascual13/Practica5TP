@@ -8,6 +8,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import es.ucm.fdi.tp.practica5.ListenerSettings.ListenerSettings;
+
 @SuppressWarnings("serial")
 public class AutomaticMovesPanel extends JPanel {
 	public static final String randomButtonText = "Random";
@@ -24,7 +26,7 @@ public class AutomaticMovesPanel extends JPanel {
 		void IntelligentButtonClicked();
 	}
 
-	public AutomaticMovesPanel(RandomButtonListener randomListener, IntelligentButtonListener intelligentListener) {
+	public AutomaticMovesPanel(ListenerSettings listener) {
 		super(new FlowLayout());
 		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), panelNameText));
 		randomButton = new JButton(randomButtonText);
@@ -35,12 +37,12 @@ public class AutomaticMovesPanel extends JPanel {
 		
 		randomButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				randomListener.RandomButtonClicked();
+				listener.RandomButtonClicked();
 			}});
 		
 		intelligentButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				intelligentListener.IntelligentButtonClicked();
+				listener.IntelligentButtonClicked();
 			}});
 		
 		

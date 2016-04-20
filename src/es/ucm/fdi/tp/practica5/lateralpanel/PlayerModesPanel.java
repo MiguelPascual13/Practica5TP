@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
+import es.ucm.fdi.tp.practica5.ListenerSettings.ListenerSettings;
 
 @SuppressWarnings("serial")
 public class PlayerModesPanel extends JPanel {
@@ -27,7 +28,7 @@ public class PlayerModesPanel extends JPanel {
 	public interface SetButtonListener{
 		void SetButtonClicked(Piece piece, String mode);
 	}
-	public PlayerModesPanel(List<Piece> pieces, SetButtonListener setListener) {
+	public PlayerModesPanel(List<Piece> pieces, ListenerSettings listener) {
 		super(new FlowLayout());
 
 		Piece pieceArray[] = new Piece[pieces.size()];
@@ -47,7 +48,7 @@ public class PlayerModesPanel extends JPanel {
 		this.add(setButton);
 		setButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setListener.SetButtonClicked(pieces.get(playerName.getSelectedIndex()), playerModesArray[playerGameModes.getSelectedIndex()]);
+				listener.SetButtonClicked(pieces.get(playerName.getSelectedIndex()), playerModesArray[playerGameModes.getSelectedIndex()]);
 			}
 		});
 

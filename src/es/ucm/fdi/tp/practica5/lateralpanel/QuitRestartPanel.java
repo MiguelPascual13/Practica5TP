@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import es.ucm.fdi.tp.practica5.ListenerSettings.ListenerSettings;
+
 @SuppressWarnings("serial")
 public class QuitRestartPanel extends JPanel{
 	public static final String quitButtonText = "Quit";
@@ -22,7 +24,7 @@ public class QuitRestartPanel extends JPanel{
 		void RestartButtonClicked();
 	}
 	
-	public QuitRestartPanel(QuitButtonListener quitListener, RestartButtonListener restartListener){
+	public QuitRestartPanel(ListenerSettings listener){
 		super(new FlowLayout());
 		
 		quitButton = new JButton(quitButtonText);
@@ -33,12 +35,12 @@ public class QuitRestartPanel extends JPanel{
 		
 		quitButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				quitListener.QuitButtonClicked();
+				listener.QuitButtonClicked();
 			}});
 		
 		restartButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				restartListener.RestartButtonClicked();
+				listener.RestartButtonClicked();
 			}});
 		
 	}

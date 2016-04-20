@@ -25,14 +25,14 @@ public class PlayerInformationPanel extends JPanel {
 	private JScrollPane scrollPane;
 	private JTable table;
 
-	public PlayerInformationPanel(List<Piece> pieces, Board board, PieceColorMap colorChooser) {
+	public PlayerInformationPanel(List<Piece> pieces, Board board, PieceColorMap colorChooser, List<Piece> randomPlayers, List<Piece> intelligentPlayers) {
 		
 		super(new BorderLayout());
 		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), panelNameText));
 
 		/* That should come from somewhere... */
 		String columName[] = { col1, col2, col3 };
-		table = new JTable(new MyTableModel(pieces, columName, board));
+		table = new JTable(new MyTableModel(pieces, columName, board, randomPlayers, intelligentPlayers));
 		for(int i=0; i<3; i++){
 			 table.getColumnModel().getColumn(i).setHeaderValue(columName[i]);
 		}
@@ -61,11 +61,15 @@ public class PlayerInformationPanel extends JPanel {
 		private String[] columnName;
 		private List<Piece> pieces;
 		private Board board;
+		private List<Piece> randomPlayers;
+		private List<Piece> intelligentPlayers;
 
-		public MyTableModel(List<Piece> pieces, String[] columnName, Board board) {
+		public MyTableModel(List<Piece> pieces, String[] columnName, Board board, List<Piece> randomPlayers, List<Piece> intelligentPlayers) {
 			this.pieces = pieces;
 			this.columnName = columnName;
 			this.board = board;
+			this.randomPlayers = randomPlayers;
+			this.intelligentPlayers = intelligentPlayers;
 		}
 
 		@Override
@@ -89,13 +93,31 @@ public class PlayerInformationPanel extends JPanel {
 			case 0:
 				return pieces.get(row);
 			case 1:
-				return "MANUAL";// Se que no es esto hay que ver que hay que
-								// poner los modes
-								// ESTO ESTA MAAAAAAAAL
+				return stringMode(row);
 			default:
 				return board.getPieceCount(pieces.get(row));
 			}
 		}
+		
+		public String stringMode(int row){
+				if(isAutomaticPlayer(pieces.get(row), randomPlayers)!=null){
+					return "Random";
+				}
+				else if(isAutomaticPlayer(pieces.get(row), intelligentPlayers)!=null){
+					return "Intelligent";
+				}
+				else{
+					return "Manual";
+				}
+		}
+		public Integer isAutomaticPlayer(Piece p, List<Piece> players) {
+			for (int i = 0; i < players.size(); i++) {
+				if (p == players.get(i))
+					return i;
+			}
+			return null;
+		}
+
 
 		public boolean isCellEditable(int row, int col) {
 			return false;

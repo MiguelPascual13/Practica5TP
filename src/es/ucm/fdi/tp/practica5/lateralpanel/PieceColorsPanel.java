@@ -13,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
+import es.ucm.fdi.tp.practica5.ListenerSettings.ListenerSettings;
 
 @SuppressWarnings("serial")
 public class PieceColorsPanel extends JPanel {
@@ -26,7 +27,7 @@ public class PieceColorsPanel extends JPanel {
 		void colorChanged(Piece piece, Color color);
 	}
 	
-	public PieceColorsPanel(List<Piece> pieces, ColorChangeListener listener) {
+	public PieceColorsPanel(List<Piece> pieces, ListenerSettings listener) {
 		super(new FlowLayout());
 
 		Piece pieceArray[] = new Piece[pieces.size()];

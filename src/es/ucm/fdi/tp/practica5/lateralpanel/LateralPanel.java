@@ -7,12 +7,7 @@ import javax.swing.JPanel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
-import es.ucm.fdi.tp.practica5.lateralpanel.AutomaticMovesPanel.IntelligentButtonListener;
-import es.ucm.fdi.tp.practica5.lateralpanel.AutomaticMovesPanel.RandomButtonListener;
-import es.ucm.fdi.tp.practica5.lateralpanel.PieceColorsPanel.ColorChangeListener;
-import es.ucm.fdi.tp.practica5.lateralpanel.PlayerModesPanel.SetButtonListener;
-import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.QuitButtonListener;
-import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.RestartButtonListener;
+import es.ucm.fdi.tp.practica5.ListenerSettings.ListenerSettings;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
 @SuppressWarnings("serial")
@@ -26,20 +21,16 @@ public class LateralPanel extends JPanel {
 	private PlayerInformationPanel playerInformationPanel;
 
 	public LateralPanel(List<Piece> pieces, PieceColorMap colorChooser,
-			Board board, ColorChangeListener listener,
-			QuitButtonListener quitListener,
-			RestartButtonListener restartListener,
-			RandomButtonListener randomListener,
-			IntelligentButtonListener intelligentListener,
-			SetButtonListener setListener) {
+			Board board, ListenerSettings listener, List<Piece> randomPlayers,
+			List<Piece> intelligentPlayers) {
 		super(new GridLayout(0, 1));
 		statusMessagePanel = new StatusMessagePanel();
 		playerInformationPanel = new PlayerInformationPanel(pieces, board,
-				colorChooser);
-		playerModesPanel = new PlayerModesPanel(pieces, setListener);
+				colorChooser, randomPlayers, intelligentPlayers);
+		playerModesPanel = new PlayerModesPanel(pieces, listener);
 		pieceColorsPanel = new PieceColorsPanel(pieces, listener);
-		automaticMovesPanel = new AutomaticMovesPanel(randomListener, intelligentListener);
-		quitRestartPanel = new QuitRestartPanel(quitListener, restartListener);
+		automaticMovesPanel = new AutomaticMovesPanel(listener);
+		quitRestartPanel = new QuitRestartPanel(listener);
 		this.add(statusMessagePanel);
 		this.add(playerInformationPanel);
 		this.add(pieceColorsPanel);
