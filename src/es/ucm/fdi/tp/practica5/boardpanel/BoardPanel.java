@@ -122,7 +122,10 @@ public class BoardPanel extends JPanel {
 	 * 
 	 * HIGHLIGHT3: Revise all the highlights.
 	 */
-
+	
+	/*Hay que encontrar alguna forma de pasar un array de movimientos válidos
+	 * de forma que hacer el filtro sea más general y casi trivial.*/
+	
 	/*
 	 * Las variables de filas y columnas indican la pieza seleccionada, se
 	 * pintarán bordes a la casilla selecciona y a las no ocupadas movibles.

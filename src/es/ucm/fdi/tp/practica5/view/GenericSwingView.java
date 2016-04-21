@@ -133,8 +133,12 @@ public class GenericSwingView implements GameObserver {
 			gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");
 		}
 		if (gui.isRandomPlayer(turn) != null) {
-			c.makeMove(random);
-			gui.update();
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					c.makeMove(random);
+					gui.update();
+				}
+			});
 		} else if (gui.isIntelligentPlayer(turn) != null) {
 			c.makeMove(ai);
 			gui.update();
