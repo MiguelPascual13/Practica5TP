@@ -140,7 +140,7 @@ public class AtaxxMove extends GameMove {
 	private void moveToAdjacent(Board board, List<Piece> pieces) {
 		board.setPosition(row, col, getPiece());
 		board.setPieceCount(getPiece(), board.getPieceCount(getPiece()) + 1);
-		transformAdjacents(board, pieces, row, col);
+		transformNeighbors(board, pieces, row, col);
 	}
 
 	/**
@@ -155,7 +155,7 @@ public class AtaxxMove extends GameMove {
 	private void moveFar(Board board, List<Piece> pieces) {
 		board.setPosition(row, col, getPiece());
 		board.setPosition(oldRow, oldCol, null);
-		transformAdjacents(board, pieces, row, col);
+		transformNeighbors(board, pieces, row, col);
 	}
 
 	private static final int deltas[][] = { { 0, 1 }, { 1, 1 }, { 1, 0 },
@@ -177,7 +177,7 @@ public class AtaxxMove extends GameMove {
 		return x >= 0 && y >= 0 && x < dim && y < dim;
 	}
 
-	private void transformAdjacents(Board board, List<Piece> pieces,
+	private void transformNeighbors(Board board, List<Piece> pieces,
 			int oldRow, int oldCol) {
 		for (int[] ds : deltas) {
 			int x = oldRow + ds[0];
@@ -221,11 +221,10 @@ public class AtaxxMove extends GameMove {
 		}
 
 		try {
-			int oldRow, oldCol, row, col;
-			oldRow = Integer.parseInt(words[0]);
-			oldCol = Integer.parseInt(words[1]);
-			row = Integer.parseInt(words[2]);
-			col = Integer.parseInt(words[3]);
+			int oldRow = Integer.parseInt(words[0]);
+			int oldCol = Integer.parseInt(words[1]);
+			int row = Integer.parseInt(words[2]);
+			int col = Integer.parseInt(words[3]);
 			return createMove(oldRow, oldCol, row, col, p);
 		} catch (NumberFormatException e) {
 			return null;

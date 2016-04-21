@@ -11,7 +11,7 @@ import javax.swing.JTextArea;
 
 @SuppressWarnings("serial")
 public class StatusMessagePanel extends JPanel {
-	private static final String panelNameText = "Status Message";
+	private static final String PANEL_NAME_TEXT = "Status Message";
 
 	private JScrollPane scrollPane;
 	private JTextArea textArea;
@@ -23,7 +23,7 @@ public class StatusMessagePanel extends JPanel {
 		textArea.setEditable(false);
 		scrollPane = new JScrollPane(textArea);
 
-		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), panelNameText));
+		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), PANEL_NAME_TEXT));
 		scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener(){
 			public void adjustmentValueChanged(AdjustmentEvent e){
 			textArea.select(textArea.getHeight()+1000000000,0);

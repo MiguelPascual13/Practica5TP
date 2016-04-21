@@ -12,9 +12,9 @@ import es.ucm.fdi.tp.practica5.listeners.ListenerSettings;
 
 @SuppressWarnings("serial")
 public class AutomaticMovesPanel extends JPanel {
-	public static final String randomButtonText = "Random";
-	public static final String intelligentButtonText = "Intelligent";
-	private static final String panelNameText = "Automatic Moves";
+	public static final String RANDOM_BUTTON_TEXT = "Random";
+	public static final String INTELLIGENT_BUTTON_TEXT = "Intelligent";
+	private static final String PANEL_NAME_TEXT = "Automatic Moves";
 
 	private JButton randomButton;
 	private JButton intelligentButton;
@@ -28,9 +28,9 @@ public class AutomaticMovesPanel extends JPanel {
 
 	public AutomaticMovesPanel(ListenerSettings listener) {
 		super(new FlowLayout());
-		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), panelNameText));
-		randomButton = new JButton(randomButtonText);
-		intelligentButton = new JButton(intelligentButtonText);
+		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), PANEL_NAME_TEXT));
+		randomButton = new JButton(RANDOM_BUTTON_TEXT);
+		intelligentButton = new JButton(INTELLIGENT_BUTTON_TEXT);
 		intelligentButton.setEnabled(false);
 		this.add(randomButton);
 		this.add(intelligentButton);

@@ -49,13 +49,13 @@ public class ListenerSettings {
 	}
 
 	public void SetButtonClicked(Piece piece, String mode) {
-		if (mode == PlayerModesPanel.manualText) {
+		if (mode == PlayerModesPanel.MANUAL_TEXT) {
 			if (gui.isRandomPlayer(piece) != null) {
 				randomPlayers.remove(piece);
 			} else if (gui.isIntelligentPlayer(piece) != null) {
 				intelligentPlayers.remove(piece);
 			}
-		} else if (mode == PlayerModesPanel.randomText) {
+		} else if (mode == PlayerModesPanel.RANDOM_TEXT) {
 			if (gui.isIntelligentPlayer(piece) != null) {
 				intelligentPlayers.remove(piece);
 			}

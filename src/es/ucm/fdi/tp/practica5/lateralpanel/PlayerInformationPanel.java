@@ -18,36 +18,41 @@ import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
 @SuppressWarnings("serial")
 public class PlayerInformationPanel extends JPanel {
-	private static final String panelNameText = "Player Information";
-	private static final String col1 = "Player";
-	private static final String col2 = "Mode";
-	private static final String col3 = "#Pieces";
-	private static final String manual = "Manual";
-	private static final String random = "Random";
-	private static final String intelligent = "Intelligent";
-	private static final String unknown = "Unknown";
+	private static final String PANEL_NAME_TEXT = "Player Information";
+	private static final String COL1 = "Player";
+	private static final String COL2 = "Mode";
+	private static final String COL3 = "#Pieces";
+	private static final String MANUAL = "Manual";
+	private static final String RANDOM = "Random";
+	private static final String INTELLIGENT = "Intelligent";
+	private static final String UNKNOWN = "-";
 
 	private JScrollPane scrollPane;
 	private JTable table;
 
-	public PlayerInformationPanel(List<Piece> pieces, Board board, PieceColorMap colorChooser,
-			List<Piece> randomPlayers, List<Piece> intelligentPlayers, Piece viewPiece) {
+	public PlayerInformationPanel(List<Piece> pieces, Board board,
+			PieceColorMap colorChooser, List<Piece> randomPlayers,
+			List<Piece> intelligentPlayers, Piece viewPiece) {
 
 		super(new BorderLayout());
-		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), panelNameText));
+		this.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createEtchedBorder(), PANEL_NAME_TEXT));
 		/* That should come from somewhere... */
-		String columName[] = { col1, col2, col3 };
-		table = new JTable(new MyTableModel(pieces, columName, board, randomPlayers, intelligentPlayers));
+		String columName[] = { COL1, COL2, COL3 };
+		table = new JTable(new MyTableModel(pieces, columName, board,
+				randomPlayers, intelligentPlayers, viewPiece));
 		for (int i = 0; i < 3; i++) {
 			table.getColumnModel().getColumn(i).setHeaderValue(columName[i]);
 		}
 		table.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
 
 			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-					boolean hasFocus, int row, int column) {
-				JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
-						column);
+			public Component getTableCellRendererComponent(JTable table,
+					Object value, boolean isSelected, boolean hasFocus,
+					int row, int column) {
+				JComponent c = (JComponent) super
+						.getTableCellRendererComponent(table, value,
+								isSelected, hasFocus, row, column);
 				c.setBackground(colorChooser.getColorFor(pieces.get(row)));
 				return c;
 			}
@@ -68,14 +73,17 @@ public class PlayerInformationPanel extends JPanel {
 		private Board board;
 		private List<Piece> randomPlayers;
 		private List<Piece> intelligentPlayers;
+		private Piece viewPiece;
 
-		public MyTableModel(List<Piece> pieces, String[] columnName, Board board, List<Piece> randomPlayers,
-				List<Piece> intelligentPlayers) {
+		public MyTableModel(List<Piece> pieces, String[] columnName,
+				Board board, List<Piece> randomPlayers,
+				List<Piece> intelligentPlayers, Piece viewPiece) {
 			this.pieces = pieces;
 			this.columnName = columnName;
 			this.board = board;
 			this.randomPlayers = randomPlayers;
 			this.intelligentPlayers = intelligentPlayers;
+			this.viewPiece = viewPiece;
 		}
 
 		@Override
@@ -101,18 +109,33 @@ public class PlayerInformationPanel extends JPanel {
 			case 1:
 				return stringMode(row);
 			default:
-				return board.getPieceCount(pieces.get(row));
+				return stringPieceCount(row);
+			}
+		}
+
+		public String stringPieceCount(int row) {
+			Integer pieceCount = board.getPieceCount(pieces.get(row));
+			if (pieceCount != null) {
+				return pieceCount.toString();
+			} else {
+				return UNKNOWN;
 			}
 		}
 
 		public String stringMode(int row) {
+			if (viewPiece == null || viewPiece == pieces.get(row)) {
 				if (isAutomaticPlayer(pieces.get(row), randomPlayers) != null) {
-					return random;
-				} else if (isAutomaticPlayer(pieces.get(row), intelligentPlayers) != null) {
-					return intelligent;
+					return RANDOM;
+				} else if (isAutomaticPlayer(pieces.get(row),
+						intelligentPlayers) != null) {
+					return INTELLIGENT;
 				} else {
-					return manual;
+					return MANUAL;
 				}
+			} else {
+				return UNKNOWN;
+			}
+
 		}
 
 		public Integer isAutomaticPlayer(Piece p, List<Piece> players) {

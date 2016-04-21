@@ -178,30 +178,6 @@ public class AtaxxRules implements GameRules {
 		return correct;
 	}
 
-	/**
-	 * DO NOT USE, its here until we check the correctness of its substitute.
-	 * 
-	 * @deprecated it will for sure disappear.
-	 * @param board
-	 * @param playersPieces
-	 */
-	@SuppressWarnings("unused")
-	private void refreshPiecesCounters(Board board, List<Piece> playersPieces) {
-		for (int i = 0; i < playersPieces.size(); i++) {
-			board.setPieceCount(playersPieces.get(i), 0);
-		}
-
-		for (int i = 0; i < dim; i++) {
-			for (int j = 0; j < dim; j++) {
-				if (board.getPosition(i, j) != null && board.getPosition(i, j).getId() != "*") {
-					Integer actualpoints = board.getPieceCount(board.getPosition(i, j)) + 1;
-					board.setPieceCount(board.getPosition(i, j), actualpoints);
-				}
-
-			}
-		}
-	}
-	
 	/*REVISE*/
 	private Integer onlyOneAlive(Board board, List<Piece> playersPieces) {
 		int alive = 0;

@@ -17,8 +17,8 @@ import es.ucm.fdi.tp.practica5.listeners.ListenerSettings;
 
 @SuppressWarnings("serial")
 public class PieceColorsPanel extends JPanel {
-	private static final String chooseColorButtonText = "Choose Color";
-	private static final String panelNameText = "Piece Colors";
+	private static final String CHOOSE_COLOR_BUTTON_TEXT = "Choose Color";
+	private static final String PANEL_NAME_TEXT = "Piece Colors";
 
 	private JButton chooseColorButton;
 	private JComboBox<Piece> playerName;
@@ -36,8 +36,8 @@ public class PieceColorsPanel extends JPanel {
 		}
 
 		this.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createEtchedBorder(), panelNameText));
-		chooseColorButton = new JButton(chooseColorButtonText);
+				BorderFactory.createEtchedBorder(), PANEL_NAME_TEXT));
+		chooseColorButton = new JButton(CHOOSE_COLOR_BUTTON_TEXT);
 		playerName = new JComboBox<Piece>(pieceArray);
 		this.add(playerName);
 		this.add(chooseColorButton);

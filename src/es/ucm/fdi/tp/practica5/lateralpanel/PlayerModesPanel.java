@@ -15,10 +15,10 @@ import es.ucm.fdi.tp.practica5.listeners.ListenerSettings;
 
 @SuppressWarnings("serial")
 public class PlayerModesPanel extends JPanel {
-	private static final String setButtonText = "Set";
-	private static final String panelNameText = "Player Modes";
-	public static final String manualText = "Manual";
-	public static final String randomText = "Random";
+	private static final String SET_BUTTON_TEXT = "Set";
+	private static final String PANEL_NAME_TEXT = "Player Modes";
+	public static final String MANUAL_TEXT = "Manual";
+	public static final String RANDOM_TEXT = "Random";
 	// private static final String intelligentText = "Intelligent";
 
 	private JButton setButton;
@@ -36,11 +36,11 @@ public class PlayerModesPanel extends JPanel {
 			pieceArray[i] = pieces.get(i);
 		}
 
-		String playerModesArray[] = { manualText, randomText };
+		String playerModesArray[] = { MANUAL_TEXT, RANDOM_TEXT };
 
 		this.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createEtchedBorder(), panelNameText));
-		setButton = new JButton(setButtonText);
+				BorderFactory.createEtchedBorder(), PANEL_NAME_TEXT));
+		setButton = new JButton(SET_BUTTON_TEXT);
 		playerName = new JComboBox<Piece>(pieceArray);
 		playerGameModes = new JComboBox<String>(playerModesArray);
 		this.add(playerName);
