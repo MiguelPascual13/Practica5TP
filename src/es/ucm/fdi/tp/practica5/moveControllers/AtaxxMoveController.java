@@ -1,4 +1,3 @@
-
 package es.ucm.fdi.tp.practica5.moveControllers;
 
 import java.awt.event.MouseEvent;
@@ -14,15 +13,16 @@ import es.ucm.fdi.tp.practica5.utils.Utils;
 @SuppressWarnings("serial")
 public class AtaxxMoveController extends MoveController {
 	private boolean somethingSelected = false;
-	
-	//Departure piece.
+
+	/* Destination piece. */
 	private Integer oldRow = null;
 	private Integer oldColumn = null;
-	
-	/*Piece*/
+
+	/* Piece that the view use to show the possible moves filter. */
 	private Integer selectedRow = null;
 	private Integer selectedColumn = null;
-	
+
+	/* Destination piece. */
 	private Integer newRow = null;
 	private Integer newColumn = null;
 
@@ -32,11 +32,13 @@ public class AtaxxMoveController extends MoveController {
 	private static final String invalidOrigin = "left-click a piece of yours as an origin...\n";
 
 	@Override
-	public GameMove requestMove(Piece p, Board board, List<Piece> pieces, GameRules rules) {
+	public GameMove requestMove(Piece p, Board board, List<Piece> pieces,
+			GameRules rules) {
 		return new AtaxxMove(oldRow, oldColumn, newRow, newColumn, p);
 	}
 
-	public Integer manageClicks(Board board, int row, int column, Piece turn, Piece viewPiece, MouseEvent mouseEvent) {
+	public Integer manageClicks(Board board, int row, int column, Piece turn,
+			Piece viewPiece, MouseEvent mouseEvent) {
 
 		if (!checkMultiViewCase(turn, viewPiece))
 			return NOTHING_TO_REPAINT;
@@ -45,16 +47,25 @@ public class AtaxxMoveController extends MoveController {
 			if (somethingSelected) {
 				if (board.getPosition(row, column) == null) {
 					setDestinationCell(row, column);
-					if (Utils.InfiniteDistanceExceeded(oldRow, oldColumn, row, column)) {
+					if (Utils.InfiniteDistanceExceeded(oldRow, oldColumn, row,
+							column)) {
 						return NOTHING_TO_REPAINT;
 					}
 					somethingSelected = false;
+					/*
+					 * Says to the view that the filter must be OFF in the next
+					 * repaint.
+					 */
 					resetSelectedCell();
 					return REPAINT_AND_MOVE;
 				} else
 					return NOTHING_TO_REPAINT;
 			} else {
 				if (board.getPosition(row, column) == turn) {
+					/*
+					 * Says to the view that the filter must be ON in the next
+					 * repaint.
+					 */
 					setSelectedCell(row, column);
 					somethingSelected = true;
 					return SOMETHING_TO_REPAINT;
@@ -64,13 +75,14 @@ public class AtaxxMoveController extends MoveController {
 			}
 		} else {
 			somethingSelected = false;
+			/* Says to the view that the filter must be OFF in the next repaint. */
 			resetSelectedCell();
 			return SOMETHING_TO_REPAINT;
 		}
 	}
-	
-	/*La vista trabaja con selected, el movimiento con old*/
-	//GET
+
+	/* La vista trabaja con selected, el movimiento con old */
+	// GET
 	public Integer getSelectedRow() {
 		return this.selectedRow;
 	}
@@ -78,21 +90,21 @@ public class AtaxxMoveController extends MoveController {
 	public Integer getSelectedColumn() {
 		return this.selectedColumn;
 	}
-	
-	//RESET
+
+	// RESET
 	private void resetSelectedCell() {
 		this.selectedRow = null;
 		this.selectedColumn = null;
 	}
-	
-	//SET
+
+	// SET
 	private void setSelectedCell(Integer row, Integer column) {
 		this.oldRow = row;
 		this.oldColumn = column;
 		this.selectedRow = row;
 		this.selectedColumn = column;
 	}
-	
+
 	private void setDestinationCell(Integer row, Integer column) {
 		this.newRow = row;
 		this.newColumn = column;
