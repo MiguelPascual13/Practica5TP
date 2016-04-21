@@ -55,8 +55,8 @@ public class GUI extends JFrame {
 
 		this.vSplitPane.setLeftComponent(boardPanel);
 		this.vSplitPane.setRightComponent(lateralPanel);
-		this.vSplitPane.setDividerLocation(580);
 		this.getContentPane().add(vSplitPane, BorderLayout.CENTER);
+		this.vSplitPane.setDividerLocation(580);
 
 		/* Other stuff */
 		this.setLocation(100, 50);

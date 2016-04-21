@@ -20,7 +20,8 @@ import es.ucm.fdi.tp.basecode.bgame.views.GenericConsoleView;
 public class AtaxxFactory implements GameFactory {
 
 	private static final long serialVersionUID = 1L;
-
+	public static final int DEFAULT_DIM = 5;
+	public static final int DEFAULT_OBSTACLES = 4;
 	private int dim;
 
 	private int obstacles;
@@ -30,8 +31,8 @@ public class AtaxxFactory implements GameFactory {
 	 * create an Ataxx board of 5x5 by default.
 	 */
 	public AtaxxFactory() {
-		this.dim = 5;
-		this.obstacles = 4;
+		this.dim = DEFAULT_DIM;
+		this.obstacles = DEFAULT_OBSTACLES;
 	}
 
 	/**
@@ -48,7 +49,7 @@ public class AtaxxFactory implements GameFactory {
 		this.dim = dim;
 		this.obstacles = obstacles;
 	}
-
+	
 	@Override
 	public GameRules gameRules() {
 		return new AtaxxRules(dim, obstacles);

@@ -1,3 +1,4 @@
+
 package es.ucm.fdi.tp.practica5.moveControllers;
 
 import java.awt.event.MouseEvent;
@@ -13,13 +14,17 @@ import es.ucm.fdi.tp.practica5.utils.Utils;
 @SuppressWarnings("serial")
 public class AtaxxMoveController extends MoveController {
 	private boolean somethingSelected = false;
-
+	
+	//Departure piece.
 	private Integer oldRow = null;
 	private Integer oldColumn = null;
+	
+	/*Piece*/
 	private Integer selectedRow = null;
 	private Integer selectedColumn = null;
-	private Integer row = null;
-	private Integer column = null;
+	
+	private Integer newRow = null;
+	private Integer newColumn = null;
 
 	private static final String moveMessage = "left-click origin piece...\nrigh-click anywhere to deselect origin...\n";
 	private static final String destinationMessage = "left-click destination empty valid piece...\nright-click anywhere to deselect origin...\n";
@@ -28,7 +33,7 @@ public class AtaxxMoveController extends MoveController {
 
 	@Override
 	public GameMove requestMove(Piece p, Board board, List<Piece> pieces, GameRules rules) {
-		return new AtaxxMove(oldRow, oldColumn, row, column, p);
+		return new AtaxxMove(oldRow, oldColumn, newRow, newColumn, p);
 	}
 
 	public Integer manageClicks(Board board, int row, int column, Piece turn, Piece viewPiece, MouseEvent mouseEvent) {
@@ -80,12 +85,6 @@ public class AtaxxMoveController extends MoveController {
 		this.selectedColumn = null;
 	}
 	
-	private void resetOldCell() {
-		this.oldRow = null;
-		this.oldColumn = null;
-		resetSelectedCell();
-	}
-	
 	//SET
 	private void setSelectedCell(Integer row, Integer column) {
 		this.oldRow = row;
@@ -95,7 +94,7 @@ public class AtaxxMoveController extends MoveController {
 	}
 	
 	private void setDestinationCell(Integer row, Integer column) {
-		this.row = row;
-		this.column = column;
+		this.newRow = row;
+		this.newColumn = column;
 	}
 }

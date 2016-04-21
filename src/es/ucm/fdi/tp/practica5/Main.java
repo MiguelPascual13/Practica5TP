@@ -598,13 +598,29 @@ public class Main {
 			gameFactory = new TicTacToeFactoryExt();
 			break;
 		case ATAXX:
-			if (correctDimension() && correctObstacles()) {
-				gameFactory = new AtaxxFactoryExt(dimRows, obstacles);
+			if (dimensionSpecified() && obstaclesSpecified()) {
+				if (correctDimension() && correctObstacles()) {
+					gameFactory = new AtaxxFactoryExt(dimRows, obstacles);
+				} else {
+					createDefaultAtaxxGame();
+				}
+			} else if (dimensionSpecified()) {
+				if (correctDimension())
+					gameFactory = new AtaxxFactoryExt(dimRows,
+							AtaxxFactoryExt.DEFAULT_OBSTACLES);
+				else {
+					createDefaultAtaxxGame();
+				}
+			} else if (obstaclesSpecified()) {
+				if (correctObstacles())
+					gameFactory = new AtaxxFactoryExt(
+							AtaxxFactoryExt.DEFAULT_DIM, obstacles);
+				else
+					createDefaultAtaxxGame();
 			} else {
-				/* The parameters are wrong, create one by default. */
-				System.out.println("");
-				gameFactory = new AtaxxFactoryExt();
+				createDefaultAtaxxGame();
 			}
+
 			break;
 		default:
 			throw new UnsupportedOperationException(
@@ -613,16 +629,33 @@ public class Main {
 
 	}
 
-	private static boolean correctDimension() {
-		return dimRows != null && dimCols != null && dimRows == dimCols
-				&& dimRows >= 5 && dimRows % 2 == 1;
+	private static boolean dimensionSpecified() {
+		return dimRows != null && dimCols != null;
 	}
-	
+
+	private static boolean obstaclesSpecified() {
+		return obstacles != null;
+	}
+
+	private static boolean correctDimension() {
+		return dimRows == dimCols && dimRows >= 5 && dimRows % 2 == 1;
+	}
+
 	private static boolean correctObstacles() {
-		return obstacles != null && obstacles <= (((((dimRows / 2) * (dimCols / 2)) - 1) * 4) + 1)
+		if (dimRows == null || dimCols == null) {
+			dimRows = AtaxxFactoryExt.DEFAULT_DIM;
+			dimCols = AtaxxFactoryExt.DEFAULT_DIM;
+		}
+		return obstacles <= (((((dimRows / 2) * (dimCols / 2)) - 1) * 4) + 1)
 				&& (obstacles % 4 == 0 || obstacles % 4 == 1);
 	}
-	
+
+	private static void createDefaultAtaxxGame() {
+		System.out
+				.println("Some arguments are invalid, creating a default game");
+		gameFactory = new AtaxxFactoryExt();
+	}
+
 	/**
 	 * Builds the dimension (-d or --dim) CLI option.
 	 * 
