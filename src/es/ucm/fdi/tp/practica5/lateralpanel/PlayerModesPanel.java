@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.listeners.ListenerSettings;
 
+/*NO ME GUSTA EL USO DE VIEWPIECE Y PROBABLEMENTE HAYA QUE CAMBIARLO
+ * TAMBIÉN HAY PROBLEMAS CON LOS PUTOS PLAYERS (NO ME GUSTAN)*/
+
 @SuppressWarnings("serial")
 public class PlayerModesPanel extends JPanel {
 	private static final String SET_BUTTON_TEXT = "Set";
@@ -28,20 +31,18 @@ public class PlayerModesPanel extends JPanel {
 	public interface SetButtonListener {
 		void SetButtonClicked(Piece piece, String mode);
 	}
-
-	public PlayerModesPanel(List<Piece> pieces, ListenerSettings listener) {
+	
+	/*Esta ventana debe conocer qué playermodes hay disponibles.*/
+	
+	public PlayerModesPanel(List<Piece> pieces, ListenerSettings listener, Piece viewPiece) {
 		super(new FlowLayout());
-
-		Piece pieceArray[] = new Piece[pieces.size()];
-		for (int i = 0; i < pieces.size(); i++) {
-			pieceArray[i] = pieces.get(i);
-		}
-
-		String playerModesArray[] = { MANUAL_TEXT, RANDOM_TEXT, INTELLIGENT_TEXT};
-
+		
 		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), PANEL_NAME_TEXT));
+		this.fillJComboBox(pieces, viewPiece);
+		
+		String playerModesArray[] = { MANUAL_TEXT, RANDOM_TEXT, INTELLIGENT_TEXT };
+		
 		setButton = new JButton(SET_BUTTON_TEXT);
-		playerName = new JComboBox<Piece>(pieceArray);
 		playerGameModes = new JComboBox<String>(playerModesArray);
 		this.add(playerName);
 		this.add(playerGameModes);
@@ -53,5 +54,18 @@ public class PlayerModesPanel extends JPanel {
 			}
 		});
 
+	}
+
+	private void fillJComboBox(List<Piece> pieces, Piece viewPiece) {
+		if (viewPiece == null) {
+			Piece pieceArray[] = new Piece[pieces.size()];
+			for (int i = 0; i < pieces.size(); i++) {
+				pieceArray[i] = pieces.get(i);
+			}
+			playerName = new JComboBox<Piece>(pieceArray);
+		} else {
+			playerName = new JComboBox<Piece>();
+			playerName.addItem(viewPiece);
+		}
 	}
 }

@@ -26,7 +26,7 @@ public class LateralPanel extends JPanel {
 		statusMessagePanel = new StatusMessagePanel();
 		playerInformationPanel = new PlayerInformationPanel(pieces, board, colorChooser, randomPlayers,
 				intelligentPlayers, viewPiece);
-		playerModesPanel = new PlayerModesPanel(pieces, listener);
+		playerModesPanel = new PlayerModesPanel(pieces, listener, viewPiece);
 		pieceColorsPanel = new PieceColorsPanel(pieces, listener);
 		automaticMovesPanel = new AutomaticMovesPanel(listener);
 		quitRestartPanel = new QuitRestartPanel(listener, viewPiece);
