@@ -1,6 +1,7 @@
 package es.ucm.fdi.tp.practica5.boardpanel;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.util.List;
 
@@ -179,4 +180,20 @@ public class BoardPanel extends JPanel {
 			}
 		}
 	}
+}
+
+
+//kdlñskfñlkdsf
+public void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    g.setColor(color);
+    if (obstaculo){
+        g.fillRect(3, 3, this.getWidth()-6, this.getHeight()-6);
+        g.setColor(Color.WHITE);
+        g.drawRect(3, 3, this.getWidth()-6, this.getHeight()-6);
+    } else    if (piece) {
+        g.fillOval(3, 3, this.getWidth()-9, this.getHeight()-9);
+        g.setColor(Color.BLACK);
+        g.drawOval(3, 3, this.getWidth()-9, this.getHeight()-9);
+    }
 }
