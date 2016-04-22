@@ -2,6 +2,7 @@ package es.ucm.fdi.tp.practica5.lateralpanel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -43,7 +44,10 @@ public class PlayerInformationPanel extends JPanel {
 				randomPlayers, intelligentPlayers, viewPiece));
 		for (int i = 0; i < 3; i++) {
 			table.getColumnModel().getColumn(i).setHeaderValue(columName[i]);
+			//table.getColumnModel().getColumn(i).setPreferredWidth(100);
 		}
+		//table.setPreferredSize(new Dimension(table.getPreferredSize().width,20*pieces.size()));
+		//table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
 
 			@Override

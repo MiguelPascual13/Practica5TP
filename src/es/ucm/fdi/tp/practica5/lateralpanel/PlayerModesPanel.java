@@ -19,7 +19,7 @@ public class PlayerModesPanel extends JPanel {
 	private static final String PANEL_NAME_TEXT = "Player Modes";
 	public static final String MANUAL_TEXT = "Manual";
 	public static final String RANDOM_TEXT = "Random";
-	// private static final String intelligentText = "Intelligent";
+	private static final String INTELLIGENT_TEXT = "Intelligent";
 
 	private JButton setButton;
 	private JComboBox<Piece> playerName;
@@ -37,7 +37,7 @@ public class PlayerModesPanel extends JPanel {
 			pieceArray[i] = pieces.get(i);
 		}
 
-		String playerModesArray[] = { MANUAL_TEXT, RANDOM_TEXT };
+		String playerModesArray[] = { MANUAL_TEXT, RANDOM_TEXT, INTELLIGENT_TEXT};
 
 		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), PANEL_NAME_TEXT));
 		setButton = new JButton(SET_BUTTON_TEXT);
@@ -54,5 +54,4 @@ public class PlayerModesPanel extends JPanel {
 		});
 
 	}
-
 }

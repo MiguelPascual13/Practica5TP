@@ -191,10 +191,9 @@ public void paintComponent(Graphics g) {
         g.fillRect(3, 3, this.getWidth()-6, this.getHeight()-6);
         g.setColor(Color.WHITE);
         g.drawRect(3, 3, this.getWidth()-6, this.getHeight()-6);
-    } else    if (piece) {
+    } else if (piece) {
         g.fillOval(3, 3, this.getWidth()-9, this.getHeight()-9);
         g.setColor(Color.BLACK);
         g.drawOval(3, 3, this.getWidth()-9, this.getHeight()-9);
     }
-}
-*/
+}*/

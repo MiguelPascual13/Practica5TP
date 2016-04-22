@@ -150,10 +150,15 @@ public class GenericSwingView implements GameObserver {
 				}
 			});
 		} else if (gui.isIntelligentPlayer(turn) != null) {
-			gui.enableBottons(false, viewPiece);
-			c.makeMove(ai);
-			gui.enableBottons(true, viewPiece);
-			gui.update();
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					gui.enableBottons(false, viewPiece);
+					c.makeMove(ai);
+					gui.enableBottons(true, viewPiece);
+					gui.update();
+				}
+			});
+			
 		}
 	}
 
