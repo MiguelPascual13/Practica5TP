@@ -29,7 +29,7 @@ public class LateralPanel extends JPanel {
 		playerModesPanel = new PlayerModesPanel(pieces, listener);
 		pieceColorsPanel = new PieceColorsPanel(pieces, listener);
 		automaticMovesPanel = new AutomaticMovesPanel(listener);
-		quitRestartPanel = new QuitRestartPanel(listener);
+		quitRestartPanel = new QuitRestartPanel(listener, viewPiece);
 		this.add(statusMessagePanel);
 		this.add(playerInformationPanel);
 		this.add(pieceColorsPanel);
@@ -52,5 +52,14 @@ public class LateralPanel extends JPanel {
 	 */
 	public void appendToStatusMessagePanel(String message) {
 		this.statusMessagePanel.append(message);
+	}
+	
+	public void enableBottons(boolean change, Piece viewPiece){
+		automaticMovesPanel.enableRandom(change);
+		automaticMovesPanel.enableIntelligent(change);
+		quitRestartPanel.enableQuit(change);
+		if(viewPiece==null){
+			quitRestartPanel.enableRestart(change);
+		}
 	}
 }

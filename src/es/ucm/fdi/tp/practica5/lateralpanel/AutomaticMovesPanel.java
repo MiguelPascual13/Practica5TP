@@ -31,7 +31,6 @@ public class AutomaticMovesPanel extends JPanel {
 		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), PANEL_NAME_TEXT));
 		randomButton = new JButton(RANDOM_BUTTON_TEXT);
 		intelligentButton = new JButton(INTELLIGENT_BUTTON_TEXT);
-		intelligentButton.setEnabled(false);
 		this.add(randomButton);
 		this.add(intelligentButton);
 		
@@ -44,8 +43,12 @@ public class AutomaticMovesPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				listener.IntelligentButtonClicked();
 			}});
-		
-		
-
 	}
+	public void enableRandom(boolean change) {
+		randomButton.setEnabled(change);
+	}
+
+	public void enableIntelligent(boolean change) {
+		intelligentButton.setEnabled(change);
+	} 
 }

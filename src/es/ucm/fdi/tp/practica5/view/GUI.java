@@ -35,7 +35,7 @@ public class GUI extends JFrame {
 
 	/*-----COMPONENTES DEPRECATED-----*/
 	private ListenerSettings generalListener;
-
+	
 	public GUI(Board board, List<Piece> pieces, PieceColorMap colorChooser, Piece turn, Controller controller,
 			MoveController moveController, Player random, Player ai, List<Piece> randomPlayers,
 			List<Piece> intelligentPlayers, Piece viewPiece) {
@@ -81,6 +81,11 @@ public class GUI extends JFrame {
 		this.boardPanel.update(moveController.getSelectedRow(), moveController.getSelectedColumn(), moveController.getFilterOnCells(board), actualTurn);
 		this.lateralPanel.updateTable();
 	}
+	
+	public void enableBottons(boolean change, Piece viewPiece){
+		lateralPanel.enableBottons(change, viewPiece);
+		update();
+	}
 
 	/**
 	 * Updates the the turn so the interface know what´s going on to tell new
@@ -117,8 +122,10 @@ public class GUI extends JFrame {
 				Integer answer = moveController.manageClicks(board, row, column, actualTurn, viewPiece, mouseEvent);
 				if (answer == MoveController.REPAINT_AND_MOVE) {
 					controller.makeMove(moveController);
+					enableBottons(true, viewPiece);
 					update();
 				} else if (answer == MoveController.SOMETHING_TO_REPAINT) {
+					enableBottons(false, viewPiece);
 					update();
 				}
 			}

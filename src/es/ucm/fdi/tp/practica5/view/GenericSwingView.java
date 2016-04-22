@@ -4,6 +4,9 @@ import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import es.ucm.fdi.tp.basecode.bgame.control.Controller;
 import es.ucm.fdi.tp.basecode.bgame.control.Player;
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
@@ -105,22 +108,27 @@ public class GenericSwingView implements GameObserver {
 		gui.appendToStatusMessagePanel(gameStatusMessage + state + "\n");
 		if (winner != null) {
 			gui.appendToStatusMessagePanel(winnerMessage + winner + "\n");
+			JOptionPane.showMessageDialog(new JFrame(),
+				    winnerMessage + winner,
+				    gameOverMessage,
+				    JOptionPane.PLAIN_MESSAGE);
+		}
+		else{
+			JOptionPane.showMessageDialog(new JFrame(),
+				    gameStatusMessage,
+				    gameOverMessage,
+				    JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 
-	// Estos dos metodos están en blanco en el generic console view, me da a mi
-	// que vamos a tener que meter lógica en ellos...
-
 	@Override
 	public void onMoveStart(Board board, Piece turn) {
-		// TODO Auto-generated method stub
-
+			gui.enableBottons(false, viewPiece);
 	}
 
 	@Override
 	public void onMoveEnd(Board board, Piece turn, boolean success) {
-		// TODO Auto-generated method stub
-
+			gui.enableBottons(true, viewPiece);
 	}
 
 	@Override
@@ -135,19 +143,28 @@ public class GenericSwingView implements GameObserver {
 		if (gui.isRandomPlayer(turn) != null) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
+					gui.enableBottons(false, viewPiece);
 					c.makeMove(random);
+					gui.enableBottons(true, viewPiece);
 					gui.update();
 				}
 			});
 		} else if (gui.isIntelligentPlayer(turn) != null) {
+			gui.enableBottons(false, viewPiece);
 			c.makeMove(ai);
+			gui.enableBottons(true, viewPiece);
 			gui.update();
 		}
 	}
 
 	@Override
 	public void onError(String msg) {
+		JOptionPane.showMessageDialog(new JFrame(),
+			    msg,
+			    "Game error",
+			    JOptionPane.ERROR_MESSAGE);
 		gui.appendToStatusMessagePanel(msg + "\n");
+		gui.enableBottons(false, viewPiece);
 	}
 
 }
