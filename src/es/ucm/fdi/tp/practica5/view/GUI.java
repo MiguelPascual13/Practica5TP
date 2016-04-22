@@ -31,6 +31,7 @@ public class GUI extends JFrame {
 	private List<Piece> actualIntelligentPlayers;
 	private Piece actualTurn;
 	private MoveController moveController;
+	private Board board;
 
 	/*-----COMPONENTES DEPRECATED-----*/
 	private ListenerSettings generalListener;
@@ -40,6 +41,7 @@ public class GUI extends JFrame {
 			List<Piece> intelligentPlayers, Piece viewPiece) {
 
 		super();
+		this.board = board;
 		this.moveController = moveController;
 		this.actualRandomPlayers = randomPlayers;
 		this.actualIntelligentPlayers = intelligentPlayers;
@@ -76,7 +78,7 @@ public class GUI extends JFrame {
 	}
 
 	public void update() {
-		this.boardPanel.update(moveController.getSelectedRow(), moveController.getSelectedColumn());
+		this.boardPanel.update(moveController.getSelectedRow(), moveController.getSelectedColumn(), moveController.getFilterOnCells(board), actualTurn);
 		this.lateralPanel.updateTable();
 	}
 

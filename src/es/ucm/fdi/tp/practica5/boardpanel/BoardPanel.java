@@ -2,15 +2,17 @@ package es.ucm.fdi.tp.practica5.boardpanel;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Game;
+import es.ucm.fdi.tp.basecode.bgame.model.Pair;
+import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.boardpanel.Cell.CellClickedListener;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
-import es.ucm.fdi.tp.practica5.utils.Utils;
 
 @SuppressWarnings("serial")
 public class BoardPanel extends JPanel {
@@ -49,7 +51,7 @@ public class BoardPanel extends JPanel {
 		this.listener = listener;
 		this.colorChooser = colorChooser;
 		this.setBoard(board);
-		this.update(null, null);
+		this.update(null, null, null, null);
 	}
 
 	public void setGame(Game game) {
@@ -122,27 +124,27 @@ public class BoardPanel extends JPanel {
 	 * 
 	 * HIGHLIGHT3: Revise all the highlights.
 	 */
-	
-	/*Hay que encontrar alguna forma de pasar un array de movimientos válidos
-	 * de forma que hacer el filtro sea más general y casi trivial.*/
-	
+
+	/*
+	 * Hay que encontrar alguna forma de pasar un array de movimientos válidos
+	 * de forma que hacer el filtro sea más general y casi trivial.
+	 */
+
+	/* Tenemos que pasarlle de alguna forma el array de pares. */
+
 	/*
 	 * Las variables de filas y columnas indican la pieza seleccionada, se
 	 * pintarán bordes a la casilla selecciona y a las no ocupadas movibles.
 	 */
-	public void update(Integer row, Integer column) {
-		if (colorChooser == null) {
-			this.colorChooser = new PieceColorMap();
-		}
+	public void update(Integer row, Integer column, List<Pair<Integer, Integer>> filterOnCellsList, Piece turn) {
+		// if (colorChooser == null) {
+		// this.colorChooser = new PieceColorMap();
+		// }
 		for (int i = 0; i < this.board.getRows(); i++) {
 			for (int j = 0; j < this.board.getCols(); j++) {
 				cells[i][j].setOpaque(true);
 				if (row != null && column != null) {
-					Color c = this.colorChooser.getColorFor(board.getPosition(row, column));
-					if ((!Utils.InfiniteDistanceExceeded(row, column, i, j) && board.getPosition(i, j) == null)
-							|| ((i == row) && (j == column))) {
-						cells[i][j].setBorder(BorderFactory.createLineBorder(c, 4));
-					}
+					applyFilter(row, column, filterOnCellsList, turn);
 				} else
 					cells[i][j].setBorder(null);
 				cells[i][j].setBackground(this.colorChooser.getColorFor(board.getPosition(i, j)));
@@ -162,6 +164,18 @@ public class BoardPanel extends JPanel {
 		for (int i = 0; i < this.board.getRows(); i++) {
 			for (int j = 0; j < this.board.getCols(); j++) {
 				this.cells[i][j] = new Cell(i, j, listener);
+			}
+		}
+	}
+
+	private void applyFilter(int row, int column, List<Pair<Integer, Integer>> filterOnCellsList, Piece turn) {
+		if (turn != null) {
+			// if(row == MoveController.DEFAULT_SELECTED_PIECE)
+
+			Color c = this.colorChooser.getColorFor(turn);
+			for (int i = 0; i < filterOnCellsList.size(); i++) {
+				cells[filterOnCellsList.get(i).getFirst()][filterOnCellsList.get(i).getSecond()]
+						.setBorder(BorderFactory.createLineBorder(c, SEPARATION));
 			}
 		}
 	}

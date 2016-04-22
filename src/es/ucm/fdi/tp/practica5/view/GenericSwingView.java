@@ -147,7 +147,6 @@ public class GenericSwingView implements GameObserver {
 
 	@Override
 	public void onError(String msg) {
-		gui.update();
 		gui.appendToStatusMessagePanel(msg + "\n");
 	}
 

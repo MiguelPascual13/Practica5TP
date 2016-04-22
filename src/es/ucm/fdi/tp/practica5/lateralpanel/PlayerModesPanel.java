@@ -24,10 +24,11 @@ public class PlayerModesPanel extends JPanel {
 	private JButton setButton;
 	private JComboBox<Piece> playerName;
 	private JComboBox<String> playerGameModes;
-	
-	public interface SetButtonListener{
+
+	public interface SetButtonListener {
 		void SetButtonClicked(Piece piece, String mode);
 	}
+
 	public PlayerModesPanel(List<Piece> pieces, ListenerSettings listener) {
 		super(new FlowLayout());
 
@@ -38,8 +39,7 @@ public class PlayerModesPanel extends JPanel {
 
 		String playerModesArray[] = { MANUAL_TEXT, RANDOM_TEXT };
 
-		this.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createEtchedBorder(), PANEL_NAME_TEXT));
+		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), PANEL_NAME_TEXT));
 		setButton = new JButton(SET_BUTTON_TEXT);
 		playerName = new JComboBox<Piece>(pieceArray);
 		playerGameModes = new JComboBox<String>(playerModesArray);
@@ -48,7 +48,8 @@ public class PlayerModesPanel extends JPanel {
 		this.add(setButton);
 		setButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				listener.SetButtonClicked(pieces.get(playerName.getSelectedIndex()), playerModesArray[playerGameModes.getSelectedIndex()]);
+				listener.SetButtonClicked(pieces.get(playerName.getSelectedIndex()),
+						playerModesArray[playerGameModes.getSelectedIndex()]);
 			}
 		});
 

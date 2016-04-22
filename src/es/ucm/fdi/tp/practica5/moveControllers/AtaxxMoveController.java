@@ -1,11 +1,13 @@
 package es.ucm.fdi.tp.practica5.moveControllers;
 
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.GameMove;
 import es.ucm.fdi.tp.basecode.bgame.model.GameRules;
+import es.ucm.fdi.tp.basecode.bgame.model.Pair;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.ataxx.AtaxxMove;
 import es.ucm.fdi.tp.practica5.utils.Utils;
@@ -32,13 +34,11 @@ public class AtaxxMoveController extends MoveController {
 	private static final String invalidOrigin = "left-click a piece of yours as an origin...\n";
 
 	@Override
-	public GameMove requestMove(Piece p, Board board, List<Piece> pieces,
-			GameRules rules) {
+	public GameMove requestMove(Piece p, Board board, List<Piece> pieces, GameRules rules) {
 		return new AtaxxMove(oldRow, oldColumn, newRow, newColumn, p);
 	}
 
-	public Integer manageClicks(Board board, int row, int column, Piece turn,
-			Piece viewPiece, MouseEvent mouseEvent) {
+	public Integer manageClicks(Board board, int row, int column, Piece turn, Piece viewPiece, MouseEvent mouseEvent) {
 
 		if (!checkMultiViewCase(turn, viewPiece))
 			return NOTHING_TO_REPAINT;
@@ -47,8 +47,7 @@ public class AtaxxMoveController extends MoveController {
 			if (somethingSelected) {
 				if (board.getPosition(row, column) == null) {
 					setDestinationCell(row, column);
-					if (Utils.InfiniteDistanceExceeded(oldRow, oldColumn, row,
-							column)) {
+					if (Utils.InfiniteDistanceExceeded(oldRow, oldColumn, row, column)) {
 						return NOTHING_TO_REPAINT;
 					}
 					somethingSelected = false;
@@ -75,7 +74,9 @@ public class AtaxxMoveController extends MoveController {
 			}
 		} else {
 			somethingSelected = false;
-			/* Says to the view that the filter must be OFF in the next repaint. */
+			/*
+			 * Says to the view that the filter must be OFF in the next repaint.
+			 */
 			resetSelectedCell();
 			return SOMETHING_TO_REPAINT;
 		}
@@ -108,5 +109,22 @@ public class AtaxxMoveController extends MoveController {
 	private void setDestinationCell(Integer row, Integer column) {
 		this.newRow = row;
 		this.newColumn = column;
+	}
+
+	@Override
+	public List<Pair<Integer, Integer>> getFilterOnCells(Board board) {
+		if (selectedRow != null && selectedColumn != null) {
+			List<Pair<Integer, Integer>> filterOnCellsList = new ArrayList<Pair<Integer, Integer>>();
+			for (int i = 0; i < board.getRows(); i++) {
+				for (int j = 0; j < board.getCols(); j++) {
+					if ((!Utils.InfiniteDistanceExceeded(selectedRow, selectedColumn, i, j)
+							&& board.getPosition(i, j) == null) || ((i == selectedRow) && (j == selectedColumn))) {
+						filterOnCellsList.add(new Pair<Integer, Integer>(i, j));
+					}
+				}
+			}
+			return filterOnCellsList;
+		} else
+			return null;
 	}
 }

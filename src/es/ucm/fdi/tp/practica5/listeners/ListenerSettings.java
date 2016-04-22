@@ -1,7 +1,6 @@
 package es.ucm.fdi.tp.practica5.listeners;
 
 import java.awt.Color;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JFrame;
