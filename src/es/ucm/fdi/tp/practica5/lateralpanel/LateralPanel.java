@@ -10,6 +10,8 @@ import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.listeners.ListenerSettings;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
+/*Esto debe conocer qué tipos de jugadores hay disponibles*/
+
 @SuppressWarnings("serial")
 public class LateralPanel extends JPanel {
 
