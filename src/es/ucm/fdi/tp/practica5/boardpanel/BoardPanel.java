@@ -183,7 +183,7 @@ public class BoardPanel extends JPanel {
 }
 
 
-//kdlñskfñlkdsf
+/*
 public void paintComponent(Graphics g) {
     super.paintComponent(g);
     g.setColor(color);
@@ -197,3 +197,4 @@ public void paintComponent(Graphics g) {
         g.drawOval(3, 3, this.getWidth()-9, this.getHeight()-9);
     }
 }
+*/
