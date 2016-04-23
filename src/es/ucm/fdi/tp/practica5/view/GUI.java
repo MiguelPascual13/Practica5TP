@@ -8,12 +8,13 @@ import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 
 import es.ucm.fdi.tp.basecode.bgame.control.Controller;
-import es.ucm.fdi.tp.basecode.bgame.control.Player;
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.boardpanel.BoardPanel;
 import es.ucm.fdi.tp.practica5.boardpanel.Cell.CellClickedListener;
 import es.ucm.fdi.tp.practica5.controller.SwingController;
+import es.ucm.fdi.tp.practica5.lateralpanel.AutomaticMovesPanel.IntelligentButtonListener;
+import es.ucm.fdi.tp.practica5.lateralpanel.AutomaticMovesPanel.RandomButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.LateralPanel;
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.QuitButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.RestartButtonListener;
@@ -34,10 +35,11 @@ public class GUI extends JFrame {
 	private Board board;
 
 	public GUI(Board board, List<Piece> pieces, PieceColorMap colorChooser,
-			Piece turn, MoveController moveController, Player random, Player ai,
-			Piece viewPiece, SwingController controller,
-			QuitButtonListener quitButtonListener,
-			RestartButtonListener restartButtonListener) {
+			Piece turn, MoveController moveController, Piece viewPiece,
+			SwingController controller, QuitButtonListener quitButtonListener,
+			RestartButtonListener restartButtonListener,
+			RandomButtonListener randomButtonListener,
+			IntelligentButtonListener intelligentButtonListener) {
 
 		super();
 		this.board = board;
@@ -47,8 +49,9 @@ public class GUI extends JFrame {
 
 		buildBoard(board, colorChooser, moveController, controller, viewPiece);
 
-		lateralPanel = new LateralPanel(pieces, colorChooser, board, viewPiece, controller, turn, random, ai,
-				quitButtonListener, restartButtonListener);
+		lateralPanel = new LateralPanel(pieces, colorChooser, board, viewPiece,
+				controller, turn, quitButtonListener, restartButtonListener,
+				randomButtonListener, intelligentButtonListener);
 
 		this.vSplitPane.setLeftComponent(boardPanel);
 		this.vSplitPane.setRightComponent(lateralPanel);

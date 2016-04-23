@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import es.ucm.fdi.tp.basecode.bgame.control.Player;
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.controller.SwingController;
@@ -31,9 +30,10 @@ public class LateralPanel extends JPanel {
 
 	public LateralPanel(List<Piece> pieces, PieceColorMap colorChooser,
 			Board board, Piece viewPiece, SwingController controller,
-			Piece turn, Player randomPlayer, Player aiPlayer,
-			QuitButtonListener quitButtonListener,
-			RestartButtonListener restartButtonListener) {
+			Piece turn, QuitButtonListener quitButtonListener,
+			RestartButtonListener restartButtonListener,
+			RandomButtonListener randomButtonListener,
+			IntelligentButtonListener intelligentButtonListener) {
 		super(new GridLayout(0, 1));
 
 		this.piecesArray = this.piecesListToArrayOfPieces(pieces);
@@ -49,7 +49,8 @@ public class LateralPanel extends JPanel {
 		this.add(playerInformationPanel);
 		this.add(pieceColorsPanel);
 		this.buildAndAddPlayerModesPanel(piecesArray, viewPiece, controller);
-		this.buildAndAddAutomaticMovesPanel(controller, randomPlayer, aiPlayer);
+		this.buildAndAddAutomaticMovesPanel(controller, randomButtonListener,
+				intelligentButtonListener);
 		this.add(quitRestartPanel);
 
 	}
@@ -111,49 +112,24 @@ public class LateralPanel extends JPanel {
 	}
 
 	private boolean buildAutomaticMovesPanel(SwingController controller,
-			Player randomPlayer, Player aiPlayer) {
+			RandomButtonListener randomButtonListener,
+			IntelligentButtonListener intelligentButtonListener) {
 		if (controller.getAvailablePlayerModes() == 1) {
 			return false;
 		} else {
-			RandomButtonListener randomListener = this
-					.getRandomButtonListener(controller, randomPlayer);
-			IntelligentButtonListener intelligentListener = this
-					.getIntelligentButtonListener(controller, aiPlayer);
-			automaticMovesPanel = new AutomaticMovesPanel(randomListener,
-					intelligentListener,
+			automaticMovesPanel = new AutomaticMovesPanel(randomButtonListener,
+					intelligentButtonListener,
 					controller.getPlayerModesStringArray());
 			return true;
 		}
 	}
 
 	private void buildAndAddAutomaticMovesPanel(SwingController controller,
-			Player randomPlayer, Player aiPlayer) {
-		if (this.buildAutomaticMovesPanel(controller, randomPlayer, aiPlayer))
+			RandomButtonListener randomButtonListener,
+			IntelligentButtonListener intelligentButtonListener) {
+		if (this.buildAutomaticMovesPanel(controller, randomButtonListener,
+				intelligentButtonListener))
 			this.add(automaticMovesPanel);
-	}
-
-	private RandomButtonListener getRandomButtonListener(
-			SwingController controller, Player randomPlayer) {
-		return new RandomButtonListener() {
-
-			@Override
-			public void RandomButtonClicked() {
-				controller.makeMove(randomPlayer);
-			}
-
-		};
-	}
-
-	private IntelligentButtonListener getIntelligentButtonListener(
-			SwingController controller, Player aiPlayer) {
-		return new IntelligentButtonListener() {
-
-			@Override
-			public void IntelligentButtonClicked() {
-				controller.makeMove(aiPlayer);
-			}
-
-		};
 	}
 
 	private void buildQuitRestartPanel(Piece viewPiece,

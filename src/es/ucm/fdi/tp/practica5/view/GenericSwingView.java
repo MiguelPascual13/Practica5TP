@@ -13,6 +13,8 @@ import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
 import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.controller.SwingController;
+import es.ucm.fdi.tp.practica5.lateralpanel.AutomaticMovesPanel.IntelligentButtonListener;
+import es.ucm.fdi.tp.practica5.lateralpanel.AutomaticMovesPanel.RandomButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.QuitButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.RestartButtonListener;
 import es.ucm.fdi.tp.practica5.moveControllers.MoveController;
@@ -47,13 +49,7 @@ public class GenericSwingView implements GameObserver {
 	public GenericSwingView(Observable<GameObserver> g, SwingController c,
 			final Piece viewPiece, MoveController moveController, Player random,
 			Player ai) {
-		/*
-		 * Me suscribo como observador de la clase. (No se que significa
-		 * exactamente, pero bueno).
-		 * 
-		 * Deberíamos iniciar la gui desde aquí, pero nos genera el problema del
-		 * puto tablero...
-		 */
+
 		this.random = random;
 		this.ai = ai;
 		this.moveController = moveController;
@@ -70,10 +66,12 @@ public class GenericSwingView implements GameObserver {
 		if (gui != null)
 			gui.dispose();
 
-		gui = new GUI(board, pieces, colorChooser, turn, moveController, random,
-				ai, this.viewPiece, controller,
+		gui = new GUI(board, pieces, colorChooser, turn, moveController,
+				this.viewPiece, controller,
 				this.getQuitButtonListener(controller),
-				this.getRestartButtonListener(controller));
+				this.getRestartButtonListener(controller),
+				this.getRandomButtonListener(),
+				this.getIntelligentButtonListener());
 
 		if (viewPiece == null) {
 			gui.setTitle(titleMessage + gameDesc);
@@ -203,4 +201,27 @@ public class GenericSwingView implements GameObserver {
 
 		};
 	}
+	
+	private RandomButtonListener getRandomButtonListener() {
+		return new RandomButtonListener() {
+
+			@Override
+			public void RandomButtonClicked() {
+				randomMakeMove();
+			}
+
+		};
+	}
+
+	private IntelligentButtonListener getIntelligentButtonListener() {
+		return new IntelligentButtonListener() {
+
+			@Override
+			public void IntelligentButtonClicked() {
+				intelligentMakeMove();
+			}
+
+		};
+	}
+
 }
