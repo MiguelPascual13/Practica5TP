@@ -16,6 +16,7 @@ import es.ucm.fdi.tp.practica5.controller.SwingController;
 import es.ucm.fdi.tp.practica5.lateralpanel.AutomaticMovesPanel.IntelligentButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.AutomaticMovesPanel.RandomButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.LateralPanel;
+import es.ucm.fdi.tp.practica5.lateralpanel.PieceColorsPanel.ColorChangeListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.QuitButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.RestartButtonListener;
 import es.ucm.fdi.tp.practica5.moveControllers.MoveController;
@@ -39,7 +40,8 @@ public class GUI extends JFrame {
 			SwingController controller, QuitButtonListener quitButtonListener,
 			RestartButtonListener restartButtonListener,
 			RandomButtonListener randomButtonListener,
-			IntelligentButtonListener intelligentButtonListener) {
+			IntelligentButtonListener intelligentButtonListener,
+			ColorChangeListener colorChangeListener) {
 
 		super();
 		this.board = board;
@@ -51,7 +53,8 @@ public class GUI extends JFrame {
 
 		lateralPanel = new LateralPanel(pieces, colorChooser, board, viewPiece,
 				controller, turn, quitButtonListener, restartButtonListener,
-				randomButtonListener, intelligentButtonListener);
+				randomButtonListener, intelligentButtonListener,
+				colorChangeListener);
 
 		this.vSplitPane.setLeftComponent(boardPanel);
 		this.vSplitPane.setRightComponent(lateralPanel);
@@ -106,8 +109,8 @@ public class GUI extends JFrame {
 
 				});
 	}
-	
-	public void disableAutomaticMoves(boolean disable){
+
+	public void disableAutomaticMoves(boolean disable) {
 		this.lateralPanel.disableAutomaticMoves(disable);
 	}
 }

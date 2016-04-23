@@ -1,5 +1,6 @@
 package es.ucm.fdi.tp.practica5.view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.controller.SwingController;
 import es.ucm.fdi.tp.practica5.lateralpanel.AutomaticMovesPanel.IntelligentButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.AutomaticMovesPanel.RandomButtonListener;
+import es.ucm.fdi.tp.practica5.lateralpanel.PieceColorsPanel.ColorChangeListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.QuitButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.RestartButtonListener;
 import es.ucm.fdi.tp.practica5.moveControllers.MoveController;
@@ -71,7 +73,8 @@ public class GenericSwingView implements GameObserver {
 				this.getQuitButtonListener(controller),
 				this.getRestartButtonListener(controller),
 				this.getRandomButtonListener(),
-				this.getIntelligentButtonListener());
+				this.getIntelligentButtonListener(),
+				this.getColorChangeListener());
 
 		setGUITitle(gameDesc);
 		checkForDisablingButtons(turn);
@@ -114,7 +117,7 @@ public class GenericSwingView implements GameObserver {
 
 	@Override
 	public void onChangeTurn(Board board, Piece turn) {
-		//deberíamos cachear aquí toda la mierda.
+		// deberíamos cachear aquí toda la mierda.
 		gui.setTurn(turn);
 		gui.update();
 
@@ -214,6 +217,18 @@ public class GenericSwingView implements GameObserver {
 		};
 	}
 
+	private ColorChangeListener getColorChangeListener() {
+		return new ColorChangeListener() {
+
+			@Override
+			public void colorChanged(Piece piece, Color color) {
+				colorChooser.setColorFor(piece, color);
+				gui.update();
+			}
+
+		};
+	}
+
 	private void setGUITitle(String gameDesc) {
 		if (viewPiece == null) {
 			gui.setTitle(titleMessage + gameDesc);
@@ -238,8 +253,8 @@ public class GenericSwingView implements GameObserver {
 			gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");
 		}
 	}
-	
-	private void checkForAutomaticMoves(Piece turn){
+
+	private void checkForAutomaticMoves(Piece turn) {
 		if (controller.isPlayerOfType(turn,
 				controller.getPlayerModeString(SwingController.RANDOM))) {
 			randomMakeMove();
@@ -248,11 +263,11 @@ public class GenericSwingView implements GameObserver {
 			intelligentMakeMove();
 		}
 	}
-	
-	private void checkForDisablingButtons(Piece turn){
-		if(this.viewPiece != null && this.viewPiece != turn){
+
+	private void checkForDisablingButtons(Piece turn) {
+		if (this.viewPiece != null && this.viewPiece != turn) {
 			gui.disableAutomaticMoves(true);
-		} else if(viewPiece == turn){
+		} else if (viewPiece == turn) {
 			gui.disableAutomaticMoves(false);
 		}
 	}

@@ -1,6 +1,5 @@
 package es.ucm.fdi.tp.practica5.lateralpanel;
 
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
 
@@ -33,7 +32,8 @@ public class LateralPanel extends JPanel {
 			Piece turn, QuitButtonListener quitButtonListener,
 			RestartButtonListener restartButtonListener,
 			RandomButtonListener randomButtonListener,
-			IntelligentButtonListener intelligentButtonListener) {
+			IntelligentButtonListener intelligentButtonListener,
+			ColorChangeListener colorChangeListener) {
 		super(new GridLayout(0, 1));
 
 		this.piecesArray = this.piecesListToArrayOfPieces(pieces);
@@ -41,7 +41,7 @@ public class LateralPanel extends JPanel {
 		statusMessagePanel = new StatusMessagePanel();
 		playerInformationPanel = new PlayerInformationPanel(pieces, board,
 				colorChooser, viewPiece, controller);
-		this.buildPieceColorPanel(pieces, colorChooser);
+		this.buildPieceColorPanel(pieces, colorChangeListener);
 		this.buildQuitRestartPanel(viewPiece, quitButtonListener,
 				restartButtonListener);
 
@@ -62,11 +62,11 @@ public class LateralPanel extends JPanel {
 	public void appendToStatusMessagePanel(String message) {
 		this.statusMessagePanel.append(message);
 	}
-	
-	public void disableAutomaticMoves(boolean disable){
+
+	public void disableAutomaticMoves(boolean disable) {
 		this.automaticMovesPanel.disablePanel(disable);
 	}
-	
+
 	private boolean buildPlayerModesPanel(Piece pieces[], Piece viewPiece,
 			SwingController controller) {
 		if (controller.getAvailablePlayerModes() == 1) {
@@ -102,17 +102,9 @@ public class LateralPanel extends JPanel {
 	}
 
 	private void buildPieceColorPanel(List<Piece> pieces,
-			PieceColorMap colorChooser) {
+			ColorChangeListener listener) {
 		Piece piecesArray[] = this.piecesListToArrayOfPieces(pieces);
-		pieceColorsPanel = new PieceColorsPanel(piecesArray,
-				new ColorChangeListener() {
-
-					@Override
-					public void colorChanged(Piece piece, Color color) {
-						colorChooser.setColorFor(piece, color);
-					}
-
-				});
+		pieceColorsPanel = new PieceColorsPanel(piecesArray, listener);
 	}
 
 	private boolean buildAutomaticMovesPanel(SwingController controller,
