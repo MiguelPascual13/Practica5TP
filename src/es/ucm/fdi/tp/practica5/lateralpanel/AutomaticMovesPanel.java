@@ -43,6 +43,14 @@ public class AutomaticMovesPanel extends JPanel {
 		this.addListeners(randomListener, intelligentListener);
 	}
 
+	public void disablePanel(boolean disable) {
+		for (int i = 0; i < playerModeButtons.size(); i++) {
+			if (playerModeButtons.get(i) != null)
+				playerModeButtons.get(i).setEnabled(!disable);
+			this.repaint();
+		}
+	}
+
 	private void buildButtons(String playerModesArray[]) {
 		this.playerModeButtons.add(null);
 		for (int i = 1; i < playerModesArray.length; i++) {
@@ -98,7 +106,7 @@ public class AutomaticMovesPanel extends JPanel {
 		return index < this.playerModeButtons.size()
 				&& this.playerModeButtons.get(index) != null;
 	}
-	
+
 	/*
 	 * public void enableRandom(boolean change) {
 	 * randomButton.setEnabled(change); }

@@ -62,7 +62,11 @@ public class LateralPanel extends JPanel {
 	public void appendToStatusMessagePanel(String message) {
 		this.statusMessagePanel.append(message);
 	}
-
+	
+	public void disableAutomaticMoves(boolean disable){
+		this.automaticMovesPanel.disablePanel(disable);
+	}
+	
 	private boolean buildPlayerModesPanel(Piece pieces[], Piece viewPiece,
 			SwingController controller) {
 		if (controller.getAvailablePlayerModes() == 1) {

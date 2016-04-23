@@ -73,12 +73,8 @@ public class GenericSwingView implements GameObserver {
 				this.getRandomButtonListener(),
 				this.getIntelligentButtonListener());
 
-		if (viewPiece == null) {
-			gui.setTitle(titleMessage + gameDesc);
-		} else {
-			gui.setTitle(titleMessage + gameDesc + " (" + viewPiece + ")");
-		}
-
+		setGUITitle(gameDesc);
+		checkForDisablingButtons(turn);
 		gui.update();
 		gui.appendToStatusMessagePanel(
 				startingMessage + "'" + gameDesc + "'\n");
@@ -88,15 +84,13 @@ public class GenericSwingView implements GameObserver {
 		} else {
 			gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");
 		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				gui.setVisible(true);
-			}
-		});
+
+		setGUIvisible();
 	}
 
 	@Override
 	public void onGameOver(Board board, State state, Piece winner) {
+		/* distinguir multiviews. */
 		gui.update();
 		gui.appendToStatusMessagePanel(gameOverMessage);
 		gui.appendToStatusMessagePanel(gameStatusMessage + state + "\n");
@@ -120,21 +114,17 @@ public class GenericSwingView implements GameObserver {
 
 	@Override
 	public void onChangeTurn(Board board, Piece turn) {
+		//deberíamos cachear aquí toda la mierda.
 		gui.setTurn(turn);
 		gui.update();
-		if (this.viewPiece == turn) {
-			gui.appendToStatusMessagePanel(
-					changeTurnMessage + youMessage + turn + "\n");
-		} else {
-			gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");
-		}
-		if (controller.isPlayerOfType(turn,
-				controller.getPlayerModeString(SwingController.RANDOM))) {
-			randomMakeMove();
-		} else if (controller.isPlayerOfType(turn,
-				controller.getPlayerModeString(SwingController.INTELLIGENT))) {
-			intelligentMakeMove();
-		}
+
+		/*
+		 * Si estamos en multiviews y no es nuestro turno disablearemos:
+		 * automatic moves
+		 */
+		checkForDisablingButtons(turn);
+		appendChangeTurnMessage(turn);
+		checkForAutomaticMoves(turn);
 	}
 
 	@Override
@@ -201,7 +191,7 @@ public class GenericSwingView implements GameObserver {
 
 		};
 	}
-	
+
 	private RandomButtonListener getRandomButtonListener() {
 		return new RandomButtonListener() {
 
@@ -224,4 +214,46 @@ public class GenericSwingView implements GameObserver {
 		};
 	}
 
+	private void setGUITitle(String gameDesc) {
+		if (viewPiece == null) {
+			gui.setTitle(titleMessage + gameDesc);
+		} else {
+			gui.setTitle(titleMessage + gameDesc + " (" + viewPiece + ")");
+		}
+	}
+
+	private void setGUIvisible() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				gui.setVisible(true);
+			}
+		});
+	}
+
+	private void appendChangeTurnMessage(Piece turn) {
+		if (this.viewPiece == turn) {
+			gui.appendToStatusMessagePanel(
+					changeTurnMessage + youMessage + turn + "\n");
+		} else {
+			gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");
+		}
+	}
+	
+	private void checkForAutomaticMoves(Piece turn){
+		if (controller.isPlayerOfType(turn,
+				controller.getPlayerModeString(SwingController.RANDOM))) {
+			randomMakeMove();
+		} else if (controller.isPlayerOfType(turn,
+				controller.getPlayerModeString(SwingController.INTELLIGENT))) {
+			intelligentMakeMove();
+		}
+	}
+	
+	private void checkForDisablingButtons(Piece turn){
+		if(this.viewPiece != null && this.viewPiece != turn){
+			gui.disableAutomaticMoves(true);
+		} else if(viewPiece == turn){
+			gui.disableAutomaticMoves(false);
+		}
+	}
 }
