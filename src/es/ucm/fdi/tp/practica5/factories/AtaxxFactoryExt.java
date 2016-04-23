@@ -6,6 +6,7 @@ import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
 import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.ataxx.AtaxxFactory;
+import es.ucm.fdi.tp.practica5.controller.SwingController;
 import es.ucm.fdi.tp.practica5.moveControllers.AtaxxMoveController;
 import es.ucm.fdi.tp.practica5.view.GenericSwingView;
 
@@ -14,7 +15,7 @@ import es.ucm.fdi.tp.practica5.view.GenericSwingView;
  */
 
 @SuppressWarnings("serial")
-public class AtaxxFactoryExt extends AtaxxFactory{
+public class AtaxxFactoryExt extends AtaxxFactory {
 
 	private AtaxxMoveController moveController;
 
@@ -32,9 +33,11 @@ public class AtaxxFactoryExt extends AtaxxFactory{
 	 * Dónde cojones se meten las piezas en el array de los cojones?
 	 */
 	@Override
-	public void createSwingView(final Observable<GameObserver> g, final Controller c, final Piece viewPiece,
-			Player random, Player ai) {
+	public void createSwingView(final Observable<GameObserver> g,
+			final Controller c, final Piece viewPiece, Player random,
+			Player ai) {
 		moveController = new AtaxxMoveController();
-		new GenericSwingView(g, c, viewPiece, moveController, random, ai);
+		new GenericSwingView(g, (SwingController) (c), viewPiece,
+				moveController, random, ai);
 	}
 }

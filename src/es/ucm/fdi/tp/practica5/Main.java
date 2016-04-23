@@ -21,6 +21,7 @@ import es.ucm.fdi.tp.basecode.bgame.model.AIAlgorithm;
 import es.ucm.fdi.tp.basecode.bgame.model.Game;
 import es.ucm.fdi.tp.basecode.bgame.model.GameError;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
+import es.ucm.fdi.tp.practica5.controller.SwingController;
 import es.ucm.fdi.tp.practica5.factories.AdvancedTTTFactoryExt;
 import es.ucm.fdi.tp.practica5.factories.AtaxxFactoryExt;
 import es.ucm.fdi.tp.practica5.factories.ConnectNFactoryExt;
@@ -96,8 +97,9 @@ public class Main {
 		 * See constructor below. If you have doubts, look for information about
 		 * enumerates inner classes in Java.
 		 */
-		CONNECTN("cn", "ConnectN"), TicTacToe("ttt", "Tic-Tac-Toe"), AdvancedTicTacToe(
-				"attt", "Advanced Tic-Tac-Toe"), ATAXX("ataxx", "Ataxx");
+		CONNECTN("cn", "ConnectN"), TicTacToe("ttt",
+				"Tic-Tac-Toe"), AdvancedTicTacToe("attt",
+						"Advanced Tic-Tac-Toe"), ATAXX("ataxx", "Ataxx");
 
 		private String id;
 		private String desc;
@@ -136,7 +138,7 @@ public class Main {
 		 * See constructor below. If you have doubts, look for information about
 		 * enumerates inner classes in Java.
 		 */
-		MANUAL("m", "Manual"), RANDOM("r", "Random"), AI("a", "Automatics");
+		MANUAL("m", "Manual"), RANDOM("r", "Random"), AI("a", "Intelligent");
 
 		private String id;
 		private String desc;
@@ -186,6 +188,7 @@ public class Main {
 	final private static PlayerMode DEFAULT_PLAYERMODE = PlayerMode.MANUAL;
 
 	public static final String OBSTACLE = "*";
+	public static final int PLAYER_MODES_NUMBER = 3;
 
 	/*-----ATTRIBUTES-----*/
 
@@ -420,7 +423,8 @@ public class Main {
 	 *             If an invalid value is provided (the valid values are those
 	 *             of {@link ViewInfo}.
 	 */
-	private static void parseViewOption(CommandLine line) throws ParseException {
+	private static void parseViewOption(CommandLine line)
+			throws ParseException {
 		String viewVal = line.getOptionValue("v", DEFAULT_VIEW.getId());
 		// view type
 		for (ViewInfo v : ViewInfo.values()) {
@@ -510,12 +514,12 @@ public class Main {
 					if (selectedMode != null) {
 						playerModes.add(selectedMode);
 					} else {
-						throw new ParseException("Invalid player mode in '"
-								+ player + "'");
+						throw new ParseException(
+								"Invalid player mode in '" + player + "'");
 					}
 				} else {
-					throw new ParseException("Invalid player information '"
-							+ player + "'");
+					throw new ParseException(
+							"Invalid player information '" + player + "'");
 				}
 			}
 		}
@@ -564,7 +568,8 @@ public class Main {
 	 *             Si se proporciona un valor invalido (Los valores validos son
 	 *             los de {@link GameInfo}).
 	 */
-	private static void parseGameOption(CommandLine line) throws ParseException {
+	private static void parseGameOption(CommandLine line)
+			throws ParseException {
 		String gameVal = line.getOptionValue("g", DEFAULT_GAME.getId());
 		GameInfo selectedGame = null;
 
@@ -667,10 +672,7 @@ public class Main {
 	 *         Objeto {@link Option} de esta opcion.
 	 */
 	private static Option constructDimensionOption() {
-		return new Option(
-				"d",
-				"dim",
-				true,
+		return new Option("d", "dim", true,
 				"The board size (if allowed by the selected game). It must has the form ROWSxCOLS.");
 	}
 
@@ -738,7 +740,8 @@ public class Main {
 	 *            CLI {@link Options} object to print the usage information.
 	 * 
 	 */
-	private static void parseHelpOption(CommandLine line, Options cmdLineOptions) {
+	private static void parseHelpOption(CommandLine line,
+			Options cmdLineOptions) {
 		if (line.hasOption("h")) {
 			HelpFormatter formatter = new HelpFormatter();
 			formatter.printHelp(Main.class.getCanonicalName(), cmdLineOptions,
@@ -760,8 +763,8 @@ public class Main {
 			try {
 				obstacles = Integer.parseInt(obs);
 			} catch (NumberFormatException e) {
-				throw new ParseException("Invalid number of obstacles:"
-						+ obstacles);
+				throw new ParseException(
+						"Invalid number of obstacles:" + obstacles);
 			}
 		}
 	}
@@ -849,20 +852,14 @@ public class Main {
 			gameFactory.createConsoleView(g, c);
 			break;
 		case WINDOW:
-			/*
-			 * Hay que tener en cuenta las particularidades del enunciado y
-			 * distinguir el caso de la vista múltiple.
-			 */
-			c = new Controller(g, pieces);
+			c = new SwingController(g, pieces, gameFactory.createRandomPlayer(),
+					gameFactory.createAIPlayer(aiPlayerAlg));
 
-			/* Notese que aquí no tenemos ni vista de players ni nada de nada */
 			if (!multiviews) {
-				// VISTA SIMPLE
 				gameFactory.createSwingView(g, c, null,
 						gameFactory.createRandomPlayer(),
 						gameFactory.createAIPlayer(aiPlayerAlg));
 			} else {
-				// VISTA MÚLTIPLE
 				for (Piece p : pieces) {
 					gameFactory.createSwingView(g, c, p,
 							gameFactory.createRandomPlayer(),
@@ -877,6 +874,15 @@ public class Main {
 
 		/* Aquí se crea el tablerito */
 		c.start();
+	}
+
+	public static String[] getPlayerModesDescriptions() {
+		String playerModesStringArray[] = new String[PLAYER_MODES_NUMBER];
+		PlayerMode playerModesArray[] = PlayerMode.values();
+		for (int i = 0; i < playerModesArray.length; i++) {
+			playerModesStringArray[i] = playerModesArray[i].getDesc();
+		}
+		return playerModesStringArray;
 	}
 
 	public static void main(String[] args) {

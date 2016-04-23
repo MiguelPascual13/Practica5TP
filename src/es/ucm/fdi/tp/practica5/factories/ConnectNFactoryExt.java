@@ -6,6 +6,7 @@ import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
 import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.basecode.connectn.ConnectNFactory;
+import es.ucm.fdi.tp.practica5.controller.SwingController;
 import es.ucm.fdi.tp.practica5.moveControllers.ConnectNMoveController;
 import es.ucm.fdi.tp.practica5.view.GenericSwingView;
 
@@ -14,10 +15,10 @@ import es.ucm.fdi.tp.practica5.view.GenericSwingView;
  * of the game.
  */
 @SuppressWarnings("serial")
-public class ConnectNFactoryExt extends ConnectNFactory{
-	
+public class ConnectNFactoryExt extends ConnectNFactory {
+
 	private ConnectNMoveController moveController;
-	
+
 	public ConnectNFactoryExt() {
 		super();
 	}
@@ -27,10 +28,12 @@ public class ConnectNFactoryExt extends ConnectNFactory{
 	}
 
 	@Override
-	public void createSwingView(final Observable<GameObserver> g, final Controller c, final Piece viewPiece,
-			Player random, Player ai) {
+	public void createSwingView(final Observable<GameObserver> g,
+			final Controller c, final Piece viewPiece, Player random,
+			Player ai) {
 		moveController = new ConnectNMoveController();
-		new GenericSwingView(g, c, viewPiece, moveController, random, ai);
+		new GenericSwingView(g, (SwingController) (c), viewPiece,
+				moveController, random, ai);
 	}
 
 }

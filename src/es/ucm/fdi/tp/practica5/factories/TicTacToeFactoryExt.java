@@ -6,6 +6,7 @@ import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
 import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.basecode.ttt.TicTacToeFactory;
+import es.ucm.fdi.tp.practica5.controller.SwingController;
 import es.ucm.fdi.tp.practica5.moveControllers.TicTacToeMoveController;
 import es.ucm.fdi.tp.practica5.view.GenericSwingView;
 
@@ -15,9 +16,11 @@ public class TicTacToeFactoryExt extends TicTacToeFactory {
 	private TicTacToeMoveController moveController;
 
 	@Override
-	public void createSwingView(final Observable<GameObserver> g, final Controller c, final Piece viewPiece,
-			Player random, Player ai) {
+	public void createSwingView(final Observable<GameObserver> g,
+			final Controller c, final Piece viewPiece, Player random,
+			Player ai) {
 		moveController = new TicTacToeMoveController();
-		new GenericSwingView(g, c, viewPiece, moveController, random, ai);
+		new GenericSwingView(g, (SwingController) (c), viewPiece,
+				moveController, random, ai);
 	}
 }

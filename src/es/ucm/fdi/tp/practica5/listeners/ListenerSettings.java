@@ -10,7 +10,6 @@ import es.ucm.fdi.tp.basecode.bgame.control.Controller;
 import es.ucm.fdi.tp.basecode.bgame.control.Player;
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
-import es.ucm.fdi.tp.practica5.lateralpanel.PlayerModesPanel;
 import es.ucm.fdi.tp.practica5.moveControllers.MoveController;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 import es.ucm.fdi.tp.practica5.view.GUI;
@@ -28,8 +27,7 @@ public class ListenerSettings {
 	MoveController moveController;
 
 	public ListenerSettings(PieceColorMap colorChooser, GUI gui, Controller c,
-			Player random, Player ai, Piece turn, List<Piece> randomPlayers,
-			List<Piece> intelligentPlayers, Board board,MoveController moveController) {
+			Player random, Player ai, Piece turn, Board board,MoveController moveController) {
 		this.colorChooser =colorChooser;
 		this.gui=gui;
 		this.c=c;
@@ -46,38 +44,7 @@ public class ListenerSettings {
 		colorChooser.setColorFor(piece, color);
 		gui.update();
 	}
-
-	public void SetButtonClicked(Piece piece, String mode) {
-		if (mode == PlayerModesPanel.MANUAL_TEXT) {
-			if (gui.isRandomPlayer(piece) != null) {
-				randomPlayers.remove(piece);
-			} else if (gui.isIntelligentPlayer(piece) != null) {
-				intelligentPlayers.remove(piece);
-			}
-		} else if (mode == PlayerModesPanel.RANDOM_TEXT) {
-			if (gui.isIntelligentPlayer(piece) != null) {
-				intelligentPlayers.remove(piece);
-			}
-			if (gui.isRandomPlayer(piece) == null) {
-				randomPlayers.add(piece);
-			}
-			if (piece == turn) {
-				c.makeMove(random);
-			}
-		} else {
-			if (gui.isRandomPlayer(piece) != null) {
-				randomPlayers.remove(piece);
-			}
-			if (gui.isIntelligentPlayer(piece) == null) {
-				intelligentPlayers.add(piece);
-			}
-			if (piece == turn) {
-				c.makeMove(ai);
-			}
-		}
-		gui.update();
-	}
-
+	
 	public void RandomButtonClicked() {
 		c.makeMove(random);
 	}

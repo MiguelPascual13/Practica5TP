@@ -28,11 +28,6 @@ public class AtaxxMoveController extends MoveController {
 	private Integer newRow = null;
 	private Integer newColumn = null;
 
-	private static final String moveMessage = "left-click origin piece...\nrigh-click anywhere to deselect origin...\n";
-	private static final String destinationMessage = "left-click destination empty valid piece...\nright-click anywhere to deselect origin...\n";
-	private static final String invalidDestination = "choose a valid destination...\n";
-	private static final String invalidOrigin = "left-click a piece of yours as an origin...\n";
-
 	@Override
 	public GameMove requestMove(Piece p, Board board, List<Piece> pieces, GameRules rules) {
 		return new AtaxxMove(oldRow, oldColumn, newRow, newColumn, p);

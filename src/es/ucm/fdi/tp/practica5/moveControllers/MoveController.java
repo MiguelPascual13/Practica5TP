@@ -11,7 +11,8 @@ import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 @SuppressWarnings("serial")
 
 public abstract class MoveController extends Player {
-
+	
+	//cambiar a enum
 	public static final Integer NOTHING_TO_REPAINT = null;
 	public static final Integer SOMETHING_TO_REPAINT = -1;
 	public static final Integer REPAINT_AND_MOVE = 1;

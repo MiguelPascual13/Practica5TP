@@ -2,7 +2,6 @@ package es.ucm.fdi.tp.practica5.lateralpanel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -15,6 +14,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
+import es.ucm.fdi.tp.practica5.controller.SwingController;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
 @SuppressWarnings("serial")
@@ -23,40 +23,38 @@ public class PlayerInformationPanel extends JPanel {
 	private static final String COL1 = "Player";
 	private static final String COL2 = "Mode";
 	private static final String COL3 = "#Pieces";
-	private static final String MANUAL = "Manual";
-	private static final String RANDOM = "Random";
-	private static final String INTELLIGENT = "Intelligent";
 	private static final String UNKNOWN = "-";
 
 	private JScrollPane scrollPane;
 	private JTable table;
 
 	public PlayerInformationPanel(List<Piece> pieces, Board board,
-			PieceColorMap colorChooser, List<Piece> randomPlayers,
-			List<Piece> intelligentPlayers, Piece viewPiece) {
+			PieceColorMap colorChooser, Piece viewPiece,
+			SwingController controller) {
 
 		super(new BorderLayout());
 		this.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createEtchedBorder(), PANEL_NAME_TEXT));
-		/* That should come from somewhere... */
+
 		String columName[] = { COL1, COL2, COL3 };
-		table = new JTable(new MyTableModel(pieces, columName, board,
-				randomPlayers, intelligentPlayers, viewPiece));
+		table = new JTable(new MyTableModel(pieces, columName, board, viewPiece,
+				controller));
 		for (int i = 0; i < 3; i++) {
 			table.getColumnModel().getColumn(i).setHeaderValue(columName[i]);
-			//table.getColumnModel().getColumn(i).setPreferredWidth(100);
+			// table.getColumnModel().getColumn(i).setPreferredWidth(100);
 		}
-		//table.setPreferredSize(new Dimension(table.getPreferredSize().width,20*pieces.size()));
-		//table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+		// table.setPreferredSize(new
+		// Dimension(table.getPreferredSize().width,20*pieces.size()));
+		// table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
 
 			@Override
 			public Component getTableCellRendererComponent(JTable table,
-					Object value, boolean isSelected, boolean hasFocus,
-					int row, int column) {
-				JComponent c = (JComponent) super
-						.getTableCellRendererComponent(table, value,
-								isSelected, hasFocus, row, column);
+					Object value, boolean isSelected, boolean hasFocus, int row,
+					int column) {
+				JComponent c = (JComponent) super.getTableCellRendererComponent(
+						table, value, isSelected, hasFocus, row, column);
 				c.setBackground(colorChooser.getColorFor(pieces.get(row)));
 				return c;
 			}
@@ -75,19 +73,16 @@ public class PlayerInformationPanel extends JPanel {
 		private String[] columnName;
 		private List<Piece> pieces;
 		private Board board;
-		private List<Piece> randomPlayers;
-		private List<Piece> intelligentPlayers;
 		private Piece viewPiece;
+		private SwingController controller;
 
 		public MyTableModel(List<Piece> pieces, String[] columnName,
-				Board board, List<Piece> randomPlayers,
-				List<Piece> intelligentPlayers, Piece viewPiece) {
+				Board board, Piece viewPiece, SwingController controller) {
 			this.pieces = pieces;
 			this.columnName = columnName;
 			this.board = board;
-			this.randomPlayers = randomPlayers;
-			this.intelligentPlayers = intelligentPlayers;
 			this.viewPiece = viewPiece;
+			this.controller = controller;
 		}
 
 		@Override
@@ -128,26 +123,23 @@ public class PlayerInformationPanel extends JPanel {
 
 		public String stringMode(int row) {
 			if (viewPiece == null || viewPiece == pieces.get(row)) {
-				if (isAutomaticPlayer(pieces.get(row), randomPlayers) != null) {
-					return RANDOM;
-				} else if (isAutomaticPlayer(pieces.get(row),
-						intelligentPlayers) != null) {
-					return INTELLIGENT;
+				if (this.controller.isPlayerOfType(pieces.get(row), controller
+						.getPlayerModeString(SwingController.RANDOM))) {
+					return controller
+							.getPlayerModeString(SwingController.RANDOM);
+				} else if (this.controller.isPlayerOfType(pieces.get(row),
+						controller.getPlayerModeString(
+								SwingController.INTELLIGENT))) {
+					return controller
+							.getPlayerModeString(SwingController.INTELLIGENT);
 				} else {
-					return MANUAL;
+					return controller
+							.getPlayerModeString(SwingController.MANUAL);
 				}
 			} else {
 				return UNKNOWN;
 			}
 
-		}
-
-		public Integer isAutomaticPlayer(Piece p, List<Piece> players) {
-			for (int i = 0; i < players.size(); i++) {
-				if (p == players.get(i))
-					return i;
-			}
-			return null;
 		}
 
 		public boolean isCellEditable(int row, int col) {

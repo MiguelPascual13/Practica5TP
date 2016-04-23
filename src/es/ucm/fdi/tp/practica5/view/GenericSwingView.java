@@ -7,13 +7,13 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import es.ucm.fdi.tp.basecode.bgame.control.Controller;
 import es.ucm.fdi.tp.basecode.bgame.control.Player;
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Game.State;
 import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
 import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
+import es.ucm.fdi.tp.practica5.controller.SwingController;
 import es.ucm.fdi.tp.practica5.moveControllers.MoveController;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
@@ -36,17 +36,16 @@ public class GenericSwingView implements GameObserver {
 	 * Esta clase debería tener una GUI como atributo privado sobre el que
 	 * trabajar.
 	 */
+	private SwingController controller;
 	private Piece viewPiece;
 	private GUI gui;
-	private Controller c;
 	private MoveController moveController;
 	private Player random;
 	private Player ai;
-	private List<Piece> randomPlayers;
-	private List<Piece> intelligentPlayers;
 
-	public GenericSwingView(Observable<GameObserver> g, Controller c, final Piece viewPiece,
-			MoveController moveController, Player random, Player ai) {
+	public GenericSwingView(Observable<GameObserver> g, SwingController c,
+			final Piece viewPiece, MoveController moveController, Player random,
+			Player ai) {
 		/*
 		 * Me suscribo como observador de la clase. (No se que significa
 		 * exactamente, pero bueno).
@@ -57,29 +56,21 @@ public class GenericSwingView implements GameObserver {
 		this.random = random;
 		this.ai = ai;
 		this.moveController = moveController;
-		this.c = c;
+		this.controller = c;
 		this.viewPiece = viewPiece;
 		g.addObserver(this);
 		colorChooser = new PieceColorMap();
-		this.randomPlayers = new ArrayList<Piece>();
-		this.intelligentPlayers = new ArrayList<Piece>();
 	}
 
 	@Override
-	/* Nos pasan un read only board, lo cual no nos sirve de mucho... */
-	public void onGameStart(Board board, String gameDesc, List<Piece> pieces, Piece turn) {
-		
-		if(gui != null)
-			gui.dispose();
-		
-		if (this.randomPlayers != null) {
-			this.randomPlayers = new ArrayList<Piece>();
-		} else if (this.intelligentPlayers != null){
-			this.intelligentPlayers = new ArrayList<Piece>();
-		}
+	public void onGameStart(Board board, String gameDesc, List<Piece> pieces,
+			Piece turn) {
 
-		gui = new GUI(board, pieces, colorChooser, turn, c, moveController, random, ai, randomPlayers,
-				intelligentPlayers, this.viewPiece);
+		if (gui != null)
+			gui.dispose();
+
+		gui = new GUI(board, pieces, colorChooser, turn, moveController, random,
+				ai, this.viewPiece, controller);
 
 		if (viewPiece == null) {
 			gui.setTitle(titleMessage + gameDesc);
@@ -88,9 +79,11 @@ public class GenericSwingView implements GameObserver {
 		}
 
 		gui.update();
-		gui.appendToStatusMessagePanel(startingMessage + "'" + gameDesc + "'\n");
+		gui.appendToStatusMessagePanel(
+				startingMessage + "'" + gameDesc + "'\n");
 		if (this.viewPiece == turn) {
-			gui.appendToStatusMessagePanel(changeTurnMessage + youMessage + turn + "\n");
+			gui.appendToStatusMessagePanel(
+					changeTurnMessage + youMessage + turn + "\n");
 		} else {
 			gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");
 		}
@@ -108,27 +101,22 @@ public class GenericSwingView implements GameObserver {
 		gui.appendToStatusMessagePanel(gameStatusMessage + state + "\n");
 		if (winner != null) {
 			gui.appendToStatusMessagePanel(winnerMessage + winner + "\n");
-			JOptionPane.showMessageDialog(new JFrame(),
-				    winnerMessage + winner,
-				    gameOverMessage,
-				    JOptionPane.PLAIN_MESSAGE);
-		}
-		else{
-			JOptionPane.showMessageDialog(new JFrame(),
-				    gameStatusMessage,
-				    gameOverMessage,
-				    JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(new JFrame(), winnerMessage + winner,
+					gameOverMessage, JOptionPane.PLAIN_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(new JFrame(), gameStatusMessage,
+					gameOverMessage, JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 
 	@Override
 	public void onMoveStart(Board board, Piece turn) {
-			gui.enableBottons(false, viewPiece);
+		gui.enableBottons(false, viewPiece);
 	}
 
 	@Override
 	public void onMoveEnd(Board board, Piece turn, boolean success) {
-			gui.enableBottons(true, viewPiece);
+		gui.enableBottons(true, viewPiece);
 	}
 
 	@Override
@@ -136,40 +124,47 @@ public class GenericSwingView implements GameObserver {
 		gui.setTurn(turn);
 		gui.update();
 		if (this.viewPiece == turn) {
-			gui.appendToStatusMessagePanel(changeTurnMessage + youMessage + turn + "\n");
+			gui.appendToStatusMessagePanel(
+					changeTurnMessage + youMessage + turn + "\n");
 		} else {
 			gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");
 		}
-		if (gui.isRandomPlayer(turn) != null) {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					gui.enableBottons(false, viewPiece);
-					c.makeMove(random);
-					gui.enableBottons(true, viewPiece);
-					gui.update();
-				}
-			});
-		} else if (gui.isIntelligentPlayer(turn) != null) {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					gui.enableBottons(false, viewPiece);
-					c.makeMove(ai);
-					gui.enableBottons(true, viewPiece);
-					gui.update();
-				}
-			});
-			
+		if (controller.isPlayerOfType(turn,
+				controller.getPlayerModeString(SwingController.RANDOM))) {
+			randomMakeMove();
+		} else if (controller.isPlayerOfType(turn,
+				controller.getPlayerModeString(SwingController.INTELLIGENT))) {
+			intelligentMakeMove();
 		}
 	}
 
 	@Override
 	public void onError(String msg) {
-		JOptionPane.showMessageDialog(new JFrame(),
-			    msg,
-			    "Game error",
-			    JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(new JFrame(), msg, "Game error",
+				JOptionPane.ERROR_MESSAGE);
 		gui.appendToStatusMessagePanel(msg + "\n");
 		gui.enableBottons(false, viewPiece);
 	}
 
+	private void randomMakeMove() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				gui.enableBottons(false, viewPiece);
+				controller.makeMove(random);
+				gui.enableBottons(true, viewPiece);
+				gui.update();
+			}
+		});
+	}
+
+	private void intelligentMakeMove() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				gui.enableBottons(false, viewPiece);
+				controller.makeMove(ai);
+				gui.enableBottons(true, viewPiece);
+				gui.update();
+			}
+		});
+	}
 }
