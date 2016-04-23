@@ -11,12 +11,14 @@ import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.Main;
 
 public class SwingController extends Controller {
-	
-	//cambiar por un enum.
+
+	private int availablePlayerModes = 1;
+
+	// cambiar por un enum.
 	public static final int MANUAL = 0;
 	public static final int RANDOM = 1;
 	public static final int INTELLIGENT = 2;
-	
+
 	protected Map<Piece, String> players;
 	protected String playerModesStringArray[];
 
@@ -30,8 +32,7 @@ public class SwingController extends Controller {
 	private void initializePiecePlayersMap(List<Piece> pieces) {
 		players = new HashMap<Piece, String>();
 		for (int i = 0; i < pieces.size(); i++) {
-			players.put(pieces.get(i),
-					this.playerModesStringArray[MANUAL]);
+			players.put(pieces.get(i), this.playerModesStringArray[MANUAL]);
 		}
 	}
 
@@ -41,8 +42,18 @@ public class SwingController extends Controller {
 				.getPlayerModesDescriptions();
 		int length = provisionalPlayerModesStringArray.length;
 		this.playerModesStringArray = new String[length];
-		for (int i = 0; i < length; i++) {
-			this.playerModesStringArray[i] = provisionalPlayerModesStringArray[i];
+		this.playerModesStringArray[MANUAL] = provisionalPlayerModesStringArray[MANUAL];
+		if (randomPlayer != null) {
+			this.playerModesStringArray[RANDOM] = provisionalPlayerModesStringArray[RANDOM];
+			this.availablePlayerModes++;
+		} else {
+			this.playerModesStringArray[RANDOM] = null;
+		}
+		if (aiPlayer != null) {
+			this.playerModesStringArray[INTELLIGENT] = provisionalPlayerModesStringArray[INTELLIGENT];
+			this.availablePlayerModes++;
+		} else {
+			this.playerModesStringArray[INTELLIGENT] = null;
 		}
 	}
 
@@ -61,8 +72,12 @@ public class SwingController extends Controller {
 	public void setPlayerType(Piece piece, String type) {
 		this.players.put(piece, type);
 	}
-	
-	public String getPlayerModeString(int index){
+
+	public String getPlayerModeString(int index) {
 		return this.playerModesStringArray[index];
+	}
+
+	public int getAvailablePlayerModes() {
+		return this.availablePlayerModes;
 	}
 }

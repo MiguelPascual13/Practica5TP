@@ -1,7 +1,6 @@
 package es.ucm.fdi.tp.practica5.view;
 
 import java.awt.EventQueue;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -111,12 +110,10 @@ public class GenericSwingView implements GameObserver {
 
 	@Override
 	public void onMoveStart(Board board, Piece turn) {
-		gui.enableBottons(false, viewPiece);
 	}
 
 	@Override
 	public void onMoveEnd(Board board, Piece turn, boolean success) {
-		gui.enableBottons(true, viewPiece);
 	}
 
 	@Override
@@ -143,15 +140,12 @@ public class GenericSwingView implements GameObserver {
 		JOptionPane.showMessageDialog(new JFrame(), msg, "Game error",
 				JOptionPane.ERROR_MESSAGE);
 		gui.appendToStatusMessagePanel(msg + "\n");
-		gui.enableBottons(false, viewPiece);
 	}
 
 	private void randomMakeMove() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				gui.enableBottons(false, viewPiece);
 				controller.makeMove(random);
-				gui.enableBottons(true, viewPiece);
 				gui.update();
 			}
 		});
@@ -160,9 +154,7 @@ public class GenericSwingView implements GameObserver {
 	private void intelligentMakeMove() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				gui.enableBottons(false, viewPiece);
 				controller.makeMove(ai);
-				gui.enableBottons(true, viewPiece);
 				gui.update();
 			}
 		});

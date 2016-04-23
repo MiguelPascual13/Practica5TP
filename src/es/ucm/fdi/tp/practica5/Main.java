@@ -852,8 +852,11 @@ public class Main {
 			gameFactory.createConsoleView(g, c);
 			break;
 		case WINDOW:
-			c = new SwingController(g, pieces, gameFactory.createRandomPlayer(),
-					gameFactory.createAIPlayer(aiPlayerAlg));
+			// c = new SwingController(g, pieces,
+			// gameFactory.createRandomPlayer(),
+			// gameFactory.createAIPlayer(aiPlayerAlg));
+
+			c = new SwingController(g, pieces, gameFactory.createRandomPlayer(), null);
 
 			if (!multiviews) {
 				gameFactory.createSwingView(g, c, null,

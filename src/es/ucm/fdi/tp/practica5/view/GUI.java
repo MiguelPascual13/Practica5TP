@@ -52,7 +52,7 @@ public class GUI extends JFrame {
 
 		lateralPanel = new LateralPanel(pieces, colorChooser, board,
 				generalListener,
-				viewPiece, controller);
+				viewPiece, controller, turn, random, ai);
 
 		this.vSplitPane.setLeftComponent(boardPanel);
 		this.vSplitPane.setRightComponent(lateralPanel);
@@ -83,11 +83,6 @@ public class GUI extends JFrame {
 		this.lateralPanel.updateTable();
 	}
 
-	public void enableBottons(boolean change, Piece viewPiece) {
-		lateralPanel.enableBottons(change, viewPiece);
-		update();
-	}
-
 	public void setTurn(Piece turn) {
 		this.actualTurn = turn;
 	}
@@ -104,10 +99,8 @@ public class GUI extends JFrame {
 								column, actualTurn, viewPiece, mouseEvent);
 						if (answer == MoveController.REPAINT_AND_MOVE) {
 							controller.makeMove(moveController);
-							enableBottons(true, viewPiece);
 							update();
 						} else if (answer == MoveController.SOMETHING_TO_REPAINT) {
-							enableBottons(false, viewPiece);
 							update();
 						}
 					}

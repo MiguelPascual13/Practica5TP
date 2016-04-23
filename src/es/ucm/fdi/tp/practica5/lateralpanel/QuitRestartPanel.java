@@ -8,7 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
-import es.ucm.fdi.tp.practica5.listeners.ListenerSettings;
 
 @SuppressWarnings("serial")
 public class QuitRestartPanel extends JPanel {
@@ -26,7 +25,8 @@ public class QuitRestartPanel extends JPanel {
 		void RestartButtonClicked();
 	}
 
-	public QuitRestartPanel(ListenerSettings listener, Piece viewPiece) {
+	public QuitRestartPanel(QuitButtonListener quitButtonListener,
+			RestartButtonListener restartButtonListener, Piece viewPiece) {
 		super(new FlowLayout());
 
 		quitButton = new JButton(QUIT_BUTTON_TEXT);
@@ -35,24 +35,16 @@ public class QuitRestartPanel extends JPanel {
 		this.add(quitButton);
 		quitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				listener.QuitButtonClicked();
+				quitButtonListener.QuitButtonClicked();
 			}
 		});
 		if (viewPiece == null) {
 			this.add(restartButton);
 			restartButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					listener.RestartButtonClicked();
+					restartButtonListener.RestartButtonClicked();
 				}
 			});
 		}
-	}
-
-	public void enableQuit(boolean change) {
-		quitButton.setEnabled(change);
-	}
-
-	public void enableRestart(boolean change) {
-		restartButton.setEnabled(change);
 	}
 }

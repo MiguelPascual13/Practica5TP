@@ -1,8 +1,5 @@
 package es.ucm.fdi.tp.practica5.listeners;
 
-import java.awt.Color;
-import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -17,40 +14,22 @@ import es.ucm.fdi.tp.practica5.view.GUI;
 /*QUE PUTA MIERDA ES ESTA!!!!!!!!!!!!!!!!!!!!!!*/
 
 public class ListenerSettings {
-	PieceColorMap colorChooser;
 	GUI gui;
 	Controller c;
 	Player random, ai;
 	Piece turn;
-	List<Piece> randomPlayers, intelligentPlayers;
 	Board board;
 	MoveController moveController;
 
 	public ListenerSettings(PieceColorMap colorChooser, GUI gui, Controller c,
 			Player random, Player ai, Piece turn, Board board,MoveController moveController) {
-		this.colorChooser =colorChooser;
 		this.gui=gui;
 		this.c=c;
 		this.random=random;
 		this.ai=ai;
 		this.turn=turn;
-		this.randomPlayers=randomPlayers;
-		this.intelligentPlayers=intelligentPlayers;
 		this.board=board;
 		this.moveController=moveController;
-	}
-
-	public void colorChanged(Piece piece, Color color) {
-		colorChooser.setColorFor(piece, color);
-		gui.update();
-	}
-	
-	public void RandomButtonClicked() {
-		c.makeMove(random);
-	}
-
-	public void IntelligentButtonClicked() {
-		c.makeMove(ai);
 	}
 
 	public void QuitButtonClicked() {
@@ -70,9 +49,4 @@ public class ListenerSettings {
 		gui = null;
 		c.restart();
 	}
-	
-	public void setTurn(Piece turn) {
-		this.turn = turn;
-	}
-
 }
