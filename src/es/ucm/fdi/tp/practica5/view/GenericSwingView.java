@@ -13,6 +13,8 @@ import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
 import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.controller.SwingController;
+import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.QuitButtonListener;
+import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.RestartButtonListener;
 import es.ucm.fdi.tp.practica5.moveControllers.MoveController;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
@@ -69,7 +71,9 @@ public class GenericSwingView implements GameObserver {
 			gui.dispose();
 
 		gui = new GUI(board, pieces, colorChooser, turn, moveController, random,
-				ai, this.viewPiece, controller);
+				ai, this.viewPiece, controller,
+				this.getQuitButtonListener(controller),
+				this.getRestartButtonListener(controller));
 
 		if (viewPiece == null) {
 			gui.setTitle(titleMessage + gameDesc);
@@ -158,5 +162,45 @@ public class GenericSwingView implements GameObserver {
 				gui.update();
 			}
 		});
+	}
+
+	private QuitButtonListener getQuitButtonListener(
+			SwingController controller) {
+		return new QuitButtonListener() {
+
+			@Override
+			public void QuitButtonClicked() {
+				/*
+				 * We just put it because the statement said, but we think is
+				 * nicer without it.
+				 */
+				controller.stop();
+
+				JFrame ventanaQuit = new JFrame();
+				int n = JOptionPane.showConfirmDialog(ventanaQuit,
+						"Are you sure you want to quit?", "Quit",
+						JOptionPane.YES_NO_OPTION);
+				if (n == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				} else {
+					ventanaQuit.dispose();
+				}
+			}
+
+		};
+	}
+
+	private RestartButtonListener getRestartButtonListener(
+			SwingController controller) {
+		return new RestartButtonListener() {
+
+			@Override
+			public void RestartButtonClicked() {
+				gui.dispose();
+				gui = null;
+				controller.restart();
+			}
+
+		};
 	}
 }

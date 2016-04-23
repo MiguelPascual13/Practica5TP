@@ -16,7 +16,6 @@ import es.ucm.fdi.tp.practica5.lateralpanel.PieceColorsPanel.ColorChangeListener
 import es.ucm.fdi.tp.practica5.lateralpanel.PlayerModesPanel.PlayerModesChangeListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.QuitButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.RestartButtonListener;
-import es.ucm.fdi.tp.practica5.listeners.ListenerSettings;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
 @SuppressWarnings("serial")
@@ -31,9 +30,10 @@ public class LateralPanel extends JPanel {
 	private Piece piecesArray[];
 
 	public LateralPanel(List<Piece> pieces, PieceColorMap colorChooser,
-			Board board, ListenerSettings listener, Piece viewPiece,
-			SwingController controller, Piece turn, Player randomPlayer,
-			Player aiPlayer) {
+			Board board, Piece viewPiece, SwingController controller,
+			Piece turn, Player randomPlayer, Player aiPlayer,
+			QuitButtonListener quitButtonListener,
+			RestartButtonListener restartButtonListener) {
 		super(new GridLayout(0, 1));
 
 		this.piecesArray = this.piecesListToArrayOfPieces(pieces);
@@ -42,7 +42,8 @@ public class LateralPanel extends JPanel {
 		playerInformationPanel = new PlayerInformationPanel(pieces, board,
 				colorChooser, viewPiece, controller);
 		this.buildPieceColorPanel(pieces, colorChooser);
-		this.buildQuitRestartPanel(viewPiece);
+		this.buildQuitRestartPanel(viewPiece, quitButtonListener,
+				restartButtonListener);
 
 		this.add(statusMessagePanel);
 		this.add(playerInformationPanel);
@@ -155,29 +156,10 @@ public class LateralPanel extends JPanel {
 		};
 	}
 
-	private void buildQuitRestartPanel(Piece viewPiece) {
-		quitRestartPanel = new QuitRestartPanel(this.getQuitButtonListener(), this.getRestartButtonListener(), viewPiece);
-	}
-
-	private QuitButtonListener getQuitButtonListener() {
-		return new QuitButtonListener() {
-
-			@Override
-			public void QuitButtonClicked() {
-
-			}
-
-		};
-	}
-
-	private RestartButtonListener getRestartButtonListener() {
-		return new RestartButtonListener(){
-
-			@Override
-			public void RestartButtonClicked() {
-				
-			}
-			
-		};
+	private void buildQuitRestartPanel(Piece viewPiece,
+			QuitButtonListener quitButtonListener,
+			RestartButtonListener restartButtonListener) {
+		quitRestartPanel = new QuitRestartPanel(quitButtonListener,
+				restartButtonListener, viewPiece);
 	}
 }

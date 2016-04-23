@@ -825,7 +825,6 @@ public class Main {
 	 * 
 	 */
 	public static void startGame() {
-		/* Game factory has to be done yet. */
 		Game g = new Game(gameFactory.gameRules());
 		Controller c = null;
 
@@ -852,11 +851,8 @@ public class Main {
 			gameFactory.createConsoleView(g, c);
 			break;
 		case WINDOW:
-			// c = new SwingController(g, pieces,
-			// gameFactory.createRandomPlayer(),
-			// gameFactory.createAIPlayer(aiPlayerAlg));
-
-			c = new SwingController(g, pieces, gameFactory.createRandomPlayer(), null);
+			c = new SwingController(g, pieces, gameFactory.createRandomPlayer(),
+					gameFactory.createAIPlayer(aiPlayerAlg));
 
 			if (!multiviews) {
 				gameFactory.createSwingView(g, c, null,
@@ -874,8 +870,6 @@ public class Main {
 			throw new UnsupportedOperationException(
 					"Something went wrong! This program point should be unreachable!");
 		}
-
-		/* Aquí se crea el tablerito */
 		c.start();
 	}
 

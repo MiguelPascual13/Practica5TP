@@ -15,7 +15,8 @@ import es.ucm.fdi.tp.practica5.boardpanel.BoardPanel;
 import es.ucm.fdi.tp.practica5.boardpanel.Cell.CellClickedListener;
 import es.ucm.fdi.tp.practica5.controller.SwingController;
 import es.ucm.fdi.tp.practica5.lateralpanel.LateralPanel;
-import es.ucm.fdi.tp.practica5.listeners.ListenerSettings;
+import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.QuitButtonListener;
+import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.RestartButtonListener;
 import es.ucm.fdi.tp.practica5.moveControllers.MoveController;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
@@ -32,27 +33,22 @@ public class GUI extends JFrame {
 	private MoveController moveController;
 	private Board board;
 
-	/*-----COMPONENTES DEPRECATED-----*/
-	private ListenerSettings generalListener;
-
 	public GUI(Board board, List<Piece> pieces, PieceColorMap colorChooser,
 			Piece turn, MoveController moveController, Player random, Player ai,
-			Piece viewPiece, SwingController controller) {
+			Piece viewPiece, SwingController controller,
+			QuitButtonListener quitButtonListener,
+			RestartButtonListener restartButtonListener) {
 
 		super();
 		this.board = board;
 		this.moveController = moveController;
 		this.vSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-		this.generalListener = new ListenerSettings(colorChooser, this,
-				controller, random, ai, turn,
-				board, moveController);
 		this.actualTurn = turn;
 
 		buildBoard(board, colorChooser, moveController, controller, viewPiece);
 
-		lateralPanel = new LateralPanel(pieces, colorChooser, board,
-				generalListener,
-				viewPiece, controller, turn, random, ai);
+		lateralPanel = new LateralPanel(pieces, colorChooser, board, viewPiece, controller, turn, random, ai,
+				quitButtonListener, restartButtonListener);
 
 		this.vSplitPane.setLeftComponent(boardPanel);
 		this.vSplitPane.setRightComponent(lateralPanel);
