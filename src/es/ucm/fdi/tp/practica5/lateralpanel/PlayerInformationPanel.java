@@ -2,6 +2,7 @@ package es.ucm.fdi.tp.practica5.lateralpanel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -16,7 +17,14 @@ import es.ucm.fdi.tp.basecode.bgame.model.Board;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.controller.SwingController;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
-
+/**
+ * PlayerInformationPanel Class
+ * 
+ * This Class contains the JPanel component which shows the pieces, their Player Mode and their number of pieces on game,
+ *  in case it's needed for example in Ataxx or in Advanced Tic-Tac-Toe. 
+ * 
+ *
+ */
 @SuppressWarnings("serial")
 public class PlayerInformationPanel extends JPanel {
 	private static final String PANEL_NAME_TEXT = "Player Information";
@@ -27,6 +35,19 @@ public class PlayerInformationPanel extends JPanel {
 
 	private JScrollPane scrollPane;
 	private JTable table;
+	
+	/**
+	 * 
+	 * Constructor of this component. In this constructor is created everything is needed for the function part of the table. 
+	 * Such as all the renderer of the color background of each row, 
+	 * the scrollpane in case it's needed, the border and the resize modes. 
+	 * 
+	 * @param pieces The list of pieces on game. 
+	 * @param board The board where the game is played. 
+	 * @param colorChooser A hash map which relate a piece with his color. 
+	 * @param viewPiece The Piece or "Player" in which view we are. In case the multiviews option is not on, it is null.
+	 * @param controller The controller of the game on play. 
+	 */
 
 	public PlayerInformationPanel(List<Piece> pieces, Board board,
 			PieceColorMap colorChooser, Piece viewPiece,
@@ -41,12 +62,8 @@ public class PlayerInformationPanel extends JPanel {
 				controller));
 		for (int i = 0; i < 3; i++) {
 			table.getColumnModel().getColumn(i).setHeaderValue(columName[i]);
-			// table.getColumnModel().getColumn(i).setPreferredWidth(100);
 		}
-
-		// table.setPreferredSize(new
-		// Dimension(table.getPreferredSize().width,20*pieces.size()));
-		// table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
 
 			@Override
@@ -61,13 +78,25 @@ public class PlayerInformationPanel extends JPanel {
 
 		});
 		scrollPane = new JScrollPane(table);
+		this.setMaximumSize(new Dimension(250, ((pieces.size()+1)*16)+16));
+		this.setMinimumSize(new Dimension(150, (pieces.size()*16)+16));
 		this.add(scrollPane);
 	}
+	/**
+	 * Method used for update the Table information when needed.
+	 * For example when the Player Mode, has been modified or when a move has ocurred and the number of pieces has changed. 
+	 *
+	 */
 
 	public void updateTableInfo() {
-		//scrollPane.repaint();
 		this.repaint();
 	}
+	
+	/**
+	 * 
+	 * Static Class made for the construction of the JTable which provided the Table Model used to create it. 
+	 *
+	 */
 
 	static class MyTableModel extends AbstractTableModel {
 
@@ -76,6 +105,15 @@ public class PlayerInformationPanel extends JPanel {
 		private Board board;
 		private Piece viewPiece;
 		private SwingController controller;
+		
+		/**
+		 * Constructor of the Table Model static class.
+		 * @param pieces
+		 * @param columnName
+		 * @param board
+		 * @param viewPiece
+		 * @param controller
+		 */
 
 		public MyTableModel(List<Piece> pieces, String[] columnName,
 				Board board, Piece viewPiece, SwingController controller) {
@@ -113,6 +151,12 @@ public class PlayerInformationPanel extends JPanel {
 			}
 		}
 
+		/**
+		 * Identifies what the table needs to show a number or a -.
+		 * @param row
+		 * @return The string to show in the cell (row, 3) of the table.
+		 */
+		
 		public String stringPieceCount(int row) {
 			Integer pieceCount = board.getPieceCount(pieces.get(row));
 			if (pieceCount != null) {
@@ -121,6 +165,12 @@ public class PlayerInformationPanel extends JPanel {
 				return UNKNOWN;
 			}
 		}
+		
+		/**
+		 * Identifies what the table needs to show a word or a -.
+		 * @param row
+		 * @return The string to show in the cell (row, 2) of the table.
+		 */
 
 		public String stringMode(int row) {
 			if (viewPiece == null || viewPiece == pieces.get(row)) {
