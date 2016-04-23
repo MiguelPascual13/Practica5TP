@@ -75,6 +75,7 @@ public class GUI extends JFrame {
 			List<Pair<Integer, Integer>> filter, Piece turn) {
 		this.boardPanel.update(selectedRow, selectedColumn, filter, turn);
 		this.lateralPanel.updateTable();
+		this.repaint();
 	}
 
 	private void buildBoard(Board board, PieceColorMap colorChooser,

@@ -87,7 +87,8 @@ public class GenericSwingView implements GameObserver {
 			gui.appendToStatusMessagePanel(
 					changeTurnMessage + youMessage + this.actualTurn + "\n");
 		} else {
-			gui.appendToStatusMessagePanel(changeTurnMessage + this.actualTurn + "\n");
+			gui.appendToStatusMessagePanel(
+					changeTurnMessage + this.actualTurn + "\n");
 		}
 
 		setGUIvisible();
@@ -95,6 +96,9 @@ public class GenericSwingView implements GameObserver {
 
 	@Override
 	public void onGameOver(Board board, State state, Piece winner) {
+
+		/* distinguir multiples vistas */
+
 		gui.update(moveController.getSelectedRow(),
 				moveController.getSelectedColumn(),
 				moveController.getFilterOnCells(board), this.actualTurn);
@@ -121,11 +125,11 @@ public class GenericSwingView implements GameObserver {
 	@Override
 	public void onChangeTurn(Board board, Piece turn) {
 		this.actualTurn = turn;
+		checkForDisablingButtons();
+		appendChangeTurnMessage();
 		gui.update(moveController.getSelectedRow(),
 				moveController.getSelectedColumn(),
 				moveController.getFilterOnCells(board), this.actualTurn);
-		checkForDisablingButtons();
-		appendChangeTurnMessage();
 		checkForAutomaticMoves(board);
 	}
 
@@ -231,6 +235,11 @@ public class GenericSwingView implements GameObserver {
 		};
 	}
 
+	/*
+	 * Por alguna razón extraña se piensan que todos son el modo al que se ha
+	 * cambiado.
+	 */
+
 	private PlayerModesChangeListener getPlayerModesChangeListener(
 			Board board) {
 		return new PlayerModesChangeListener() {
@@ -241,7 +250,7 @@ public class GenericSwingView implements GameObserver {
 					controller.setPlayerType(piece, mode);
 				gui.update(moveController.getSelectedRow(),
 						moveController.getSelectedColumn(),
-						moveController.getFilterOnCells(board), actualTurn);
+						moveController.getFilterOnCells(board), piece);
 			}
 
 		};
@@ -291,17 +300,21 @@ public class GenericSwingView implements GameObserver {
 			gui.appendToStatusMessagePanel(
 					changeTurnMessage + youMessage + this.actualTurn + "\n");
 		} else {
-			gui.appendToStatusMessagePanel(changeTurnMessage + this.actualTurn + "\n");
+			gui.appendToStatusMessagePanel(
+					changeTurnMessage + this.actualTurn + "\n");
 		}
 	}
 
 	private void checkForAutomaticMoves(Board board) {
-		if (controller.isPlayerOfType(this.actualTurn,
-				controller.getPlayerModeString(SwingController.RANDOM))) {
-			randomMakeMove(board);
-		} else if (controller.isPlayerOfType(this.actualTurn,
-				controller.getPlayerModeString(SwingController.INTELLIGENT))) {
-			intelligentMakeMove(board);
+		if (viewPiece == null || actualTurn == viewPiece) {
+			if (controller.isPlayerOfType(this.actualTurn,
+					controller.getPlayerModeString(SwingController.RANDOM))) {
+				randomMakeMove(board);
+			} else if (controller
+					.isPlayerOfType(this.actualTurn, controller
+							.getPlayerModeString(SwingController.INTELLIGENT))) {
+				intelligentMakeMove(board);
+			}
 		}
 	}
 

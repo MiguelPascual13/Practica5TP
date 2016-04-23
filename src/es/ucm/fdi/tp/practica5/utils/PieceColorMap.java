@@ -11,7 +11,8 @@ import es.ucm.fdi.tp.practica5.Main;
 public class PieceColorMap {
 
 	private Map<Piece, Color> colorMap;
-
+	public static final Color OBSTACLE_COLOR = Color.BLACK;
+	public static final Color EMPTY_COLOR = Color.GRAY;
 	private static int CHOOSABLE_COLORS = 7;
 
 	/**
@@ -34,7 +35,7 @@ public class PieceColorMap {
 	public Color getColorFor(Piece piece) {
 		if (piece != null) {
 			if (isObstacle(piece))
-				return Color.BLACK;
+				return OBSTACLE_COLOR;
 			else {
 				if (colorMap.containsKey(piece))
 					return colorMap.get(piece);
@@ -48,7 +49,7 @@ public class PieceColorMap {
 				}
 			}
 		} else
-			return Color.GRAY;
+			return EMPTY_COLOR;
 	}
 
 	private boolean isObstacle(Piece piece) {

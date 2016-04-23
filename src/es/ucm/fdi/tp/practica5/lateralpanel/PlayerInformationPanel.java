@@ -65,7 +65,8 @@ public class PlayerInformationPanel extends JPanel {
 	}
 
 	public void updateTableInfo() {
-		scrollPane.repaint();
+		//scrollPane.repaint();
+		this.repaint();
 	}
 
 	static class MyTableModel extends AbstractTableModel {

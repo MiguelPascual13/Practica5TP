@@ -35,7 +35,7 @@ public class PlayerModesPanel extends JPanel {
 		this.fillPlayerModesJComboBox(viewPiece, playerModesArray);
 		setButton = new JButton(SET_BUTTON_TEXT);
 
-		this.addListeners(listener, pieces, playerModesArray);
+		this.addListeners(listener, pieces, playerModesArray, viewPiece);
 
 		this.add(playerName);
 		this.add(playerGameModes);
@@ -62,11 +62,18 @@ public class PlayerModesPanel extends JPanel {
 	}
 
 	private void addListeners(PlayerModesChangeListener listener,
-			Piece pieces[], String playerModesArray[]) {
+			Piece pieces[], String playerModesArray[], Piece viewPiece) {
 		setButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				listener.SetButtonClicked(pieces[playerName.getSelectedIndex()],
-						playerModesArray[playerGameModes.getSelectedIndex()]);
+				if (viewPiece == null) {
+					listener.SetButtonClicked(
+							pieces[playerName.getSelectedIndex()],
+							playerModesArray[playerGameModes
+									.getSelectedIndex()]);
+				} else {
+					listener.SetButtonClicked(viewPiece,
+							(String) playerGameModes.getSelectedItem());
+				}
 			}
 		});
 	}

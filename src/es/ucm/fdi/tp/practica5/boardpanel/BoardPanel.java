@@ -1,6 +1,7 @@
 package es.ucm.fdi.tp.practica5.boardpanel;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.util.List;
 
@@ -23,7 +24,8 @@ public class BoardPanel extends JPanel {
 	private Cell cells[][];
 	private Board board;
 
-	public BoardPanel(Board board, PieceColorMap colorChooser, CellClickedListener listener) {
+	public BoardPanel(Board board, PieceColorMap colorChooser,
+			CellClickedListener listener) {
 		super();
 		this.listener = listener;
 		this.colorChooser = colorChooser;
@@ -43,11 +45,13 @@ public class BoardPanel extends JPanel {
 		removeAll();
 		this.board = board;
 		cells = new Cell[this.board.getRows()][this.board.getCols()];
-		this.setLayout(new GridLayout(this.board.getRows(), this.board.getCols(), SEPARATION, SEPARATION));
+		this.setLayout(new GridLayout(this.board.getRows(),
+				this.board.getCols(), SEPARATION, SEPARATION));
 		this.fillJLabelMatrix();
 	}
 
-	public void update(Integer row, Integer column, List<Pair<Integer, Integer>> filterOnCellsList, Piece turn) {
+	public void update(Integer row, Integer column,
+			List<Pair<Integer, Integer>> filterOnCellsList, Piece turn) {
 		for (int i = 0; i < this.board.getRows(); i++) {
 			for (int j = 0; j < this.board.getCols(); j++) {
 				cells[i][j].setOpaque(true);
@@ -55,7 +59,9 @@ public class BoardPanel extends JPanel {
 					applyFilter(row, column, filterOnCellsList, turn);
 				} else
 					cells[i][j].setBorder(null);
-				cells[i][j].setBackground(this.colorChooser.getColorFor(board.getPosition(i, j)));
+				cells[i][j].setBackground(
+						this.colorChooser.getColorFor(board.getPosition(i, j)));
+
 				this.add(cells[i][j]);
 			}
 		}
@@ -70,29 +76,30 @@ public class BoardPanel extends JPanel {
 		}
 	}
 
-	private void applyFilter(int row, int column, List<Pair<Integer, Integer>> filterOnCellsList, Piece turn) {
+	private void applyFilter(int row, int column,
+			List<Pair<Integer, Integer>> filterOnCellsList, Piece turn) {
 		if (turn != null) {
 			Color c = this.colorChooser.getColorFor(turn);
 			for (int i = 0; i < filterOnCellsList.size(); i++) {
-				cells[filterOnCellsList.get(i).getFirst()][filterOnCellsList.get(i).getSecond()]
-						.setBorder(BorderFactory.createLineBorder(c, SEPARATION));
+				cells[filterOnCellsList.get(i).getFirst()][filterOnCellsList
+						.get(i).getSecond()].setBorder(
+								BorderFactory.createLineBorder(c, SEPARATION));
 			}
 		}
 	}
+
+	public void paintComponent(Graphics g, Color color) {
+		super.paintComponent(g);
+		g.setColor(color);
+		if (color == PieceColorMap.OBSTACLE_COLOR) {
+			g.fillRect(3, 3, this.getWidth() - 6, this.getHeight() - 6);
+			// g.setColor(Color.WHITE);
+			g.drawRect(3, 3, this.getWidth() - 6, this.getHeight() - 6);
+		} else {
+			g.fillOval(3, 3, this.getWidth() - 9, this.getHeight() - 9);
+			// g.setColor(Color.BLACK);
+			g.drawOval(3, 3, this.getWidth() - 9, this.getHeight() - 9);
+		}
+	}
+
 }
-
-
-/*CIRCULICOS
-public void paintComponent(Graphics g) {
-    super.paintComponent(g);
-    g.setColor(color);
-    if (obstaculo){
-        g.fillRect(3, 3, this.getWidth()-6, this.getHeight()-6);
-        g.setColor(Color.WHITE);
-        g.drawRect(3, 3, this.getWidth()-6, this.getHeight()-6);
-    } else if (piece) {
-        g.fillOval(3, 3, this.getWidth()-9, this.getHeight()-9);
-        g.setColor(Color.BLACK);
-        g.drawOval(3, 3, this.getWidth()-9, this.getHeight()-9);
-    }
-}*/
