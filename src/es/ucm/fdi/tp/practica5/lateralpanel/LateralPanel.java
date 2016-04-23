@@ -33,7 +33,8 @@ public class LateralPanel extends JPanel {
 			RestartButtonListener restartButtonListener,
 			RandomButtonListener randomButtonListener,
 			IntelligentButtonListener intelligentButtonListener,
-			ColorChangeListener colorChangeListener) {
+			ColorChangeListener colorChangeListener,
+			PlayerModesChangeListener playerModesChangeListener) {
 		super(new GridLayout(0, 1));
 
 		this.piecesArray = this.piecesListToArrayOfPieces(pieces);
@@ -48,7 +49,8 @@ public class LateralPanel extends JPanel {
 		this.add(statusMessagePanel);
 		this.add(playerInformationPanel);
 		this.add(pieceColorsPanel);
-		this.buildAndAddPlayerModesPanel(piecesArray, viewPiece, controller);
+		this.buildAndAddPlayerModesPanel(piecesArray, viewPiece, controller,
+				playerModesChangeListener);
 		this.buildAndAddAutomaticMovesPanel(controller, randomButtonListener,
 				intelligentButtonListener);
 		this.add(quitRestartPanel);
@@ -68,21 +70,13 @@ public class LateralPanel extends JPanel {
 	}
 
 	private boolean buildPlayerModesPanel(Piece pieces[], Piece viewPiece,
-			SwingController controller) {
+			SwingController controller,
+			PlayerModesChangeListener playerModesChangeListener) {
 		if (controller.getAvailablePlayerModes() == 1) {
 			return false;
 		} else {
-			playerModesPanel = new PlayerModesPanel(pieces,
-					new PlayerModesChangeListener() {
-
-						@Override
-						public void SetButtonClicked(Piece piece, String mode) {
-							if (controller.getPlayerType(piece) != mode)
-								controller.setPlayerType(piece, mode);
-							updateTable();
-						}
-
-					}, viewPiece, controller.getPlayerModesStringArray());
+			playerModesPanel = new PlayerModesPanel(pieces, playerModesChangeListener, viewPiece,
+					controller.getPlayerModesStringArray());
 			return true;
 		}
 	}
@@ -96,8 +90,10 @@ public class LateralPanel extends JPanel {
 	}
 
 	private void buildAndAddPlayerModesPanel(Piece pieces[], Piece viewPiece,
-			SwingController controller) {
-		if (this.buildPlayerModesPanel(pieces, viewPiece, controller))
+			SwingController controller,
+			PlayerModesChangeListener playerModesChangeListener) {
+		if (this.buildPlayerModesPanel(pieces, viewPiece, controller,
+				playerModesChangeListener))
 			this.add(playerModesPanel);
 	}
 

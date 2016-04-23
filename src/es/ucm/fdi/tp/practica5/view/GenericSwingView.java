@@ -2,6 +2,7 @@ package es.ucm.fdi.tp.practica5.view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -13,20 +14,18 @@ import es.ucm.fdi.tp.basecode.bgame.model.Game.State;
 import es.ucm.fdi.tp.basecode.bgame.model.GameObserver;
 import es.ucm.fdi.tp.basecode.bgame.model.Observable;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
+import es.ucm.fdi.tp.practica5.boardpanel.Cell.CellClickedListener;
 import es.ucm.fdi.tp.practica5.controller.SwingController;
 import es.ucm.fdi.tp.practica5.lateralpanel.AutomaticMovesPanel.IntelligentButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.AutomaticMovesPanel.RandomButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.PieceColorsPanel.ColorChangeListener;
+import es.ucm.fdi.tp.practica5.lateralpanel.PlayerModesPanel.PlayerModesChangeListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.QuitButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.RestartButtonListener;
 import es.ucm.fdi.tp.practica5.moveControllers.MoveController;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
 public class GenericSwingView implements GameObserver {
-
-	/*
-	 * COLOR CHOOSERS CON INTERFACES VISTAS ESPECIFICAS DE CADA JUEGO
-	 */
 
 	private static final String startingMessage = "Starting ";
 	private static final String changeTurnMessage = "Turn for ";
@@ -35,14 +34,11 @@ public class GenericSwingView implements GameObserver {
 	private static final String winnerMessage = "Winner: ";
 	private static final String titleMessage = "Board Games: ";
 	private static final String youMessage = " You ";
-	private PieceColorMap colorChooser;
 
-	/*
-	 * Esta clase debería tener una GUI como atributo privado sobre el que
-	 * trabajar.
-	 */
+	private PieceColorMap colorChooser;
 	private SwingController controller;
 	private Piece viewPiece;
+	private Piece turn;
 	private GUI gui;
 	private MoveController moveController;
 	private Player random;
@@ -68,17 +64,23 @@ public class GenericSwingView implements GameObserver {
 		if (gui != null)
 			gui.dispose();
 
+		this.turn = turn;
+
 		gui = new GUI(board, pieces, colorChooser, turn, moveController,
 				this.viewPiece, controller,
 				this.getQuitButtonListener(controller),
 				this.getRestartButtonListener(controller),
-				this.getRandomButtonListener(),
-				this.getIntelligentButtonListener(),
-				this.getColorChangeListener());
+				this.getRandomButtonListener(board),
+				this.getIntelligentButtonListener(board),
+				this.getColorChangeListener(board),
+				this.getPlayerModesChangeListener(board),
+				this.getCellClickedListener(board, this.turn));
 
 		setGUITitle(gameDesc);
 		checkForDisablingButtons(turn);
-		gui.update();
+		gui.update(moveController.getSelectedRow(),
+				moveController.getSelectedColumn(),
+				moveController.getFilterOnCells(board), turn);
 		gui.appendToStatusMessagePanel(
 				startingMessage + "'" + gameDesc + "'\n");
 		if (this.viewPiece == turn) {
@@ -93,8 +95,9 @@ public class GenericSwingView implements GameObserver {
 
 	@Override
 	public void onGameOver(Board board, State state, Piece winner) {
-		/* distinguir multiviews. */
-		gui.update();
+		gui.update(moveController.getSelectedRow(),
+				moveController.getSelectedColumn(),
+				moveController.getFilterOnCells(board), turn);
 		gui.appendToStatusMessagePanel(gameOverMessage);
 		gui.appendToStatusMessagePanel(gameStatusMessage + state + "\n");
 		if (winner != null) {
@@ -117,17 +120,13 @@ public class GenericSwingView implements GameObserver {
 
 	@Override
 	public void onChangeTurn(Board board, Piece turn) {
-		// deberíamos cachear aquí toda la mierda.
-		gui.setTurn(turn);
-		gui.update();
-
-		/*
-		 * Si estamos en multiviews y no es nuestro turno disablearemos:
-		 * automatic moves
-		 */
-		checkForDisablingButtons(turn);
-		appendChangeTurnMessage(turn);
-		checkForAutomaticMoves(turn);
+		this.turn = turn;
+		gui.update(moveController.getSelectedRow(),
+				moveController.getSelectedColumn(),
+				moveController.getFilterOnCells(board), turn);
+		checkForDisablingButtons(this.turn);
+		appendChangeTurnMessage(this.turn);
+		checkForAutomaticMoves(this.turn, board);
 	}
 
 	@Override
@@ -137,20 +136,24 @@ public class GenericSwingView implements GameObserver {
 		gui.appendToStatusMessagePanel(msg + "\n");
 	}
 
-	private void randomMakeMove() {
+	private void randomMakeMove(Board board) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				controller.makeMove(random);
-				gui.update();
+				gui.update(moveController.getSelectedRow(),
+						moveController.getSelectedColumn(),
+						moveController.getFilterOnCells(board), turn);
 			}
 		});
 	}
 
-	private void intelligentMakeMove() {
+	private void intelligentMakeMove(Board board) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				controller.makeMove(ai);
-				gui.update();
+				gui.update(moveController.getSelectedRow(),
+						moveController.getSelectedColumn(),
+						moveController.getFilterOnCells(board), turn);
 			}
 		});
 	}
@@ -161,10 +164,6 @@ public class GenericSwingView implements GameObserver {
 
 			@Override
 			public void QuitButtonClicked() {
-				/*
-				 * We just put it because the statement said, but we think is
-				 * nicer without it.
-				 */
 				controller.stop();
 
 				JFrame ventanaQuit = new JFrame();
@@ -195,38 +194,81 @@ public class GenericSwingView implements GameObserver {
 		};
 	}
 
-	private RandomButtonListener getRandomButtonListener() {
+	private RandomButtonListener getRandomButtonListener(Board board) {
 		return new RandomButtonListener() {
 
 			@Override
 			public void RandomButtonClicked() {
-				randomMakeMove();
+				randomMakeMove(board);
 			}
 
 		};
 	}
 
-	private IntelligentButtonListener getIntelligentButtonListener() {
+	private IntelligentButtonListener getIntelligentButtonListener(
+			Board board) {
 		return new IntelligentButtonListener() {
 
 			@Override
 			public void IntelligentButtonClicked() {
-				intelligentMakeMove();
+				intelligentMakeMove(board);
 			}
 
 		};
 	}
 
-	private ColorChangeListener getColorChangeListener() {
+	private ColorChangeListener getColorChangeListener(Board board) {
 		return new ColorChangeListener() {
 
 			@Override
 			public void colorChanged(Piece piece, Color color) {
 				colorChooser.setColorFor(piece, color);
-				gui.update();
+				gui.update(moveController.getSelectedRow(),
+						moveController.getSelectedColumn(),
+						moveController.getFilterOnCells(board), turn);
 			}
 
 		};
+	}
+
+	private PlayerModesChangeListener getPlayerModesChangeListener(
+			Board board) {
+		return new PlayerModesChangeListener() {
+
+			@Override
+			public void SetButtonClicked(Piece piece, String mode) {
+				if (controller.getPlayerType(piece) != mode)
+					controller.setPlayerType(piece, mode);
+				gui.update(moveController.getSelectedRow(),
+						moveController.getSelectedColumn(),
+						moveController.getFilterOnCells(board), turn);
+			}
+
+		};
+	}
+
+	private CellClickedListener getCellClickedListener(Board board,
+			Piece turn) {
+		return new CellClickedListener() {
+
+			@Override
+			public void cellWasClicked(int row, int column, MouseEvent e) {
+				Integer answer = moveController.manageClicks(board, row, column,
+						turn, viewPiece, e);
+				if (answer == MoveController.REPAINT_AND_MOVE) {
+					controller.makeMove(moveController);
+					gui.update(moveController.getSelectedRow(),
+							moveController.getSelectedColumn(),
+							moveController.getFilterOnCells(board), turn);
+				} else if (answer == MoveController.SOMETHING_TO_REPAINT) {
+					gui.update(moveController.getSelectedRow(),
+							moveController.getSelectedColumn(),
+							moveController.getFilterOnCells(board), turn);
+				}
+			}
+
+		};
+
 	}
 
 	private void setGUITitle(String gameDesc) {
@@ -254,13 +296,13 @@ public class GenericSwingView implements GameObserver {
 		}
 	}
 
-	private void checkForAutomaticMoves(Piece turn) {
+	private void checkForAutomaticMoves(Piece turn, Board board) {
 		if (controller.isPlayerOfType(turn,
 				controller.getPlayerModeString(SwingController.RANDOM))) {
-			randomMakeMove();
+			randomMakeMove(board);
 		} else if (controller.isPlayerOfType(turn,
 				controller.getPlayerModeString(SwingController.INTELLIGENT))) {
-			intelligentMakeMove();
+			intelligentMakeMove(board);
 		}
 	}
 
