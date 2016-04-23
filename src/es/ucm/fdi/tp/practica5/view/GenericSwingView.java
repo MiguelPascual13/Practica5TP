@@ -96,22 +96,21 @@ public class GenericSwingView implements GameObserver {
 
 	@Override
 	public void onGameOver(Board board, State state, Piece winner) {
-
-		/* distinguir multiples vistas */
-
-		gui.update(moveController.getSelectedRow(),
-				moveController.getSelectedColumn(),
-				moveController.getFilterOnCells(board), this.actualTurn);
-		gui.appendToStatusMessagePanel(gameOverMessage);
-		gui.appendToStatusMessagePanel(gameStatusMessage + state + "\n");
-		if (winner != null) {
-			gui.appendToStatusMessagePanel(winnerMessage + winner + "\n");
-			JOptionPane.showMessageDialog(new JFrame(), winnerMessage + winner,
-					gameOverMessage, JOptionPane.PLAIN_MESSAGE);
-		} else {
-			JOptionPane.showMessageDialog(new JFrame(), gameStatusMessage,
-					gameOverMessage, JOptionPane.PLAIN_MESSAGE);
-		}
+			gui.update(moveController.getSelectedRow(),
+					moveController.getSelectedColumn(),
+					moveController.getFilterOnCells(board), this.actualTurn);
+			gui.appendToStatusMessagePanel(gameOverMessage);
+			gui.appendToStatusMessagePanel(gameStatusMessage + state + "\n");
+			if (winner != null) {
+				gui.appendToStatusMessagePanel(winnerMessage + winner + "\n");
+				JOptionPane.showMessageDialog(new JFrame(),
+						winnerMessage + winner, gameOverMessage,
+						JOptionPane.PLAIN_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(new JFrame(),
+						gameStatusMessage + state, gameOverMessage,
+						JOptionPane.PLAIN_MESSAGE);
+			}
 	}
 
 	@Override
@@ -135,14 +134,18 @@ public class GenericSwingView implements GameObserver {
 
 	@Override
 	public void onError(String msg) {
-		JOptionPane.showMessageDialog(new JFrame(), msg, "Game error",
-				JOptionPane.ERROR_MESSAGE);
-		gui.appendToStatusMessagePanel(msg + "\n");
+		if (viewPiece == null || viewPiece == actualTurn) {
+			JOptionPane.showMessageDialog(new JFrame(), msg, "Game error",
+					JOptionPane.ERROR_MESSAGE);
+			gui.appendToStatusMessagePanel(msg + "\n");
+		}
 	}
 
 	private void randomMakeMove(Board board) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				gui.disableFilters();
+				// gui.update(null, null, null, actualTurn);
 				controller.makeMove(random);
 				gui.update(moveController.getSelectedRow(),
 						moveController.getSelectedColumn(),
@@ -154,6 +157,8 @@ public class GenericSwingView implements GameObserver {
 	private void intelligentMakeMove(Board board) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				gui.update(moveController.getSelectedRow(),
+						moveController.getSelectedColumn(), null, actualTurn);
 				controller.makeMove(ai);
 				gui.update(moveController.getSelectedRow(),
 						moveController.getSelectedColumn(),
@@ -235,11 +240,6 @@ public class GenericSwingView implements GameObserver {
 		};
 	}
 
-	/*
-	 * Por alguna razón extraña se piensan que todos son el modo al que se ha
-	 * cambiado.
-	 */
-
 	private PlayerModesChangeListener getPlayerModesChangeListener(
 			Board board) {
 		return new PlayerModesChangeListener() {
@@ -310,9 +310,8 @@ public class GenericSwingView implements GameObserver {
 			if (controller.isPlayerOfType(this.actualTurn,
 					controller.getPlayerModeString(SwingController.RANDOM))) {
 				randomMakeMove(board);
-			} else if (controller
-					.isPlayerOfType(this.actualTurn, controller
-							.getPlayerModeString(SwingController.INTELLIGENT))) {
+			} else if (controller.isPlayerOfType(this.actualTurn, controller
+					.getPlayerModeString(SwingController.INTELLIGENT))) {
 				intelligentMakeMove(board);
 			}
 		}

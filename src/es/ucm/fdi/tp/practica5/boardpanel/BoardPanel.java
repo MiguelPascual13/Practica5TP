@@ -57,8 +57,9 @@ public class BoardPanel extends JPanel {
 				cells[i][j].setOpaque(true);
 				if (row != null && column != null) {
 					applyFilter(row, column, filterOnCellsList, turn);
-				} else
+				} else {
 					cells[i][j].setBorder(null);
+				}
 				cells[i][j].setBackground(
 						this.colorChooser.getColorFor(board.getPosition(i, j)));
 
@@ -102,4 +103,11 @@ public class BoardPanel extends JPanel {
 		}
 	}
 
+	public void disableFilters() {
+		for (int i = 0; i < board.getRows(); i++) {
+			for (int j = 0; j < board.getCols(); j++) {
+				cells[i][j].setBorder(null);
+			}
+		}
+	}
 }

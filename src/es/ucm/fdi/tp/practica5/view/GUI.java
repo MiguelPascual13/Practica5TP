@@ -87,4 +87,8 @@ public class GUI extends JFrame {
 	public void disableAutomaticMoves(boolean disable) {
 		this.lateralPanel.disableAutomaticMoves(disable);
 	}
+	
+	public void disableFilters(){
+		this.boardPanel.disableFilters();
+	}
 }
