@@ -38,7 +38,7 @@ public class GenericSwingView implements GameObserver {
 	private PieceColorMap colorChooser;
 	private SwingController controller;
 	private Piece viewPiece;
-	private Piece turn;
+	private Piece actualTurn;
 	private GUI gui;
 	private MoveController moveController;
 	private Player random;
@@ -64,7 +64,7 @@ public class GenericSwingView implements GameObserver {
 		if (gui != null)
 			gui.dispose();
 
-		this.turn = turn;
+		this.actualTurn = turn;
 
 		gui = new GUI(board, pieces, colorChooser, turn, moveController,
 				this.viewPiece, controller,
@@ -74,20 +74,20 @@ public class GenericSwingView implements GameObserver {
 				this.getIntelligentButtonListener(board),
 				this.getColorChangeListener(board),
 				this.getPlayerModesChangeListener(board),
-				this.getCellClickedListener(board, this.turn));
+				this.getCellClickedListener(board));
 
 		setGUITitle(gameDesc);
-		checkForDisablingButtons(turn);
+		checkForDisablingButtons();
 		gui.update(moveController.getSelectedRow(),
 				moveController.getSelectedColumn(),
 				moveController.getFilterOnCells(board), turn);
 		gui.appendToStatusMessagePanel(
 				startingMessage + "'" + gameDesc + "'\n");
-		if (this.viewPiece == turn) {
+		if (this.viewPiece == this.actualTurn) {
 			gui.appendToStatusMessagePanel(
-					changeTurnMessage + youMessage + turn + "\n");
+					changeTurnMessage + youMessage + this.actualTurn + "\n");
 		} else {
-			gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");
+			gui.appendToStatusMessagePanel(changeTurnMessage + this.actualTurn + "\n");
 		}
 
 		setGUIvisible();
@@ -97,7 +97,7 @@ public class GenericSwingView implements GameObserver {
 	public void onGameOver(Board board, State state, Piece winner) {
 		gui.update(moveController.getSelectedRow(),
 				moveController.getSelectedColumn(),
-				moveController.getFilterOnCells(board), turn);
+				moveController.getFilterOnCells(board), this.actualTurn);
 		gui.appendToStatusMessagePanel(gameOverMessage);
 		gui.appendToStatusMessagePanel(gameStatusMessage + state + "\n");
 		if (winner != null) {
@@ -120,13 +120,13 @@ public class GenericSwingView implements GameObserver {
 
 	@Override
 	public void onChangeTurn(Board board, Piece turn) {
-		this.turn = turn;
+		this.actualTurn = turn;
 		gui.update(moveController.getSelectedRow(),
 				moveController.getSelectedColumn(),
-				moveController.getFilterOnCells(board), turn);
-		checkForDisablingButtons(this.turn);
-		appendChangeTurnMessage(this.turn);
-		checkForAutomaticMoves(this.turn, board);
+				moveController.getFilterOnCells(board), this.actualTurn);
+		checkForDisablingButtons();
+		appendChangeTurnMessage();
+		checkForAutomaticMoves(board);
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class GenericSwingView implements GameObserver {
 				controller.makeMove(random);
 				gui.update(moveController.getSelectedRow(),
 						moveController.getSelectedColumn(),
-						moveController.getFilterOnCells(board), turn);
+						moveController.getFilterOnCells(board), actualTurn);
 			}
 		});
 	}
@@ -153,7 +153,7 @@ public class GenericSwingView implements GameObserver {
 				controller.makeMove(ai);
 				gui.update(moveController.getSelectedRow(),
 						moveController.getSelectedColumn(),
-						moveController.getFilterOnCells(board), turn);
+						moveController.getFilterOnCells(board), actualTurn);
 			}
 		});
 	}
@@ -225,7 +225,7 @@ public class GenericSwingView implements GameObserver {
 				colorChooser.setColorFor(piece, color);
 				gui.update(moveController.getSelectedRow(),
 						moveController.getSelectedColumn(),
-						moveController.getFilterOnCells(board), turn);
+						moveController.getFilterOnCells(board), actualTurn);
 			}
 
 		};
@@ -241,29 +241,28 @@ public class GenericSwingView implements GameObserver {
 					controller.setPlayerType(piece, mode);
 				gui.update(moveController.getSelectedRow(),
 						moveController.getSelectedColumn(),
-						moveController.getFilterOnCells(board), turn);
+						moveController.getFilterOnCells(board), actualTurn);
 			}
 
 		};
 	}
 
-	private CellClickedListener getCellClickedListener(Board board,
-			Piece turn) {
+	private CellClickedListener getCellClickedListener(Board board) {
 		return new CellClickedListener() {
 
 			@Override
 			public void cellWasClicked(int row, int column, MouseEvent e) {
 				Integer answer = moveController.manageClicks(board, row, column,
-						turn, viewPiece, e);
+						actualTurn, viewPiece, e);
 				if (answer == MoveController.REPAINT_AND_MOVE) {
 					controller.makeMove(moveController);
 					gui.update(moveController.getSelectedRow(),
 							moveController.getSelectedColumn(),
-							moveController.getFilterOnCells(board), turn);
+							moveController.getFilterOnCells(board), actualTurn);
 				} else if (answer == MoveController.SOMETHING_TO_REPAINT) {
 					gui.update(moveController.getSelectedRow(),
 							moveController.getSelectedColumn(),
-							moveController.getFilterOnCells(board), turn);
+							moveController.getFilterOnCells(board), actualTurn);
 				}
 			}
 
@@ -287,29 +286,29 @@ public class GenericSwingView implements GameObserver {
 		});
 	}
 
-	private void appendChangeTurnMessage(Piece turn) {
-		if (this.viewPiece == turn) {
+	private void appendChangeTurnMessage() {
+		if (this.viewPiece == this.actualTurn) {
 			gui.appendToStatusMessagePanel(
-					changeTurnMessage + youMessage + turn + "\n");
+					changeTurnMessage + youMessage + this.actualTurn + "\n");
 		} else {
-			gui.appendToStatusMessagePanel(changeTurnMessage + turn + "\n");
+			gui.appendToStatusMessagePanel(changeTurnMessage + this.actualTurn + "\n");
 		}
 	}
 
-	private void checkForAutomaticMoves(Piece turn, Board board) {
-		if (controller.isPlayerOfType(turn,
+	private void checkForAutomaticMoves(Board board) {
+		if (controller.isPlayerOfType(this.actualTurn,
 				controller.getPlayerModeString(SwingController.RANDOM))) {
 			randomMakeMove(board);
-		} else if (controller.isPlayerOfType(turn,
+		} else if (controller.isPlayerOfType(this.actualTurn,
 				controller.getPlayerModeString(SwingController.INTELLIGENT))) {
 			intelligentMakeMove(board);
 		}
 	}
 
-	private void checkForDisablingButtons(Piece turn) {
-		if (this.viewPiece != null && this.viewPiece != turn) {
+	private void checkForDisablingButtons() {
+		if (this.viewPiece != null && this.viewPiece != this.actualTurn) {
 			gui.disableAutomaticMoves(true);
-		} else if (viewPiece == turn) {
+		} else if (viewPiece == this.actualTurn) {
 			gui.disableAutomaticMoves(false);
 		}
 	}
