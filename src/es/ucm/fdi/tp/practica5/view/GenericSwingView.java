@@ -168,13 +168,13 @@ public class GenericSwingView implements GameObserver {
 
 			@Override
 			public void QuitButtonClicked() {
-				controller.stop();
 
 				JFrame ventanaQuit = new JFrame();
 				int n = JOptionPane.showConfirmDialog(ventanaQuit,
 						"Are you sure you want to quit?", "Quit",
 						JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
+					controller.stop();
 					System.exit(0);
 				} else {
 					ventanaQuit.dispose();
