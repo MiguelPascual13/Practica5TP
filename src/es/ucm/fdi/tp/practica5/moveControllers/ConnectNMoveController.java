@@ -17,11 +17,7 @@ public class ConnectNMoveController extends MoveController {
 	private int row;
 	private int column;
 	
-	@Override
-	public Integer manageClicks(Board board, int row, int column, Piece turn, Piece viewPiece, MouseEvent mouseEvent) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public Integer getSelectedRow() {
@@ -51,6 +47,19 @@ public class ConnectNMoveController extends MoveController {
 			}
 		}
 		return filterOnCellsList;
+	}
+
+	@Override
+	public Integer manageClicks(Board board, int row, int column, Piece turn,
+			Piece viewPiece, MouseEvent mouseEvent,
+			MoveStateChangeListener moveStateChangeListener) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String notifyMoveStartInstructions() {
+		return null;
 	}
 
 }

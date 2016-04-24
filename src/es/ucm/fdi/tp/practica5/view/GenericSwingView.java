@@ -23,6 +23,7 @@ import es.ucm.fdi.tp.practica5.lateralpanel.PlayerModesPanel.PlayerModesChangeLi
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.QuitButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.RestartButtonListener;
 import es.ucm.fdi.tp.practica5.moveControllers.MoveController;
+import es.ucm.fdi.tp.practica5.moveControllers.MoveController.MoveStateChangeListener;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
 public class GenericSwingView implements GameObserver {
@@ -78,9 +79,7 @@ public class GenericSwingView implements GameObserver {
 
 		setGUITitle(gameDesc);
 		checkForDisablingButtons();
-		gui.update(moveController.getSelectedRow(),
-				moveController.getSelectedColumn(),
-				moveController.getFilterOnCells(board), turn);
+		update(board);
 		gui.appendToStatusMessagePanel(
 				startingMessage + "'" + gameDesc + "'\n");
 		if (this.viewPiece == this.actualTurn) {
@@ -90,27 +89,32 @@ public class GenericSwingView implements GameObserver {
 			gui.appendToStatusMessagePanel(
 					changeTurnMessage + this.actualTurn + "\n");
 		}
-
+		checkForMoreMoveIndications();
 		setGUIvisible();
 	}
 
 	@Override
 	public void onGameOver(Board board, State state, Piece winner) {
-			gui.update(moveController.getSelectedRow(),
-					moveController.getSelectedColumn(),
-					moveController.getFilterOnCells(board), this.actualTurn);
-			gui.appendToStatusMessagePanel(gameOverMessage);
-			gui.appendToStatusMessagePanel(gameStatusMessage + state + "\n");
-			if (winner != null) {
-				gui.appendToStatusMessagePanel(winnerMessage + winner + "\n");
-				JOptionPane.showMessageDialog(new JFrame(),
-						winnerMessage + winner, gameOverMessage,
-						JOptionPane.PLAIN_MESSAGE);
-			} else {
-				JOptionPane.showMessageDialog(new JFrame(),
-						gameStatusMessage + state, gameOverMessage,
-						JOptionPane.PLAIN_MESSAGE);
-			}
+		update(board);
+
+		gui.appendToStatusMessagePanel(gameOverMessage);
+		gui.appendToStatusMessagePanel(gameStatusMessage + state + "\n");
+		if (winner != null) {
+			gui.appendToStatusMessagePanel(winnerMessage + winner + "\n");
+			JOptionPane.showMessageDialog(new JFrame(), winnerMessage + winner,
+					gameOverMessage, JOptionPane.PLAIN_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(new JFrame(),
+					gameStatusMessage + state, gameOverMessage,
+					JOptionPane.PLAIN_MESSAGE);
+		}
+
+		if (viewPiece == null) {
+			disableRestartButton(false);
+			disableQuitButton(false);
+		}
+
+		update(board);
 	}
 
 	@Override
@@ -126,9 +130,8 @@ public class GenericSwingView implements GameObserver {
 		this.actualTurn = turn;
 		checkForDisablingButtons();
 		appendChangeTurnMessage();
-		gui.update(moveController.getSelectedRow(),
-				moveController.getSelectedColumn(),
-				moveController.getFilterOnCells(board), this.actualTurn);
+		checkForMoreMoveIndications();
+		update(board);
 		checkForAutomaticMoves(board);
 	}
 
@@ -144,12 +147,8 @@ public class GenericSwingView implements GameObserver {
 	private void randomMakeMove(Board board) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				gui.disableFilters();
-				// gui.update(null, null, null, actualTurn);
 				controller.makeMove(random);
-				gui.update(moveController.getSelectedRow(),
-						moveController.getSelectedColumn(),
-						moveController.getFilterOnCells(board), actualTurn);
+				update(board);
 			}
 		});
 	}
@@ -157,12 +156,8 @@ public class GenericSwingView implements GameObserver {
 	private void intelligentMakeMove(Board board) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				gui.update(moveController.getSelectedRow(),
-						moveController.getSelectedColumn(), null, actualTurn);
 				controller.makeMove(ai);
-				gui.update(moveController.getSelectedRow(),
-						moveController.getSelectedColumn(),
-						moveController.getFilterOnCells(board), actualTurn);
+				update(board);
 			}
 		});
 	}
@@ -232,9 +227,7 @@ public class GenericSwingView implements GameObserver {
 			@Override
 			public void colorChanged(Piece piece, Color color) {
 				colorChooser.setColorFor(piece, color);
-				gui.update(moveController.getSelectedRow(),
-						moveController.getSelectedColumn(),
-						moveController.getFilterOnCells(board), actualTurn);
+				update(board);
 			}
 
 		};
@@ -246,11 +239,11 @@ public class GenericSwingView implements GameObserver {
 
 			@Override
 			public void SetButtonClicked(Piece piece, String mode) {
-				if (controller.getPlayerType(piece) != mode)
+				if (controller.getPlayerType(piece) != mode) {
 					controller.setPlayerType(piece, mode);
-				gui.update(moveController.getSelectedRow(),
-						moveController.getSelectedColumn(),
-						moveController.getFilterOnCells(board), piece);
+					checkForDisablingButtons();
+				}
+				update(board);
 			}
 
 		};
@@ -262,21 +255,27 @@ public class GenericSwingView implements GameObserver {
 			@Override
 			public void cellWasClicked(int row, int column, MouseEvent e) {
 				Integer answer = moveController.manageClicks(board, row, column,
-						actualTurn, viewPiece, e);
+						actualTurn, viewPiece, e, getMoveStateChangeListener());
 				if (answer == MoveController.REPAINT_AND_MOVE) {
 					controller.makeMove(moveController);
-					gui.update(moveController.getSelectedRow(),
-							moveController.getSelectedColumn(),
-							moveController.getFilterOnCells(board), actualTurn);
+					update(board);
 				} else if (answer == MoveController.SOMETHING_TO_REPAINT) {
-					gui.update(moveController.getSelectedRow(),
-							moveController.getSelectedColumn(),
-							moveController.getFilterOnCells(board), actualTurn);
+					update(board);
 				}
 			}
 
 		};
 
+	}
+
+	private MoveStateChangeListener getMoveStateChangeListener() {
+		return new MoveStateChangeListener() {
+
+			@Override
+			public void notifyMoveStateChange(String string) {
+				gui.appendToStatusMessagePanel(string);
+			}
+		};
 	}
 
 	private void setGUITitle(String gameDesc) {
@@ -320,8 +319,50 @@ public class GenericSwingView implements GameObserver {
 	private void checkForDisablingButtons() {
 		if (this.viewPiece != null && this.viewPiece != this.actualTurn) {
 			gui.disableAutomaticMoves(true);
+			disableQuitButton(true);
 		} else if (viewPiece == this.actualTurn) {
+			if (!controller.isPlayerOfType(actualTurn,
+					controller.getPlayerModeString(SwingController.MANUAL))) {
+				gui.disableAutomaticMoves(true);
+			} else {
+				gui.disableAutomaticMoves(false);
+				gui.disableQuitButton(false);
+			}
+		} else if (viewPiece == null && !controller.isPlayerOfType(actualTurn,
+				controller.getPlayerModeString(SwingController.MANUAL))) {
+			gui.disableAutomaticMoves(true);
+			disableRestartButton(true);
+			disableQuitButton(true);
+		} else {
 			gui.disableAutomaticMoves(false);
+			disableRestartButton(false);
+			disableQuitButton(false);
+		}
+	}
+
+	private void disableQuitButton(boolean disable) {
+		gui.disableQuitButton(disable);
+	}
+
+	private void disableRestartButton(boolean disable) {
+		gui.disableRestartButton(disable);
+	}
+
+	private void update(Board board) {
+		gui.update(moveController.getSelectedRow(),
+				moveController.getSelectedColumn(),
+				moveController.getFilterOnCells(board), actualTurn);
+	}
+
+	private void checkForMoreMoveIndications() {
+		if (viewPiece == null && controller.isPlayerOfType(actualTurn,
+				controller.getPlayerModeString(SwingController.MANUAL))) {
+			gui.appendToStatusMessagePanel(
+					moveController.notifyMoveStartInstructions());
+		} else if (viewPiece == actualTurn && controller.isPlayerOfType(actualTurn,
+				controller.getPlayerModeString(SwingController.MANUAL))) {
+			gui.appendToStatusMessagePanel(
+					moveController.notifyMoveStartInstructions());
 		}
 	}
 }

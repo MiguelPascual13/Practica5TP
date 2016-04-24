@@ -13,12 +13,6 @@ import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 public class AdvancedTTTMoveController extends MoveController {
 
 	@Override
-	public Integer manageClicks(Board board, int row, int column, Piece turn, Piece viewPiece, MouseEvent mouseEvent) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Integer getSelectedRow() {
 		// TODO Auto-generated method stub
 		return null;
@@ -31,7 +25,8 @@ public class AdvancedTTTMoveController extends MoveController {
 	}
 
 	@Override
-	public GameMove requestMove(Piece p, Board board, List<Piece> pieces, GameRules rules) {
+	public GameMove requestMove(Piece p, Board board, List<Piece> pieces,
+			GameRules rules) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -40,6 +35,20 @@ public class AdvancedTTTMoveController extends MoveController {
 	public List<Pair<Integer, Integer>> getFilterOnCells(Board board) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Integer manageClicks(Board board, int row, int column, Piece turn,
+			Piece viewPiece, MouseEvent mouseEvent,
+			MoveStateChangeListener moveStateChangeListener) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String notifyMoveStartInstructions() {
+		return null;
+
 	}
 
 }

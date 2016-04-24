@@ -47,4 +47,12 @@ public class QuitRestartPanel extends JPanel {
 			});
 		}
 	}
+
+	public void disableQuitButton(boolean disable) {
+		this.quitButton.setEnabled(!disable);
+	}
+
+	public void disableRestartButton(boolean disable) {
+		this.restartButton.setEnabled(!disable);
+	}
 }

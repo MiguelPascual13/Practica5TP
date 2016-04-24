@@ -75,7 +75,8 @@ public class LateralPanel extends JPanel {
 		if (controller.getAvailablePlayerModes() == 1) {
 			return false;
 		} else {
-			playerModesPanel = new PlayerModesPanel(pieces, playerModesChangeListener, viewPiece,
+			playerModesPanel = new PlayerModesPanel(pieces,
+					playerModesChangeListener, viewPiece,
 					controller.getPlayerModesStringArray());
 			return true;
 		}
@@ -129,5 +130,13 @@ public class LateralPanel extends JPanel {
 			RestartButtonListener restartButtonListener) {
 		quitRestartPanel = new QuitRestartPanel(quitButtonListener,
 				restartButtonListener, viewPiece);
+	}
+
+	public void disableQuitButton(boolean disable) {
+		this.quitRestartPanel.disableQuitButton(disable);
+	}
+	
+	public void disableRestartButton(boolean disable) {
+		this.quitRestartPanel.disableRestartButton(disable);
 	}
 }

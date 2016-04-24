@@ -11,8 +11,12 @@ import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 @SuppressWarnings("serial")
 
 public abstract class MoveController extends Player {
-	
-	//cambiar a enum
+
+	public interface MoveStateChangeListener {
+		public void notifyMoveStateChange(String string);
+	}
+
+	// cambiar a enum
 	public static final Integer NOTHING_TO_REPAINT = null;
 	public static final Integer SOMETHING_TO_REPAINT = -1;
 	public static final Integer REPAINT_AND_MOVE = 1;
@@ -22,8 +26,9 @@ public abstract class MoveController extends Player {
 	 */
 	public static final Integer DEFAULT_SELECTED_PIECE = -1;
 
-	public abstract Integer manageClicks(Board board, int row, int column, Piece turn, Piece viewPiece,
-			MouseEvent mouseEvent);
+	public abstract Integer manageClicks(Board board, int row, int column,
+			Piece turn, Piece viewPiece, MouseEvent mouseEvent,
+			MoveStateChangeListener moveStateChangeListener);
 
 	public boolean checkMultiViewCase(Piece turn, Piece viewPiece) {
 		if (viewPiece != null) {
@@ -34,6 +39,8 @@ public abstract class MoveController extends Player {
 		} else
 			return true;
 	}
+
+	public abstract String notifyMoveStartInstructions();
 
 	public abstract Integer getSelectedRow();
 

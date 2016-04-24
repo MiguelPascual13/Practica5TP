@@ -14,6 +14,10 @@ import es.ucm.fdi.tp.practica5.utils.Utils;
 
 @SuppressWarnings("serial")
 public class AtaxxMoveController extends MoveController {
+
+	private static final String MOVE_START_MESSAGE = "Click on an origin piece\n";
+	private static final String MOVE_IN_PROGRESS_MESSAGE = "Click on an empty destination\n";
+
 	private boolean somethingSelected = false;
 
 	/* Destination piece. */
@@ -29,11 +33,14 @@ public class AtaxxMoveController extends MoveController {
 	private Integer newColumn = null;
 
 	@Override
-	public GameMove requestMove(Piece p, Board board, List<Piece> pieces, GameRules rules) {
+	public GameMove requestMove(Piece p, Board board, List<Piece> pieces,
+			GameRules rules) {
 		return new AtaxxMove(oldRow, oldColumn, newRow, newColumn, p);
 	}
 
-	public Integer manageClicks(Board board, int row, int column, Piece turn, Piece viewPiece, MouseEvent mouseEvent) {
+	public Integer manageClicks(Board board, int row, int column, Piece turn,
+			Piece viewPiece, MouseEvent mouseEvent,
+			MoveStateChangeListener moveStateChangeListener) {
 
 		if (!checkMultiViewCase(turn, viewPiece))
 			return NOTHING_TO_REPAINT;
@@ -42,7 +49,8 @@ public class AtaxxMoveController extends MoveController {
 			if (somethingSelected) {
 				if (board.getPosition(row, column) == null) {
 					setDestinationCell(row, column);
-					if (Utils.InfiniteDistanceExceeded(oldRow, oldColumn, row, column)) {
+					if (Utils.InfiniteDistanceExceeded(oldRow, oldColumn, row,
+							column)) {
 						return NOTHING_TO_REPAINT;
 					}
 					somethingSelected = false;
@@ -62,6 +70,8 @@ public class AtaxxMoveController extends MoveController {
 					 */
 					setSelectedCell(row, column);
 					somethingSelected = true;
+					moveStateChangeListener
+							.notifyMoveStateChange(MOVE_IN_PROGRESS_MESSAGE);
 					return SOMETHING_TO_REPAINT;
 				} else {
 					return NOTHING_TO_REPAINT;
@@ -112,8 +122,10 @@ public class AtaxxMoveController extends MoveController {
 			List<Pair<Integer, Integer>> filterOnCellsList = new ArrayList<Pair<Integer, Integer>>();
 			for (int i = 0; i < board.getRows(); i++) {
 				for (int j = 0; j < board.getCols(); j++) {
-					if ((!Utils.InfiniteDistanceExceeded(selectedRow, selectedColumn, i, j)
-							&& board.getPosition(i, j) == null) || ((i == selectedRow) && (j == selectedColumn))) {
+					if ((!Utils.InfiniteDistanceExceeded(selectedRow,
+							selectedColumn, i, j)
+							&& board.getPosition(i, j) == null)
+							|| ((i == selectedRow) && (j == selectedColumn))) {
 						filterOnCellsList.add(new Pair<Integer, Integer>(i, j));
 					}
 				}
@@ -121,5 +133,10 @@ public class AtaxxMoveController extends MoveController {
 			return filterOnCellsList;
 		} else
 			return null;
+	}
+
+	@Override
+	public String notifyMoveStartInstructions() {
+		return MOVE_START_MESSAGE;
 	}
 }
