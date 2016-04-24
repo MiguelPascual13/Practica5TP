@@ -14,7 +14,7 @@ import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 public class AdvancedTTTMoveController extends MoveController {
 
 	private boolean somethingSelected = false;
-	private boolean advancedMoveProgress = false;
+	private int playerInAdvancedStatusCounter = 0;
 
 	private int oldRow;
 	private int oldCol;
@@ -96,22 +96,25 @@ public class AdvancedTTTMoveController extends MoveController {
 	public Integer manageClicks(Board board, int row, int column, Piece turn,
 			Piece viewPiece, MouseEvent mouseEvent,
 			MoveStateChangeListener moveStateChangeListener) {
-		this.advancedMoveProgress = false;
+
 		if (!checkMultiViewCase(turn, viewPiece))
 			return NOTHING_TO_REPAINT;
-
+		
+		
+		if(board.getPieceCount(turn) == 1)
+			this.playerInAdvancedStatusCounter++;
+		
 		if (board.getPieceCount(turn) == 0) {
 			return ataxxLikeManageClicks(row, column, board, mouseEvent,
 					moveStateChangeListener, turn);
 		} else {
-			this.advancedMoveProgress = true;
 			return connectNLikeManageClicks(board, row, column);
 		}
 	}
 
 	@Override
 	public String notifyMoveStartInstructions() {
-		if (this.advancedMoveProgress)
+		if (this.playerInAdvancedStatusCounter == 2)
 			return ADVANCED_GAME_START;
 		else
 			return SIMPLE_GAME_START;
