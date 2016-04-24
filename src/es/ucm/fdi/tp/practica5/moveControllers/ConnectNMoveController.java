@@ -13,12 +13,12 @@ import es.ucm.fdi.tp.basecode.connectn.ConnectNMove;
 
 @SuppressWarnings("serial")
 public class ConnectNMoveController extends MoveController {
-	
+
 	private int row;
 	private int column;
 	
+	private static final String MOVE_START_MESSAGE = "Click on an empty cell.\n";
 	
-
 	@Override
 	public Integer getSelectedRow() {
 		// TODO Auto-generated method stub
@@ -32,7 +32,8 @@ public class ConnectNMoveController extends MoveController {
 	}
 
 	@Override
-	public GameMove requestMove(Piece p, Board board, List<Piece> pieces, GameRules rules) {
+	public GameMove requestMove(Piece p, Board board, List<Piece> pieces,
+			GameRules rules) {
 		return new ConnectNMove(row, column, p);
 	}
 
@@ -53,13 +54,21 @@ public class ConnectNMoveController extends MoveController {
 	public Integer manageClicks(Board board, int row, int column, Piece turn,
 			Piece viewPiece, MouseEvent mouseEvent,
 			MoveStateChangeListener moveStateChangeListener) {
-		// TODO Auto-generated method stub
-		return null;
+
+		if (!checkMultiViewCase(turn, viewPiece))
+			return NOTHING_TO_REPAINT;
+
+			if (board.getPosition(row, column) == null) {
+				this.row = row;
+				this.column = column;
+				return REPAINT_AND_MOVE;
+			} else
+				return NOTHING_TO_REPAINT;
 	}
 
 	@Override
 	public String notifyMoveStartInstructions() {
-		return null;
+		return MOVE_START_MESSAGE;
 	}
 
 }
