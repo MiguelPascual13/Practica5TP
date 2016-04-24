@@ -106,12 +106,4 @@ public class AutomaticMovesPanel extends JPanel {
 		return index < this.playerModeButtons.size()
 				&& this.playerModeButtons.get(index) != null;
 	}
-
-	/*
-	 * public void enableRandom(boolean change) {
-	 * randomButton.setEnabled(change); }
-	 * 
-	 * public void enableIntelligent(boolean change) {
-	 * intelligentButton.setEnabled(change); }
-	 */
 }

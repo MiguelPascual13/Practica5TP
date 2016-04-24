@@ -26,6 +26,10 @@ import es.ucm.fdi.tp.practica5.moveControllers.MoveController;
 import es.ucm.fdi.tp.practica5.moveControllers.MoveController.MoveStateChangeListener;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
+/**
+ * This class is a kind of equivalent to GenericConsoleView on the basecode,
+ * catch the model events and this the help of the controller updates the view.
+ */
 public class GenericSwingView implements GameObserver {
 
 	private static final String startingMessage = "Starting ";
@@ -45,6 +49,23 @@ public class GenericSwingView implements GameObserver {
 	private Player random;
 	private Player ai;
 
+	/**
+	 * Constructor to match the arguments of the method createSwing view in the
+	 * factories of the basecode.
+	 * 
+	 * @param g
+	 *            game in play
+	 * @param c
+	 *            controller to use
+	 * @param viewPiece
+	 *            owner of the view
+	 * @param moveController
+	 *            kind of move generator (depends on the concrete game).
+	 * @param random
+	 *            ramdom move generator
+	 * @param ai
+	 *            intelligent move generator
+	 */
 	public GenericSwingView(Observable<GameObserver> g, SwingController c,
 			final Piece viewPiece, MoveController moveController, Player random,
 			Player ai) {
@@ -62,6 +83,7 @@ public class GenericSwingView implements GameObserver {
 	public void onGameStart(Board board, String gameDesc, List<Piece> pieces,
 			Piece turn) {
 
+		/* to avoid strange behaviors in case of restarting */
 		if (gui != null)
 			gui.dispose();
 
@@ -184,6 +206,8 @@ public class GenericSwingView implements GameObserver {
 		};
 	}
 
+	/*-----LISTENERS-----*/
+
 	private RestartButtonListener getRestartButtonListener(
 			SwingController controller) {
 		return new RestartButtonListener() {
@@ -278,6 +302,8 @@ public class GenericSwingView implements GameObserver {
 		};
 	}
 
+	/* Some auxiliary private methods */
+
 	private void setGUITitle(String gameDesc) {
 		if (viewPiece == null) {
 			gui.setTitle(titleMessage + gameDesc);
@@ -316,6 +342,9 @@ public class GenericSwingView implements GameObserver {
 		}
 	}
 
+	/**
+	 * Checks if we have to disable some buttons in the lateral panel.
+	 */
 	private void checkForDisablingButtons() {
 		if (this.viewPiece != null && this.viewPiece != this.actualTurn) {
 			gui.disableAutomaticMoves(true);
@@ -354,12 +383,18 @@ public class GenericSwingView implements GameObserver {
 				moveController.getFilterOnCells(board), actualTurn);
 	}
 
+	/**
+	 * Look after possible status massage panel updates due to some
+	 * moveController indications. (We could have made it implementing
+	 * observable and game observer, but that seems to be cleaner)
+	 */
 	private void checkForMoreMoveIndications() {
 		if (viewPiece == null && controller.isPlayerOfType(actualTurn,
 				controller.getPlayerModeString(SwingController.MANUAL))) {
 			gui.appendToStatusMessagePanel(
 					moveController.notifyMoveStartInstructions());
-		} else if (viewPiece == actualTurn && controller.isPlayerOfType(actualTurn,
+		} else if (viewPiece == actualTurn && controller.isPlayerOfType(
+				actualTurn,
 				controller.getPlayerModeString(SwingController.MANUAL))) {
 			gui.appendToStatusMessagePanel(
 					moveController.notifyMoveStartInstructions());

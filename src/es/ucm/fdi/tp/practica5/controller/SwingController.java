@@ -10,6 +10,9 @@ import es.ucm.fdi.tp.basecode.bgame.model.Game;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.Main;
 
+/**
+ * Controller extended utilities for a swing view.
+ */
 public class SwingController extends Controller {
 
 	private int availablePlayerModes = 1;
@@ -57,22 +60,56 @@ public class SwingController extends Controller {
 		}
 	}
 
+	/* NOTE: Maybe is a little bit intrincated, and it maybe be changed. */
+
+	/**
+	 * Returns an array of strings with the valid player modes
+	 * 
+	 * @return
+	 */
 	public String[] getPlayerModesStringArray() {
 		return this.playerModesStringArray;
 	}
 
+	/**
+	 * Assuming that the string is a valid player mode says if the piece
+	 * specified corresponds to that player mode
+	 * 
+	 * @param piece
+	 * @param type
+	 * @return
+	 */
 	public boolean isPlayerOfType(Piece piece, String type) {
 		return this.players.get(piece) == type;
 	}
 
+	/**
+	 * Returns an string of the player mode of the piece specified
+	 * 
+	 * @param piece
+	 * @return
+	 */
 	public String getPlayerType(Piece piece) {
 		return this.players.get(piece);
 	}
 
+	/**
+	 * asuming that the string represents a valid playerMode, it changes the
+	 * player mode of the piece specified.
+	 * 
+	 * @param piece
+	 * @param type
+	 */
 	public void setPlayerType(Piece piece, String type) {
 		this.players.put(piece, type);
 	}
 
+	/**
+	 * Return an string of the player mode corresponding to the index specified
+	 * 
+	 * @param index
+	 * @return
+	 */
 	public String getPlayerModeString(int index) {
 		return this.playerModesStringArray[index];
 	}

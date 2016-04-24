@@ -656,8 +656,6 @@ public class Main {
 	}
 
 	private static void createDefaultAtaxxGame() {
-		System.out
-				.println("Some arguments are invalid, creating a default game");
 		gameFactory = new AtaxxFactoryExt();
 	}
 

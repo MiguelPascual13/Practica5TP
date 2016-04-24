@@ -11,6 +11,9 @@ import es.ucm.fdi.tp.basecode.bgame.model.Pair;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.basecode.connectn.ConnectNMove;
 
+/**
+ * Move controller for connect n
+ */
 @SuppressWarnings("serial")
 public class ConnectNMoveController extends MoveController {
 

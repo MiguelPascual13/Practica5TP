@@ -82,10 +82,6 @@ public class AtaxxFactory implements GameFactory {
 	@Override
 	public List<Piece> createDefaultPieces() {
 		List<Piece> pieces = new ArrayList<Piece>();
-		/*
-		 * WARNING: If you want to touch the pieces names, mind its correctness,
-		 * otherwise the full program will explode.
-		 */
 		pieces.add(new Piece("X"));
 		pieces.add(new Piece("O"));
 		return pieces;

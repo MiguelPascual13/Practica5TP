@@ -9,7 +9,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import es.ucm.fdi.tp.basecode.bgame.model.Board;
-import es.ucm.fdi.tp.basecode.bgame.model.Game;
 import es.ucm.fdi.tp.basecode.bgame.model.Pair;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.boardpanel.Cell.CellClickedListener;
@@ -31,14 +30,6 @@ public class BoardPanel extends JPanel {
 		this.colorChooser = colorChooser;
 		this.setBoard(board);
 		this.update(null, null, null, null);
-	}
-
-	public void setGame(Game game) {
-
-	}
-
-	public void setColors(PieceColorMap colorMap) {
-
 	}
 
 	public void setBoard(Board board) {
@@ -88,21 +79,20 @@ public class BoardPanel extends JPanel {
 			}
 		}
 	}
-
+	
+	/**
+	 * EXPERIMENTAL: Substitution of the squares, chante it to circles.
+	 * @deprecated
+	 * @param g
+	 * @param color
+	 */
 	public void paintComponent(Graphics g, Color color) {
-		super.paintComponent(g);
-		g.setColor(color);
-		if (color == PieceColorMap.OBSTACLE_COLOR) {
-			g.fillRect(3, 3, this.getWidth() - 6, this.getHeight() - 6);
-			// g.setColor(Color.WHITE);
-			g.drawRect(3, 3, this.getWidth() - 6, this.getHeight() - 6);
-		} else {
-			g.fillOval(3, 3, this.getWidth() - 9, this.getHeight() - 9);
-			// g.setColor(Color.BLACK);
-			g.drawOval(3, 3, this.getWidth() - 9, this.getHeight() - 9);
-		}
 	}
-
+	
+	/**
+	 * EXPERIMENTAL:
+	 * @deprecated
+	 */
 	public void disableFilters() {
 		for (int i = 0; i < board.getRows(); i++) {
 			for (int j = 0; j < board.getCols(); j++) {

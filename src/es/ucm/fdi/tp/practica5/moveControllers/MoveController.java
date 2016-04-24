@@ -9,7 +9,10 @@ import es.ucm.fdi.tp.basecode.bgame.model.Pair;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 
 @SuppressWarnings("serial")
-
+/**
+ * This class manage the clicks in the main window and using the mouse event
+ * information creates a valid move.
+ */
 public abstract class MoveController extends Player {
 
 	public interface MoveStateChangeListener {
@@ -26,11 +29,31 @@ public abstract class MoveController extends Player {
 	 */
 	public static final Integer DEFAULT_SELECTED_PIECE = -1;
 
+	/**
+	 * Manage the mouse event information and save the necessary to generate a
+	 * move.
+	 * 
+	 * @param board
+	 * @param row
+	 * @param column
+	 * @param turn
+	 * @param viewPiece
+	 * @param mouseEvent
+	 * @param moveStateChangeListener
+	 * @return
+	 */
 	public abstract Integer manageClicks(Board board, int row, int column,
 			Piece turn, Piece viewPiece, MouseEvent mouseEvent,
 			MoveStateChangeListener moveStateChangeListener);
 
-	public boolean checkMultiViewCase(Piece turn, Piece viewPiece) {
+	/**
+	 * Checks if we are in the multiview mode and if then if is our turn.
+	 * 
+	 * @param turn
+	 * @param viewPiece
+	 * @return
+	 */
+	protected boolean checkMultiViewCase(Piece turn, Piece viewPiece) {
 		if (viewPiece != null) {
 			if (turn != viewPiece)
 				return false;
@@ -46,5 +69,11 @@ public abstract class MoveController extends Player {
 
 	public abstract Integer getSelectedColumn();
 
+	/**
+	 * EXPERIMENTAL: Returns a list of coordinates to be highlighted.
+	 * 
+	 * @param board
+	 * @return
+	 */
 	public abstract List<Pair<Integer, Integer>> getFilterOnCells(Board board);
 }

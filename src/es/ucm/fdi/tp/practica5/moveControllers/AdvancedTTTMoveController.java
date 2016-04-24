@@ -10,6 +10,9 @@ import es.ucm.fdi.tp.basecode.bgame.model.GameRules;
 import es.ucm.fdi.tp.basecode.bgame.model.Pair;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 
+/**
+ * move controller for attt
+ */
 @SuppressWarnings("serial")
 public class AdvancedTTTMoveController extends MoveController {
 
@@ -99,11 +102,10 @@ public class AdvancedTTTMoveController extends MoveController {
 
 		if (!checkMultiViewCase(turn, viewPiece))
 			return NOTHING_TO_REPAINT;
-		
-		
-		if(board.getPieceCount(turn) == 1)
+
+		if (board.getPieceCount(turn) == 1)
 			this.playerInAdvancedStatusCounter++;
-		
+
 		if (board.getPieceCount(turn) == 0) {
 			return ataxxLikeManageClicks(row, column, board, mouseEvent,
 					moveStateChangeListener, turn);

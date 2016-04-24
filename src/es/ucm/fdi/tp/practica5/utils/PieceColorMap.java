@@ -8,6 +8,11 @@ import es.ucm.fdi.tp.basecode.bgame.Utils;
 import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.Main;
 
+/**
+ * Provides the function getColorFor, this class should be re-writing using the
+ * basecodes functions in the Utils class, unfortunately we find it out too
+ * late.
+ */
 public class PieceColorMap {
 
 	private Map<Piece, Color> colorMap;
@@ -18,8 +23,8 @@ public class PieceColorMap {
 	/**
 	 * Seven colors for seven players.
 	 */
-	private Color colors[] = { Color.BLUE, Color.GREEN, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED,
-			Color.YELLOW };
+	private Color colors[] = { Color.BLUE, Color.GREEN, Color.MAGENTA,
+			Color.ORANGE, Color.PINK, Color.RED, Color.YELLOW };
 
 	public PieceColorMap() {
 		colorMap = new HashMap<Piece, Color>();
@@ -55,8 +60,8 @@ public class PieceColorMap {
 	private boolean isObstacle(Piece piece) {
 		return piece.getId() == Main.OBSTACLE;
 	}
-	
-	public void setColorFor(Piece piece, Color color){
-			colorMap.put(piece, color);
+
+	public void setColorFor(Piece piece, Color color) {
+		colorMap.put(piece, color);
 	}
 }

@@ -12,6 +12,9 @@ import es.ucm.fdi.tp.basecode.bgame.model.Piece;
 import es.ucm.fdi.tp.practica5.ataxx.AtaxxMove;
 import es.ucm.fdi.tp.practica5.utils.Utils;
 
+/**
+ * Move controller for ataxx.
+ */
 @SuppressWarnings("serial")
 public class AtaxxMoveController extends MoveController {
 

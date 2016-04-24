@@ -1,0 +1,19 @@
+Componentes del Grupo:
+-Álvaro García Tenorio
+-Miguel Pascual Dominguez
+
+LÉEME (CAMBIOS):
+Sobre la corrección de la practica 4:
+
+Creemos que hemos corregido todo lo que nos pusiste.
+*Nomenclatura estandar de constantes (amyusculas)
+*El main del basecode seguramente lo tocamos los error, ya está restablecido.
+*Algunos cambios de legibilidad en parseGameOptions
+*Erratas tontas
+*Comentarios tontos
+*Codigo comentado en deshuso
+*Algunas correcciones de estilo en el codigo
+
+Sobre la practica 5: Creemos que funciona correctamente.
+Nos han surgido dudas en qué botones deshabilitar y cuales no
+(el pdf no nos aclaraba mucho)

@@ -16,6 +16,9 @@ import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.QuitButtonListener;
 import es.ucm.fdi.tp.practica5.lateralpanel.QuitRestartPanel.RestartButtonListener;
 import es.ucm.fdi.tp.practica5.utils.PieceColorMap;
 
+/**
+ * Panel that saves all the lateral panel option information
+ */
 @SuppressWarnings("serial")
 public class LateralPanel extends JPanel {
 
@@ -135,7 +138,7 @@ public class LateralPanel extends JPanel {
 	public void disableQuitButton(boolean disable) {
 		this.quitRestartPanel.disableQuitButton(disable);
 	}
-	
+
 	public void disableRestartButton(boolean disable) {
 		this.quitRestartPanel.disableRestartButton(disable);
 	}
